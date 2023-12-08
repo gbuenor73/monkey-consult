@@ -1,16 +1,6 @@
 import mysql.connector
-from .config import db_config
 
-
-def connect():
-    try:
-        conn = mysql.connector.connect(**db_config)
-        if conn.is_connected():
-            print('Conectado com Mysql')
-            return conn
-    except mysql.connector.Error as e:
-        print(f'Erro ao conectar com o MYSQL: {e}')
-        return None
+from app.Python.src.br.com.monkeyconsulting.infra.database.config import connect
 
 
 def fetch_data(query):
