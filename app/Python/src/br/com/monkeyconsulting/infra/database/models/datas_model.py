@@ -7,7 +7,7 @@ Base = declarative_base()
 class DataModel(Base):
     __tablename__ = 'DATAS'
 
-    id_datas = Column(Integer, primary_key=True)
+    id_data = Column(Integer, primary_key=True)
     id_cliente = Column(Integer)
     data_pagamento = Column(Date)
     inicio_dieta_treino = Column(Date)
@@ -25,7 +25,7 @@ class DataModel(Base):
         return self
 
     def __repr__(self):
-        return f"<Data(id_data'{self.id_datas}'>"
+        return f"<Data(id_data'{self.id_data}'>"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

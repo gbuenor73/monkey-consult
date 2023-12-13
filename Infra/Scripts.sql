@@ -28,7 +28,7 @@ CREATE TABLE
 
 CREATE TABLE
     DATAS (
-        id_datas INT AUTO_INCREMENT PRIMARY KEY,
+        id_data INT AUTO_INCREMENT PRIMARY KEY,
         id_cliente INT,
         data_pagamento DATE,
         inicio_dieta_treino DATE,

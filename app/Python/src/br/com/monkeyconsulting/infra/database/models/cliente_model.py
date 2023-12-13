@@ -8,11 +8,11 @@ class ClienteModel(Base):
     __tablename__ = 'CLIENTES'
 
     id_cliente = Column(Integer, primary_key=True)
+    id_plano = Column(Integer, foreign_key=True)
+    id_dieta = Column(Integer, foreign_key=True)
     nome = Column(String)
     telefone = Column(String)
     indicador_cliente_ativo = Column(Integer)
-    id_plano = Column(Integer)
-    id_dieta = Column(Integer)
 
     def to_model(self, dto):
         self.nome = dto.get('nome')

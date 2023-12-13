@@ -1,3 +1,6 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 from app.Python.src.br.com.monkeyconsulting.adapters.controllers.requests.cliente_dto import ClienteDto
 from app.Python.src.br.com.monkeyconsulting.infra.database.models.cliente_model import ClienteModel
 from br.com.monkeyconsulting.adapters.controllers.requests.datas_dto import DataDto
@@ -6,8 +9,6 @@ from br.com.monkeyconsulting.adapters.controllers.requests.planos_dto import Pla
 from br.com.monkeyconsulting.infra.database.models.datas_model import DataModel
 from br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
 from br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 db_config = {
     'host': "localhost",
@@ -28,6 +29,21 @@ def busca_todos_clientes():
     return [ClienteDto().to_dto(model) for model in models]
 
 
+def busca_todas_datas():
+    models = session.query(DataModel).all()
+    return [DataDto().to_dto(model) for model in models]
+
+
+def busca_todas_dietas():
+    models = session.query(DietaTreinoModel).all()
+    return [DietaDto().to_dto(model) for model in models]
+
+
+def busca_todos_planos():
+    models = session.query(PlanoModel).all()
+    return [PlanoDto().to_dto(model) for model in models]
+
+
 def busca_cliente_por_id(id):
     model = session.query(ClienteModel).filter_by(id_cliente=id).first()
     return ClienteDto().to_dto(model)
@@ -39,7 +55,7 @@ def busca_planos_por_id(id):
 
 
 def busca_datas_por_id(id):
-    model = session.query(DataModel).filter_by(id_datas=id).first()
+    model = session.query(DataModel).filter_by(id_data=id).first()
     return DataDto().to_dto(model)
 
 
@@ -48,25 +64,29 @@ def busca_dietas_por_id(id):
     return DietaDto().to_dto(model)
 
 
-def insere_cliente(dto: ClienteDto) -> None:
+def insere_cliente(dto: ClienteDto) -> ClienteDto:
     model = ClienteModel().to_model(dto)
     session.add(model)
     session.commit()
+    return ClienteDto().to_dto(model)
 
 
-def insere_data(dto: DataDto) -> None:
+def insere_data(dto: DataDto) -> DataDto:
     model = DataModel().to_model(dto)
     session.add(model)
     session.commit()
+    return DataDto().to_dto(model)
 
 
-def insere_dieta(dto: DietaDto) -> None:
+def insere_dieta(dto: DietaDto) -> DietaDto:
     model = DietaTreinoModel().to_model(dto)
     session.add(model)
     session.commit()
+    return DietaDto().to_dto(model)
 
 
-def insere_plano(dto: PlanoDto) -> None:
+def insere_plano(dto: PlanoDto) -> PlanoDto:
     model = PlanoModel().to_model(dto)
     session.add(model)
     session.commit()
+    return PlanoDto().to_dto(model)

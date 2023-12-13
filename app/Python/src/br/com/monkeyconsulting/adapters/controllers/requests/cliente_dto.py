@@ -1,15 +1,17 @@
+import json
+
 from marshmallow import Schema, fields
 
 
 class ClienteDto(Schema):
     id_cliente = fields.Int(required=False)
+    id_plano = fields.Int(required=True)
+    id_dieta = fields.Int(required=True)
     nome = fields.Str(required=True)
     telefone = fields.Str(required=True)
     indicador_cliente_ativo = fields.Int(required=True)
-    id_plano = fields.Int(required=True)
-    id_dieta = fields.Int(required=True)
 
-    def to_json(self):
+    def to_json(self) -> json:
         return {
             'id_cliente': self.id_cliente,
             'nome': self.nome,
