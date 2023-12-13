@@ -1,13 +1,12 @@
-from flask import request
-from flask.views import MethodView
-
 from app.Python.src.br.com.monkeyconsulting.adapters.controllers.requests.cliente_dto import ClienteDto
 from app.Python.src.br.com.monkeyconsulting.infra.database import data_base_repository
+from flask import request
+from flask.views import MethodView
 
 
 class ClientesController(MethodView):
 
-    def get():
+    def get(self):
         id = request.args.get('id')
         dto = data_base_repository.busca_cliente_por_id(id)
         return dto.to_json()

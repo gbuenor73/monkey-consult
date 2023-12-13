@@ -13,7 +13,7 @@ class PlanoModel(Base):
     descricao = Column(String)
 
     def to_model(self, dto):
-        self.id_plano = dto.get('id_plano')
+        # self.id_plano = dto.get('id_plano')
         self.dias_para_vencimento = dto.get('dias_para_vencimento')
         self.dias_para_troca_da_dieta = dto.get('dias_para_troca_da_dieta')
         self.descricao = dto.get('descricao')

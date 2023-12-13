@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields
 
 
-class DatasDto(Schema):
+class DataDto(Schema):
     id_datas = fields.Int(required=False)
     id_cliente = fields.Int(required=True)
     data_pagamento = fields.Date(required=False)

@@ -1,11 +1,11 @@
 from marshmallow import Schema, fields
 
 
-class PlanosDto(Schema):
-    id_plano = fields.Int(required=True)
-    dias_para_vencimento = fields.Int(required=False)
-    dias_para_troca_da_dieta = fields.Int(required=False)
-    descricao = fields.Int(required=False)
+class PlanoDto(Schema):
+    id_plano = fields.Int(required=False)
+    dias_para_vencimento = fields.Int(required=True)
+    dias_para_troca_da_dieta = fields.Int(required=True)
+    descricao = fields.Str(required=True)
 
     def to_json(self):
         return {

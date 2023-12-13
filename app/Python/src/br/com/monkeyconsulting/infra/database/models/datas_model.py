@@ -22,6 +22,7 @@ class DataModel(Base):
         self.ultima_troca_dieta_treino = dto.get('ultima_troca_dieta_treino')
         self.proxima_troca_dieta_treino = dto.get('proxima_troca_dieta_treino')
         self.vencimento_plano = dto.get('vencimento_plano')
+        return self
 
     def __repr__(self):
         return f"<Data(id_data'{self.id_datas}'>"

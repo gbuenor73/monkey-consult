@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields
 
 
-class DietasDto(Schema):
+class DietaDto(Schema):
     id_dieta = fields.Int(required=False)
     descricao = fields.Str(required=True)
 
