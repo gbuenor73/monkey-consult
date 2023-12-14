@@ -17,11 +17,11 @@ CREATE TABLE
 CREATE TABLE
     CLIENTES (
         id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+        id_plano INT,
+        id_dieta INT,
         nome VARCHAR(200),
         telefone VARCHAR(20),
         indicador_cliente_ativo BOOLEAN,
-        id_plano INT,
-        id_dieta INT,
         FOREIGN KEY (id_plano) REFERENCES PLANOS(id_plano),
         FOREIGN KEY (id_dieta) REFERENCES DIETAS_TREINOS(id_dieta)
     );
@@ -37,6 +37,15 @@ CREATE TABLE
         vencimento_plano DATE,
         FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id_cliente)
     );
+
+ALTER TABLE CLIENTES ADD
+    CONSTRAINT fk_clientes_planos FOREIGN KEY (id_plano) REFERENCES PLANOS(id_plano);
+
+ALTER TABLE CLIENTES ADD
+    CONSTRAINT fk_clientes_dietas FOREIGN KEY (id_dieta) REFERENCES DIETAS_TREINOS(id_dieta);
+
+ALTER TABLE DATAS ADD
+    CONSTRAINT fk_datas_clientes FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id_cliente);
 
 INSERT INTO
     PLANOS (
