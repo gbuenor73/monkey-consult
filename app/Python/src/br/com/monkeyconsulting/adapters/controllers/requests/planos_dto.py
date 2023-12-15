@@ -24,3 +24,6 @@ class PlanoDto(Schema):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return f"<Plano(id='{self.id_plano}', dias_para_vencimento='{self.dias_para_vencimento}')>"

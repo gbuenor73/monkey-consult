@@ -13,6 +13,8 @@ class PlanoModel(Base):
     dias_para_troca_da_dieta = Column(Integer)
     descricao = Column(String)
 
+    # clientes = relationship("ClienteModel", backref="PLANOS")
+
     def to_model(self, dto):
         self.dias_para_vencimento = dto.get('dias_para_vencimento')
         self.dias_para_troca_da_dieta = dto.get('dias_para_troca_da_dieta')

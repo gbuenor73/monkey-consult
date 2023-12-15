@@ -32,3 +32,6 @@ class ClienteDto(Schema):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return f"<Cliente(id='{self.id_cliente}', nome='{self.nome}')>"

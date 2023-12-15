@@ -33,3 +33,6 @@ class DataDto(Schema):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return f"<Data(id='{self.id_data}', inicio_dieta_treino='{self.inicio_dieta_treino}')>"

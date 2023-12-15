@@ -1,6 +1,6 @@
 USE monkey_consulting;
 
-CREATE TABLE
+CREATE TABLE IF NOT EXISTS
     PLANOS (
         id_plano INT AUTO_INCREMENT PRIMARY KEY,
         dias_para_vencimento INT,
@@ -8,13 +8,13 @@ CREATE TABLE
         descricao TEXT
     );
 
-CREATE TABLE
+CREATE TABLE IF NOT EXISTS
     DIETAS_TREINOS (
         id_dieta INT AUTO_INCREMENT PRIMARY KEY,
         descricao TEXT
     );
 
-CREATE TABLE
+CREATE TABLE IF NOT EXISTS
     CLIENTES (
         id_cliente INT AUTO_INCREMENT PRIMARY KEY,
         id_plano INT,
@@ -26,7 +26,7 @@ CREATE TABLE
         FOREIGN KEY (id_dieta) REFERENCES DIETAS_TREINOS(id_dieta)
     );
 
-CREATE TABLE
+CREATE TABLE IF NOT EXISTS
     DATAS (
         id_data INT AUTO_INCREMENT PRIMARY KEY,
         id_cliente INT,

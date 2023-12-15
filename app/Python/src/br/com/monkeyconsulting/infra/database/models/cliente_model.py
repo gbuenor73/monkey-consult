@@ -1,9 +1,5 @@
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
-
-from br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
-from br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
 
 Base = declarative_base()
 
@@ -17,9 +13,6 @@ class ClienteModel(Base):
     nome = Column(String)
     telefone = Column(String)
     indicador_cliente_ativo = Column(Integer)
-
-    plano = relationship(PlanoModel, primaryjoin=id_plano == PlanoModel.id_plano)
-    dieta = relationship(DietaTreinoModel)
 
     def to_model(self, dto):
         self.nome = dto.get('nome')

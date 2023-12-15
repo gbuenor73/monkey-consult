@@ -18,3 +18,6 @@ class DietaDto(Schema):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return f"<Dieta(id='{self.id_dieta}', descricao='{self.descricao}')>"
