@@ -3,7 +3,7 @@ import json
 from marshmallow import Schema, fields
 
 
-class ClienteDto(Schema):
+class ClienteRequest(Schema):
     id_cliente = fields.Int(required=False)
     id_plano = fields.Int(required=True)
     id_dieta = fields.Int(required=True)
@@ -21,7 +21,7 @@ class ClienteDto(Schema):
             'id_dieta': self.id_dieta
         }
 
-    def to_dto(self, model):
+    def to_req(self, model):
         self.id_cliente = model.id_cliente
         self.nome = model.nome
         self.telefone = model.telefone
@@ -34,4 +34,4 @@ class ClienteDto(Schema):
         super().__init__(*args, **kwargs)
 
     def __repr__(self):
-        return f"<Cliente(id='{self.id_cliente}', nome='{self.nome}')>"
+        return f"<ClienteRequest(id='{self.id_cliente}', nome='{self.nome}')>"

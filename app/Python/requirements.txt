@@ -1,5 +1,6 @@
 flask
-mashmallow
+flask_cors
+marshmallow
 sqlalchemy
 mysql.connector
 mysql-connector-python

@@ -3,7 +3,7 @@ import json
 from flask import request
 from flask.views import MethodView
 
-from app.Python.src.br.com.monkeyconsulting.adapters.controllers.requests.cliente_dto import ClienteDto
+from app.Python.src.br.com.monkeyconsulting.adapters.controllers.requests.cliente_req import ClienteRequest
 from br.com.monkeyconsulting.domain.utils.utils import list_to_json, format_response
 from br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
 
@@ -25,7 +25,7 @@ class ClientesController(MethodView):
     def post(self):
         data = request.json
         try:
-            dto = ClienteDto().load(data)
+            dto = ClienteRequest().load(data)
             response = self.repo.insere_cliente(dto)
             return format_response(response.to_json())
         except Exception as e:

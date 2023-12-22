@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields
 
 
-class DietaDto(Schema):
+class DietaRequest(Schema):
     id_dieta = fields.Int(required=False)
     descricao = fields.Str(required=True)
 
@@ -11,7 +11,7 @@ class DietaDto(Schema):
             'descricao': self.descricao
         }
 
-    def to_dto(self, model):
+    def to_request(self, model):
         self.id_dieta = model.id_dieta
         self.descricao = model.descricao
         return self
@@ -20,4 +20,4 @@ class DietaDto(Schema):
         super().__init__(*args, **kwargs)
 
     def __repr__(self):
-        return f"<Dieta(id='{self.id_dieta}', descricao='{self.descricao}')>"
+        return f"<DietaRequest(id='{self.id_dieta}', descricao='{self.descricao}')>"

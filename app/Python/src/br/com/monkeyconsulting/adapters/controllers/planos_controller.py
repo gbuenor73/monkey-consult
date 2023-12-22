@@ -2,7 +2,7 @@ from flask import request
 from flask.views import MethodView
 
 from br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
-from br.com.monkeyconsulting.adapters.controllers.requests.planos_dto import PlanoDto
+from br.com.monkeyconsulting.adapters.controllers.requests.planos_req import PlanoRequest
 from br.com.monkeyconsulting.domain.utils.utils import list_to_json, format_response
 from br.com.monkeyconsulting.infra.database.repositories.planos_repository import PlanosRepository
 
@@ -24,7 +24,7 @@ class PlanosController(MethodView):
     def post(self):
         data = request.json
         try:
-            dto = PlanoDto().load(data)
+            dto = PlanoRequest().load(data)
             response = self.repo.insere_plano(dto)
             return format_response(response.to_json())
         except Exception as e:

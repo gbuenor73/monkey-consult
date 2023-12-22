@@ -1,7 +1,7 @@
 from flask import request
 from flask.views import MethodView
 
-from br.com.monkeyconsulting.adapters.controllers.requests.dietas_treinos_dto import DietaDto
+from br.com.monkeyconsulting.adapters.controllers.requests.dietas_treinos_req import DietaRequest
 from br.com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
 from br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
 from br.com.monkeyconsulting.infra.database.repositories.dieta_repository import DietasRepository
@@ -24,7 +24,7 @@ class DietasController(MethodView):
     def post(self):
         data = request.json
         try:
-            dto = DietaDto().load(data)
+            dto = DietaRequest().load(data)
             response = self.repo.insere_dieta(dto)
             return format_response(response.to_json())
         except Exception as e:

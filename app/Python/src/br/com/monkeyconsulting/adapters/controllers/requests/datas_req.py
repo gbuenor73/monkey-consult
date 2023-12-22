@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields
 
 
-class DataDto(Schema):
+class DataRequest(Schema):
     id_data = fields.Int(required=False)
     id_cliente = fields.Int(required=True)
     data_pagamento = fields.Date(required=False)
@@ -21,7 +21,7 @@ class DataDto(Schema):
             'vencimento_plano': self.vencimento_plano
         }
 
-    def to_dto(self, model):
+    def to_request(self, model):
         self.id_data = model.id_data
         self.id_cliente = model.id_cliente
         self.data_pagamento = model.data_pagamento
@@ -35,4 +35,4 @@ class DataDto(Schema):
         super().__init__(*args, **kwargs)
 
     def __repr__(self):
-        return f"<Data(id='{self.id_data}', inicio_dieta_treino='{self.inicio_dieta_treino}')>"
+        return f"<DataRequest(id='{self.id_data}', inicio_dieta_treino='{self.inicio_dieta_treino}')>"

@@ -1,6 +1,5 @@
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -12,8 +11,6 @@ class PlanoModel(Base):
     dias_para_vencimento = Column(Integer)
     dias_para_troca_da_dieta = Column(Integer)
     descricao = Column(String)
-
-    # clientes = relationship("ClienteModel", backref="PLANOS")
 
     def to_model(self, dto):
         self.dias_para_vencimento = dto.get('dias_para_vencimento')
