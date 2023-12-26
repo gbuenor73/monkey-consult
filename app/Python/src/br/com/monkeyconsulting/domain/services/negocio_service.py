@@ -1,4 +1,4 @@
-from br.com.monkeyconsulting.adapters.controllers.responses.response_completo_req import ResponseCompletoResponse
+from br.com.monkeyconsulting.adapters.controllers.responses.response_completo_resp import ResponseCompletoResponse
 from br.com.monkeyconsulting.domain.utils.utils import list_to_json, format_response
 from br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
 from br.com.monkeyconsulting.infra.database.repositories.datas_repository import DatasRepository

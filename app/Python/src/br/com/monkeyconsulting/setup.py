@@ -4,7 +4,7 @@ from flask_cors import CORS
 from app.Python.src.br.com.monkeyconsulting.adapters.controllers.clientes_controller import ClientesController
 from br.com.monkeyconsulting.adapters.controllers.datas_controller import DatasController
 from br.com.monkeyconsulting.adapters.controllers.dietas_treinos_controller import DietasController
-from br.com.monkeyconsulting.adapters.controllers.negocio_controller import NegocioController
+from br.com.monkeyconsulting.adapters.controllers.negocios_controller import NegocioController
 from br.com.monkeyconsulting.adapters.controllers.planos_controller import PlanosController
 
 app = Flask(__name__)

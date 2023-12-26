@@ -20,10 +20,6 @@ class ClienteDTO:
         ClienteDTO.nome = req.nome
         ClienteDTO.telefone = req.telefone
         ClienteDTO.indicador_ativo = req.indicador_cliente_ativo
-        ClienteDTO.plano.id_plano = req.id_plano
-        ClienteDTO.dieta.id_dieta = req.id_dieta
+        ClienteDTO.plano = PlanoDTO.to_dto(req.plano)
+        ClienteDTO.dieta = DietaTreinoDTO.to_dto(req.dieta)
         return ClienteDTO
-
-    @staticmethod
-    def static():
-        return 'teste'

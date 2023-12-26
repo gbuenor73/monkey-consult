@@ -11,5 +11,5 @@ class NegocioController(MethodView):
     def get(self):
         return self.service.obtem_todos_dados()
 
-    def post(self):
-        return self.service.post()
+    # def post(self):
+    #     return self.service.post()

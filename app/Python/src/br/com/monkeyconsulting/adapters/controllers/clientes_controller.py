@@ -4,6 +4,7 @@ from flask import request
 from flask.views import MethodView
 
 from app.Python.src.br.com.monkeyconsulting.adapters.controllers.requests.cliente_req import ClienteRequest
+from br.com.monkeyconsulting.domain.services.clientes_service import ClientesService
 from br.com.monkeyconsulting.domain.utils.utils import list_to_json, format_response
 from br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
 
@@ -11,7 +12,7 @@ from br.com.monkeyconsulting.infra.database.repositories.clientes_repository imp
 class ClientesController(MethodView):
 
     def __init__(self):
-        self.repo = ClientesRepository()
+        self.repo = ClientesService()
 
     def get(self) -> json:
         id = request.args.get('id')
