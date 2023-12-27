@@ -10,7 +10,7 @@ def date_handler(obj):
     if isinstance(obj, (date, datetime)):
         return obj.strftime('%d-%m-%Y')
     else:
-        raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
+        return obj
 
 
 def format_response(obj):

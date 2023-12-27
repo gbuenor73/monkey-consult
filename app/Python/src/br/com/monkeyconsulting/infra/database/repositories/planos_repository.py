@@ -1,6 +1,6 @@
-from br.com.monkeyconsulting.adapters.controllers.requests.planos_req import PlanoRequest
-from br.com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
-from br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
+from app.Python.src.br.com.monkeyconsulting.adapters.controllers.requests.planos_req import PlanoRequest
+from app.Python.src.br.com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
+from app.Python.src.br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
 
 
 class PlanosRepository:
@@ -9,7 +9,7 @@ class PlanosRepository:
             models = db.session.query(PlanoModel).all()
             return [PlanoRequest().to_request(model) for model in models]
 
-    def busca_planos_por_id(self, id):
+    def busca_plano_por_id(self, id):
         with DBConnectionHandler() as db:
             model = db.session.query(PlanoModel).filter_by(id_plano=id).first()
             return PlanoRequest().to_request(model)

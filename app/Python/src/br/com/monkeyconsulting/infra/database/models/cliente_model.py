@@ -1,9 +1,10 @@
-from br.com.monkeyconsulting.adapters.controllers.requests.cliente_req import ClienteRequest
-from br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
-from br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+
+from app.Python.src.br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
+from app.Python.src.br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
+from app.Python.src.br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
 
 Base = declarative_base()
 
@@ -21,7 +22,7 @@ class ClienteModel(Base):
     plano = relationship(PlanoModel, lazy=False)
     dieta = relationship(DietaTreinoModel)
 
-    def to_model(self, dto: ClienteRequest):
+    def to_model(self, dto: ClienteDTO) -> 'ClienteModel':
         self.nome = dto.get('nome')
         self.telefone = dto.get('telefone')
         self.indicador_cliente_ativo = dto.get('indicador_cliente_ativo')

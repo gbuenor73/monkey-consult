@@ -1,6 +1,6 @@
-from br.com.monkeyconsulting.adapters.controllers.requests.dietas_treinos_req import DietaRequest
-from br.com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
-from br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
+from app.Python.src.br.com.monkeyconsulting.adapters.controllers.requests.dietas_treinos_req import DietaRequest
+from app.Python.src.br.com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
+from app.Python.src.br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
 
 
 class DietasRepository:

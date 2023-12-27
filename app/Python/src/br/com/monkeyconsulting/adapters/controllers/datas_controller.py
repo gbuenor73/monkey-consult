@@ -1,16 +1,15 @@
 from flask import request
 from flask.views import MethodView
 
-from br.com.monkeyconsulting.adapters.controllers.requests.datas_req import DataRequest
-from br.com.monkeyconsulting.domain.utils.utils import list_to_json, format_response
-from br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
-from br.com.monkeyconsulting.infra.database.repositories.datas_repository import DatasRepository
+from app.Python.src.br.com.monkeyconsulting.adapters.controllers.requests.datas_req import DataRequest
+from app.Python.src.br.com.monkeyconsulting.domain.services.datas_service import DatasService
+from app.Python.src.br.com.monkeyconsulting.domain.utils.utils import list_to_json, format_response
 
 
 class DatasController(MethodView):
 
     def __init__(self):
-        self.repo = DatasRepository()
+        self.repo = DatasService()
 
     def get(self):
         id = request.args.get('id')
@@ -18,7 +17,7 @@ class DatasController(MethodView):
             datas = self.repo.busca_todas_datas()
             return format_response(list_to_json(datas))
         else:
-            data = self.repo.busca_datas_por_id(id)
+            data = self.repo.busca_data_por_id(id)
             return format_response(data.to_json())
 
     def post(self):

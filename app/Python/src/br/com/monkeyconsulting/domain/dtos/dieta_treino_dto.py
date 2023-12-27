@@ -1,4 +1,4 @@
-from br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
+from app.Python.src.br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
 
 
 class DietaTreinoDTO:

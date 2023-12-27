@@ -1,6 +1,6 @@
 import json
 
-from br.com.monkeyconsulting.domain.dtos.plano_dto import PlanoDTO
+from app.Python.src.br.com.monkeyconsulting.domain.dtos.plano_dto import PlanoDTO
 
 
 class PlanoResponse:

@@ -1,6 +1,6 @@
-from br.com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
-from br.com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
-from br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
+from app.Python.src.br.com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
+from app.Python.src.br.com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
+from app.Python.src.br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
 
 
 class ClienteResponse:

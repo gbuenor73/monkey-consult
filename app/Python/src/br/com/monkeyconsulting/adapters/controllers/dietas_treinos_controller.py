@@ -1,24 +1,25 @@
+import json
+
 from flask import request
 from flask.views import MethodView
 
-from br.com.monkeyconsulting.adapters.controllers.requests.dietas_treinos_req import DietaRequest
-from br.com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
-from br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
-from br.com.monkeyconsulting.infra.database.repositories.dieta_repository import DietasRepository
+from app.Python.src.br.com.monkeyconsulting.adapters.controllers.requests.dietas_treinos_req import DietaRequest
+from app.Python.src.br.com.monkeyconsulting.domain.services.dieta_service import DietaTreinoService
+from app.Python.src.br.com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
 
 
 class DietasController(MethodView):
 
     def __init__(self):
-        self.repo = DietasRepository()
+        self.repo = DietaTreinoService()
 
-    def get(self):
+    def get(self) -> json:
         id = request.args.get('id')
         if id is None:
             dietas = self.repo.busca_todas_dietas()
             return format_response(list_to_json(dietas))
         else:
-            dto = self.repo.busca_dietas_por_id(id)
+            dto = self.repo.busca_dieta_por_id(id)
             return format_response(dto.to_json())
 
     def post(self):

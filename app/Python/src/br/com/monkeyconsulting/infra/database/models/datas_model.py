@@ -1,5 +1,8 @@
-from sqlalchemy import Column, Integer, Date
+from sqlalchemy import Column, Integer, Date, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+
+from app.Python.src.br.com.monkeyconsulting.infra.database.models.cliente_model import ClienteModel
 
 Base = declarative_base()
 
@@ -8,12 +11,14 @@ class DataModel(Base):
     __tablename__ = 'DATAS'
 
     id_data = Column(Integer, primary_key=True)
-    id_cliente = Column(Integer)
+    id_cliente = Column(Integer, ForeignKey(ClienteModel.id_cliente), nullable=False)
     data_pagamento = Column(Date)
     inicio_dieta_treino = Column(Date)
     ultima_troca_dieta_treino = Column(Date)
     proxima_troca_dieta_treino = Column(Date)
     vencimento_plano = Column(Date)
+
+    clientes = relationship(ClienteModel)
 
     def to_model(self, dto):
         self.id_cliente = dto.get('id_cliente')
