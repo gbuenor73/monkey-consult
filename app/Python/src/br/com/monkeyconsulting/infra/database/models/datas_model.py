@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, Date, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from app.Python.src.br.com.monkeyconsulting.infra.database.models.cliente_model import ClienteModel
+from src.br.com.monkeyconsulting.infra.database.models.cliente_model import ClienteModel
 
 Base = declarative_base()
 

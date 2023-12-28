@@ -1,4 +1,4 @@
-from app.Python.src.br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
+from src.br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
 
 
 class PlanoDTO:

@@ -1,5 +1,5 @@
-from app.Python.src.br.com.monkeyconsulting.adapters.controllers.responses.clientes_resp import ClienteResponse
-from app.Python.src.br.com.monkeyconsulting.domain.dtos.completo_dto import CompletoDTO
+from src.br.com.monkeyconsulting.adapters.controllers.responses.clientes_resp import ClienteResponse
+from src.br.com.monkeyconsulting.domain.dtos.completo_dto import CompletoDTO
 
 
 class CompletoResponse:

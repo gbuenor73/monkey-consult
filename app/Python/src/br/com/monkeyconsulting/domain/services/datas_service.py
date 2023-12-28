@@ -1,5 +1,5 @@
-from app.Python.src.br.com.monkeyconsulting.adapters.controllers.responses.data_resp import DataResponse
-from app.Python.src.br.com.monkeyconsulting.infra.database.repositories.datas_repository import DatasRepository
+from src.br.com.monkeyconsulting.adapters.controllers.responses.data_resp import DataResponse
+from src.br.com.monkeyconsulting.infra.database.repositories.datas_repository import DatasRepository
 
 
 class DatasService:
@@ -13,7 +13,9 @@ class DatasService:
 
     def busca_data_por_id(self, id):
         data = self.repo.busca_datas_por_id(id)
-        return DataResponse(data)
+        if data is not None:
+            return DataResponse(data)
+        return None
 
     def insere_data(self, dto):
         dto_response = self.repo.insere_data(dto)

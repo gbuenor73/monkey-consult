@@ -1,4 +1,4 @@
-from app.Python.src.br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
+from src.br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
 
 
 class CompletoDTO:

@@ -1,6 +1,6 @@
-from app.Python.src.br.com.monkeyconsulting.adapters.controllers.requests.planos_req import PlanoRequest
-from app.Python.src.br.com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
-from app.Python.src.br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
+from src.br.com.monkeyconsulting.adapters.controllers.requests.planos_req import PlanoRequest
+from src.br.com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
+from src.br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
 
 
 class PlanosRepository:

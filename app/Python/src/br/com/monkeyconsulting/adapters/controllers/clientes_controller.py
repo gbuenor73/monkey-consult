@@ -3,9 +3,9 @@ import json
 from flask import request
 from flask.views import MethodView
 
-from app.Python.src.br.com.monkeyconsulting.adapters.controllers.requests.cliente_req import ClienteRequest
-from app.Python.src.br.com.monkeyconsulting.domain.services.clientes_service import ClientesService
-from app.Python.src.br.com.monkeyconsulting.domain.utils.utils import list_to_json, format_response
+from src.br.com.monkeyconsulting.adapters.controllers.requests.cliente_req import ClienteRequest
+from src.br.com.monkeyconsulting.domain.services.clientes_service import ClientesService
+from src.br.com.monkeyconsulting.domain.utils.utils import list_to_json, format_response
 
 
 class ClientesController(MethodView):
@@ -20,6 +20,8 @@ class ClientesController(MethodView):
             return format_response(list_to_json(clientes_response))
         else:
             cliente_response = self.repo.busca_cliente_por_id(id)
+            if cliente_response is None:
+                return format_response(list_to_json([]))
             return format_response(cliente_response.to_json())
 
     def post(self):

@@ -2,9 +2,8 @@ from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from app.Python.src.br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
-from app.Python.src.br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
-from app.Python.src.br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
+from src.br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
+from src.br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
 
 Base = declarative_base()
 
@@ -22,7 +21,7 @@ class ClienteModel(Base):
     plano = relationship(PlanoModel, lazy=False)
     dieta = relationship(DietaTreinoModel)
 
-    def to_model(self, dto: ClienteDTO) -> 'ClienteModel':
+    def to_model(self, dto) -> 'ClienteModel':
         self.nome = dto.get('nome')
         self.telefone = dto.get('telefone')
         self.indicador_cliente_ativo = dto.get('indicador_cliente_ativo')

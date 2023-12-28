@@ -1,9 +1,9 @@
 from flask import request
 from flask.views import MethodView
 
-from app.Python.src.br.com.monkeyconsulting.adapters.controllers.requests.planos_req import PlanoRequest
-from app.Python.src.br.com.monkeyconsulting.domain.services.planos_service import PlanosService
-from app.Python.src.br.com.monkeyconsulting.domain.utils.utils import list_to_json, format_response
+from src.br.com.monkeyconsulting.adapters.controllers.requests.planos_req import PlanoRequest
+from src.br.com.monkeyconsulting.domain.services.planos_service import PlanosService
+from src.br.com.monkeyconsulting.domain.utils.utils import list_to_json, format_response
 
 
 class PlanosController(MethodView):

@@ -1,5 +1,5 @@
-from app.Python.src.br.com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
-from app.Python.src.br.com.monkeyconsulting.infra.database.repositories.dieta_repository import DietasRepository
+from src.br.com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
+from src.br.com.monkeyconsulting.infra.database.repositories.dieta_repository import DietasRepository
 
 
 class DietaTreinoService:

@@ -1,9 +1,9 @@
-from app.Python.src.br.com.monkeyconsulting.adapters.controllers.responses.completo_resp import \
+from src.br.com.monkeyconsulting.adapters.controllers.responses.completo_resp import \
     CompletoResponse
-from app.Python.src.br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
-from app.Python.src.br.com.monkeyconsulting.infra.database.repositories.datas_repository import DatasRepository
-from app.Python.src.br.com.monkeyconsulting.infra.database.repositories.dieta_repository import DietasRepository
-from app.Python.src.br.com.monkeyconsulting.infra.database.repositories.planos_repository import PlanosRepository
+from src.br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
+from src.br.com.monkeyconsulting.infra.database.repositories.datas_repository import DatasRepository
+from src.br.com.monkeyconsulting.infra.database.repositories.dieta_repository import DietasRepository
+from src.br.com.monkeyconsulting.infra.database.repositories.planos_repository import PlanosRepository
 
 
 class NegocioService:

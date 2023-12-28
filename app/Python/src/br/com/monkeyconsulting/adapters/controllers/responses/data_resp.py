@@ -1,4 +1,4 @@
-from app.Python.src.br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
+from src.br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
 
 
 class DataResponse:

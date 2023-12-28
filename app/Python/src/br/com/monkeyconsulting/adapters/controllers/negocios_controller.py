@@ -1,7 +1,8 @@
+from flask import render_template
 from flask.views import MethodView
 
-from app.Python.src.br.com.monkeyconsulting.domain.services.negocio_service import NegocioService
-from app.Python.src.br.com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
+from src.br.com.monkeyconsulting.domain.services.negocio_service import NegocioService
+from src.br.com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
 
 
 class NegocioController(MethodView):
@@ -10,5 +11,6 @@ class NegocioController(MethodView):
         self.service = NegocioService()
 
     def get(self):
-        response = self.service.obtem_todos_dados()
-        return format_response(list_to_json(response))
+        # response = self.service.obtem_todos_dados()
+        # return format_response(list_to_json(response))
+        return render_template("index.html")

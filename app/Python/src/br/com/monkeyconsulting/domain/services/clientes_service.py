@@ -1,5 +1,5 @@
-from app.Python.src.br.com.monkeyconsulting.adapters.controllers.responses.clientes_resp import ClienteResponse
-from app.Python.src.br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
+from src.br.com.monkeyconsulting.adapters.controllers.responses.clientes_resp import ClienteResponse
+from src.br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
 
 
 class ClientesService:
@@ -9,11 +9,15 @@ class ClientesService:
 
     def busca_todos_clientes(self):
         clientes = self.repo.busca_todos_clientes()
-        return [ClienteResponse(cliente) for cliente in clientes]
+        if clientes is not None:
+            return [ClienteResponse(cliente) for cliente in clientes]
+        return []
 
     def busca_cliente_por_id(self, id_cliente):
         cliente_dto = self.repo.busca_cliente_por_id(id_cliente)
-        return ClienteResponse(cliente_dto)
+        if cliente_dto is not None:
+            return ClienteResponse(cliente_dto)
+        return None
 
     def insere_cliente(self, dto):
         dto_response = self.repo.insere_cliente(dto)
