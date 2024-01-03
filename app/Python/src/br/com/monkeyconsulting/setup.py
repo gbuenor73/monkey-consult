@@ -7,7 +7,7 @@ from src.br.com.monkeyconsulting.adapters.controllers.dietas_treinos_controller 
 from src.br.com.monkeyconsulting.adapters.controllers.negocios_controller import NegocioController
 from src.br.com.monkeyconsulting.adapters.controllers.planos_controller import PlanosController
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='front/static', template_folder='front/templates')
 CORS(app)
 
 app.add_url_rule('/clientes', view_func=ClientesController.as_view('clientes'))

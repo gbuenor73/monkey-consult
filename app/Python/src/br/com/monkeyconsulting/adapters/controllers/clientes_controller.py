@@ -1,6 +1,6 @@
 import json
 
-from flask import request
+from flask import request, render_template
 from flask.views import MethodView
 
 from src.br.com.monkeyconsulting.adapters.controllers.requests.cliente_req import ClienteRequest
@@ -24,12 +24,26 @@ class ClientesController(MethodView):
                 return format_response(list_to_json([]))
             return format_response(cliente_response.to_json())
 
+    def get(self):
+        return render_template('form_cliente.html')
+
     def post(self):
-        data = request.json
+        formulario = request.form
+
+        data = {
+            'nome': formulario['nome'],
+            'telefone': formulario['telefone'],
+            'id_plano': 4,  # alterar para nao obrigatorio
+            'id_dieta': 2,  # alterar para nao obrigatorio
+            'indicador_cliente_ativo': 1  # manter
+
+        }
+        # data = request.json
         try:
             cliente_request = ClienteRequest().load(data)
             response = self.repo.insere_cliente(cliente_request)
-            return format_response(response.to_json())
+            # return format_response(response.to_json())
+            return 'Sucesso'
         except Exception as e:
             print(e)
             return e
