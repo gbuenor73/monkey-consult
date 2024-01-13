@@ -9,6 +9,7 @@ class ClientesService:
 
     def busca_todos_clientes(self):
         clientes = self.repo.busca_todos_clientes()
+
         if clientes is not None:
             return [ClienteResponse(cliente) for cliente in clientes]
         return []

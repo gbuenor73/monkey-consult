@@ -9,14 +9,14 @@ class ClientesRepository:
         with (DBConnectionHandler() as db):
             models = db.session.query(ClienteModel).all()
             if models is not None:
-                return [ClienteDTO.to_dto(model) for model in models]
+                return [ClienteDTO().to_dto(model) for model in models]
             return []
 
     def busca_cliente_por_id(self, id):
         with DBConnectionHandler() as db:
             model = db.session.query(ClienteModel).filter_by(id_cliente=id).first()
             if model is not None:
-                return ClienteDTO.to_dto(model)
+                return ClienteDTO().to_dto(model)
             return None
 
     def insere_cliente(self, dto: ClienteDTO) -> ClienteDTO:
@@ -25,7 +25,7 @@ class ClientesRepository:
             try:
                 db.session.add(model)
                 db.session.commit()
-                return ClienteDTO.to_dto(model)
+                return ClienteDTO().to_dto(model)
             except Exception as e:
                 db.session.rollback()
                 raise e

@@ -15,28 +15,29 @@ CREATE TABLE IF NOT EXISTS
     );
 
 CREATE TABLE IF NOT EXISTS
+DATAS (
+    id_data INT AUTO_INCREMENT PRIMARY KEY,
+    data_pagamento DATE,
+    inicio_dieta_treino DATE,
+    ultima_troca_dieta_treino DATE,
+    proxima_troca_dieta_treino DATE,
+    vencimento_plano DATE
+);
+
+CREATE TABLE IF NOT EXISTS
     CLIENTES (
         id_cliente INT AUTO_INCREMENT PRIMARY KEY,
         id_plano INT,
         id_dieta INT,
+        id_data INT,
         nome VARCHAR(200),
         telefone VARCHAR(20),
         indicador_cliente_ativo BOOLEAN,
         FOREIGN KEY (id_plano) REFERENCES PLANOS(id_plano),
-        FOREIGN KEY (id_dieta) REFERENCES DIETAS_TREINOS(id_dieta)
+        FOREIGN KEY (id_dieta) REFERENCES DIETAS_TREINOS(id_dieta),
+        FOREIGN KEY (id_data) REFERENCES DATAS(id_data)
     );
 
-CREATE TABLE IF NOT EXISTS
-    DATAS (
-        id_data INT AUTO_INCREMENT PRIMARY KEY,
-        id_cliente INT,
-        data_pagamento DATE,
-        inicio_dieta_treino DATE,
-        ultima_troca_dieta_treino DATE,
-        proxima_troca_dieta_treino DATE,
-        vencimento_plano DATE,
-        FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id_cliente)
-    );
 
 ALTER TABLE CLIENTES ADD
     CONSTRAINT fk_clientes_planos FOREIGN KEY (id_plano) REFERENCES PLANOS(id_plano);
@@ -44,8 +45,8 @@ ALTER TABLE CLIENTES ADD
 ALTER TABLE CLIENTES ADD
     CONSTRAINT fk_clientes_dietas FOREIGN KEY (id_dieta) REFERENCES DIETAS_TREINOS(id_dieta);
 
-ALTER TABLE DATAS ADD
-    CONSTRAINT fk_datas_clientes FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id_cliente);
+ALTER TABLE CLIENTES ADD
+    CONSTRAINT fk_clientes_datas FOREIGN KEY (id_data) REFERENCES DATAS(id_data);
 
 INSERT INTO
     PLANOS (
@@ -80,24 +81,7 @@ INSERT INTO
 VALUES ('Perda de peso'), ('Ganho de massa muscular');
 
 INSERT INTO
-    CLIENTES (
-        nome,
-        telefone,
-        indicador_cliente_ativo,
-        id_plano,
-        id_dieta
-    )
-VALUES (
-        'gabriel',
-        '11951269909',
-        true,
-        1,
-        2
-    );
-
-INSERT INTO
     DATAS (
-        id_cliente,
         data_pagamento,
         inicio_dieta_treino,
         ultima_troca_dieta_treino,
@@ -105,7 +89,6 @@ INSERT INTO
         vencimento_plano
     )
 VALUES (
-        1,
         NOW(),
         NOW(),
         NOW(),
@@ -113,8 +96,33 @@ VALUES (
         NOW()
     );
 
+INSERT INTO
+    CLIENTES (
+        nome,
+        telefone,
+        indicador_cliente_ativo,
+        id_plano,
+        id_dieta,
+        id_data
+    )
+VALUES (
+        'gabriel',
+        '11951269909',
+        true,
+        1,
+        2,
+        1
+    );
+
+
 SELECT *
 FROM `CLIENTES` c
-    JOIN `PLANOS` p ON c.id_plano = p.Id_plano
+    JOIN `PLANOS` p ON c.id_plano = p.id_plano
     JOIN `DIETAS_TREINOS` dt ON c.id_dieta = dt.id_dieta
-    JOIN `DATAS` ds ON c.id_cliente = ds.id_cliente;
+    JOIN `DATAS` ds ON c.id_data = ds.id_data;
+
+SELECT *
+FROM `CLIENTES` c 
+ORDER BY `id_cliente` DESC
+
+truncate CLIENTES;

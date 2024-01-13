@@ -5,8 +5,9 @@ from marshmallow import Schema, fields
 
 class ClienteRequest(Schema):
     id_cliente = fields.Int(required=False)
-    id_plano = fields.Int(required=True)
-    id_dieta = fields.Int(required=True)
+    id_plano = fields.Int(required=False)
+    id_dieta = fields.Int(required=False)
+    id_data = fields.Int(required=False)
     nome = fields.Str(required=True)
     telefone = fields.Str(required=True)
     indicador_cliente_ativo = fields.Int(required=True)
@@ -18,7 +19,8 @@ class ClienteRequest(Schema):
             'telefone': self.telefone,
             'indicador_cliente_ativo': self.indicador_cliente_ativo,
             'id_plano': self.id_plano,
-            'id_dieta': self.id_dieta
+            'id_dieta': self.id_dieta,
+            'id_data': self.id_data
         }
 
     def to_req(self, model):
@@ -28,6 +30,7 @@ class ClienteRequest(Schema):
         self.indicador_cliente_ativo = model.indicador_cliente_ativo
         self.id_plano = model.id_plano
         self.id_dieta = model.id_dieta
+        self.id_data = model.id_data
         return self
 
     def __init__(self, *args, **kwargs):

@@ -13,9 +13,9 @@
     <h1 class="py-title">Monkey Consulting</h1>
     <br />
     <!--        <input type="text" id="teste" placeholder="Digite o id">-->
-    <button class="py-button" id="teste1" type="button" onclick="teste">Adicionar Cliente</button>
+    <a href="clientes"><button class="py-button" id="teste1" type="button" onclick="">Adicionar Cliente</button></a>
     <button class="py-button" id="teste2" type="button" onclick="teste">Selecionar Plano</button>
-    <button class="py-button" id="teste3" type="button" onclick="teste">Selecionar Dieta/Treino</button>
+    <button class="py-button" >Selecionar Dieta/Treino</button>
     <br>
     <br>
     <table>
@@ -31,17 +31,18 @@
             </tr>
         </thead>
         <tbody>
-            {% for cliente in data['data'] %}
+             {% for cliente
+             in data['data'] %}
                 <tr class="marked_row">
-                    <td>{{ cliente['clientes']['nome'] }}</td>
-                    <td>{{ cliente['clientes']['telefone'] }}</td>
-                    <td>{{ cliente['clientes']['plano']['descricao'] }}</td>
-                    <td>{{ cliente['clientes']['dieta']['descricao'] }}</td>
+                    <td>{{ cliente['nome'] }}</td>
+                    <td>{{ cliente['telefone'] }}</td>
+                    <td>{{ cliente['plano']['descricao'] }}</td>
+                    <td>{{ cliente['dieta']['descricao'] }}</td>
                     <td>{{ cliente['proxima_troca_dieta_treino'] }}</td>
                     <td>{{ cliente['vencimento_plano'] }}</td>
                     <td>{{ cliente['data_pagamento'] }}</td>
                 </tr>
-            {% endfor %}
+             {% endfor %}
         </tbody>
     </table>
 </body>

@@ -19,11 +19,6 @@ class DatasRepository:
                 return DataDTO.to_dto(model)
             return None
 
-    def retorno_completo(self):
-        with DBConnectionHandler() as db:
-            models = db.session.query(DataModel).all()
-            return [CompletoDTO.to_dto(model) for model in models]
-
     def insere_data(self, dto: DataDTO) -> DataDTO:
         model = DataModel().to_model(dto)
         with DBConnectionHandler() as db:

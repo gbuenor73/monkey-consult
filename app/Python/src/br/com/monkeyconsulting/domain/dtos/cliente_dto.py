@@ -1,21 +1,30 @@
+from br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
 from src.br.com.monkeyconsulting.domain.dtos.dieta_treino_dto import DietaTreinoDTO
 from src.br.com.monkeyconsulting.domain.dtos.plano_dto import PlanoDTO
-from src.br.com.monkeyconsulting.infra.database.models.cliente_model import ClienteModel
 
 
 class ClienteDTO:
+    id = None
+    nome = None
+    telefone = None
+    indicador_ativo = None
     plano = PlanoDTO(None, None, None, None)
     dieta = DietaTreinoDTO(None, None)
+    data = DataDTO(None, None, None, None, None, None)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    @staticmethod
-    def to_dto(req):
-        ClienteDTO.id = req.id_cliente
-        ClienteDTO.nome = req.nome
-        ClienteDTO.telefone = req.telefone
-        ClienteDTO.indicador_ativo = req.indicador_cliente_ativo
-        ClienteDTO.plano = PlanoDTO.to_dto(req.plano)
-        ClienteDTO.dieta = DietaTreinoDTO.to_dto(req.dieta)
-        return ClienteDTO
+    def __repr__(self):
+        return f"<ClienteDTO(id='{self.id}')>"
+
+    # @staticmethod
+    def to_dto(self, req):
+        self.id = req.id_cliente
+        self.nome = req.nome
+        self.telefone = req.telefone
+        self.indicador_ativo = req.indicador_cliente_ativo
+        self.plano = PlanoDTO.to_dto(req.plano)
+        self.dieta = DietaTreinoDTO.to_dto(req.dieta)
+        self.data = DataDTO.to_dto(req.data)
+        return self

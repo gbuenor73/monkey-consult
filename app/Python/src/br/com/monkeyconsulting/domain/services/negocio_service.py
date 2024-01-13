@@ -15,5 +15,5 @@ class NegocioService:
         self.dietas_repo = DietasRepository()
 
     def obtem_todos_dados(self):
-        completo_responses = self.datas_repo.retorno_completo()
+        completo_responses = self.clientes_repo.busca_todos_clientes()
         return [CompletoResponse(completo_response) for completo_response in completo_responses]
