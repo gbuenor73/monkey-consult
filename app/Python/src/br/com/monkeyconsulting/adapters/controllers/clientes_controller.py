@@ -1,15 +1,17 @@
 from flask import request, render_template
 from flask.views import MethodView
 
+from br.com.monkeyconsulting.domain.services.planos_service import PlanosService
 from src.br.com.monkeyconsulting.adapters.controllers.requests.cliente_req import ClienteRequest
 from src.br.com.monkeyconsulting.domain.services.clientes_service import ClientesService
-from src.br.com.monkeyconsulting.domain.utils.utils import format_response
+from src.br.com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
 
 
 class ClientesController(MethodView):
 
     def __init__(self):
         self.repo = ClientesService()
+        self.planosService = PlanosService()
 
     # def get(self) -> json:
     #     id = request.args.get('id')
@@ -21,6 +23,11 @@ class ClientesController(MethodView):
     #         if cliente_response is None:
     #             return format_response(list_to_json([]))
     #         return format_response(cliente_response.to_json())
+
+    def editar_cliente(self):
+        planosDto = self.planosService.busca_todos_planos()
+        planos = format_response(list_to_json(planosDto))
+        return render_template('editar.html', planos=planos)
 
     def get(self):
         return render_template('form_cliente.html')
@@ -35,7 +42,6 @@ class ClientesController(MethodView):
                 'id_plano': 4,  # alterar para nao obrigatorio
                 'id_dieta': 2,  # alterar para nao obrigatorio
                 'indicador_cliente_ativo': 1  # manter
-
             }
         except Exception as e:
             data = request.json

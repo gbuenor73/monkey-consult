@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Cliente</title>
+</head>
+<body onblur="window.close()">
+
+    <h1>Editar</h1>
+
+    <form action="/planos" method="get">
+        <label for="planos">Selecione o Plano:</label>
+        <select id="planos" name="plano">
+            {% for item in planos.data %}
+                {{item}}
+                <option value="{{ item }}">{{item.descricao}}</option>
+            {% endfor %}
+        </select>
+    </form> 
+
+</body>
+</html>

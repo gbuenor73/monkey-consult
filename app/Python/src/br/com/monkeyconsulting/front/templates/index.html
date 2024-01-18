@@ -12,15 +12,14 @@
 <body class="body">
     <h1 class="py-title">Monkey Consulting</h1>
     <br />
-    <!--        <input type="text" id="teste" placeholder="Digite o id">-->
-    <a href="clientes"><button class="py-button" id="teste1" type="button" onclick="">Adicionar Cliente</button></a>
-    <button class="py-button" id="teste2" type="button" onclick="teste">Selecionar Plano</button>
-    <button class="py-button" >Selecionar Dieta/Treino</button>
+    <button class="py-button" onclick="openPopup('clientes')">Adicionar Cliente</button></a>
+    <!-- <button class="py-button" onclick="openPopup('planos')">Selecionar Plano</button>
+    <button class="py-button" onclick="openPopup('dietas')">Selecionar Dieta/Treino</button></a> -->
     <br>
     <br>
     <table>
         <thead>
-            <tr class="marked_row">
+            <tr style="background-color: wheat;" class="marked_row">
                 <th>Nome</th>
                 <th>Telefone</th>
                 <th>Plano</th>
@@ -31,20 +30,35 @@
             </tr>
         </thead>
         <tbody>
-             {% for cliente
-             in data['data'] %}
+             {% for cliente in dados.data %}
                 <tr class="marked_row">
-                    <td>{{ cliente['nome'] }}</td>
-                    <td>{{ cliente['telefone'] }}</td>
-                    <td>{{ cliente['plano']['descricao'] }}</td>
-                    <td>{{ cliente['dieta']['descricao'] }}</td>
-                    <td>{{ cliente['proxima_troca_dieta_treino'] }}</td>
-                    <td>{{ cliente['vencimento_plano'] }}</td>
-                    <td>{{ cliente['data_pagamento'] }}</td>
+                    <td>{{ cliente.nome }}</td>
+                    <td>{{ cliente.telefone }}</td>
+                    <td>{{ cliente.plano.descricao }}</td>
+                    <td>{{ cliente.dieta.descricao }}</td>
+                    <td>{{ cliente.proxima_troca_dieta_treino }}</td>
+                    <td>{{ cliente.vencimento_plano }}</td>
+                    <td>{{ cliente.data_pagamento }}</td>
+                    <td>
+                        <button onclick="openPopup('clientes/editar')">Editar</button>
+                        <button onclick="openPopup('editar/{{ cliente.id_cliente }}')">Deletar</button>
+                        <button onclick="openPopup('editar/{{ cliente.id_cliente }}')">Congelar</button>
+                    </td>
                 </tr>
              {% endfor %}
         </tbody>
     </table>
+
+    <br>
+
+
+    <script>
+        function openPopup(url) {
+            var style = 'width=500, height=500, scrollbars=yes';
+            window.open(url, '_blank', style);
+        }
+    </script> 
+
 </body>
 
 </html>
