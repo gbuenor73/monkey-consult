@@ -2,7 +2,7 @@ from src.br.com.monkeyconsulting.adapters.controllers.responses.dieta_treino_res
 from src.br.com.monkeyconsulting.infra.database.repositories.dieta_repository import DietasRepository
 
 
-class DietaTreinoService:
+class DietasTreinosService:
 
     def __init__(self):
         self.repo = DietasRepository()

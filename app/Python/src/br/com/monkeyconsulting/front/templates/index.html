@@ -23,7 +23,7 @@
                 <th>Nome</th>
                 <th>Telefone</th>
                 <th>Plano</th>
-                <th>Dieta</th>
+                <th>Dieta / Treino</th>
                 <th>Data da Troca Plano</th>
                 <th>Data de Vencimento Plano</th>
                 <th>Data de Pagamento</th>
@@ -40,9 +40,10 @@
                     <td>{{ cliente.vencimento_plano }}</td>
                     <td>{{ cliente.data_pagamento }}</td>
                     <td>
-                        <button onclick="openPopup('clientes/editar')">Editar</button>
-                        <button onclick="openPopup('editar/{{ cliente.id_cliente }}')">Deletar</button>
-                        <button onclick="openPopup('editar/{{ cliente.id_cliente }}')">Congelar</button>
+                        <button id="editarCliente" title="Editar Cliente" onclick="openPopup('clientes/editar/{{ cliente.id_cliente }}')">&#9998;</button>
+                        <button id="informarPagamento" title="Informar Pagamentos">$$</button>
+                        <button id="desativarCliente" title="Deletar Cliente">&#9940;</button>
+                        <button id="congelarCliente" title="Congelar Cliente">&#129482;</button>
                     </td>
                 </tr>
              {% endfor %}
@@ -57,6 +58,18 @@
             var style = 'width=500, height=500, scrollbars=yes';
             window.open(url, '_blank', style);
         }
+        document.getElementById("desativarCliente").addEventListener("click", function() {
+            window.confirm("Deletar Cliente?");
+
+            var  req = new XMLHttpRequest().open("DELETE", "/cliente/{{ id_cliente }}", true);
+            req.onreadyestatechange = function() {
+                if (req.readyState === 4 && req.status === 200) {
+                    console.log(req.responseText);
+                    window.location.reload();
+                }
+            }
+            req.send();
+        })
     </script> 
 
 </body>
