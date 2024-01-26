@@ -13,7 +13,7 @@ class NegocioController(MethodView):
     def get(self):
         response = self.service.obtem_todos_dados()
         dados = format_response(list_to_json(response))
-        return render_template("index.html", dados=dados)
+        return render_template("index.html", dados=dados), 200
 
     # def get(self):
     #     response = self.service.obtem_todos_dados()

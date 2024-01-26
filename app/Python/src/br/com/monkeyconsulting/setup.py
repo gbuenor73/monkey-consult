@@ -21,5 +21,11 @@ app.add_url_rule('/clientes/<int:id_cliente>', view_func=ClientesController.as_v
 app.add_url_rule('/clientes/editar', view_func=ClientesController.as_view('editar_cliente'))
 app.add_url_rule('/clientes/editar/<int:id_cliente>', view_func=ClientesController.as_view('detalhar_cliente'))
 
+
+@app.route('/favicon.ico')
+def favico():
+    return app.send_static_file('empty.ico')
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

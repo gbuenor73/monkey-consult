@@ -4,13 +4,13 @@ from marshmallow import Schema, fields
 
 
 class ClienteRequest(Schema):
+    nome = fields.Str(required=True)
+    telefone = fields.Str(required=True)
+    indicador_cliente_ativo = fields.Bool(required=True)
     id_cliente = fields.Int(required=False)
     id_plano = fields.Int(required=False)
     id_dieta = fields.Int(required=False)
     id_data = fields.Int(required=False)
-    nome = fields.Str(required=True)
-    telefone = fields.Str(required=True)
-    indicador_cliente_ativo = fields.Int(required=True)
 
     def to_json(self) -> json:
         return {

@@ -1,3 +1,6 @@
+import http
+
+from br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
 from src.br.com.monkeyconsulting.adapters.controllers.responses.clientes_resp import ClienteResponse
 from src.br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
 
@@ -23,3 +26,7 @@ class ClientesService:
     def insere_cliente(self, dto):
         dto_response = self.repo.insere_cliente(dto)
         return ClienteResponse(dto_response)
+
+    def desativar_cliente(self, id_cliente):
+        dto = self.repo.desativar_cliente(id_cliente)
+        return http.HTTPStatus.OK

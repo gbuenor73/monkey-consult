@@ -24,7 +24,7 @@ class ClienteDTO:
         self.nome = req.nome
         self.telefone = req.telefone
         self.indicador_ativo = req.indicador_cliente_ativo
-        self.plano = PlanoDTO.to_dto(req.plano)
-        self.dieta = DietaTreinoDTO.to_dto(req.dieta)
-        self.data = DataDTO.to_dto(req.data)
+        self.plano = PlanoDTO.to_dto(req.plano) if req.plano is not None else None
+        self.dieta = DietaTreinoDTO.to_dto(req.dieta) if req.dieta is not None else None
+        self.data = DataDTO.to_dto(req.data) if req.data is not None else None
         return self

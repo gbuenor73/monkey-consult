@@ -1,4 +1,4 @@
-from flask import request, render_template
+from flask import request, render_template, jsonify
 from flask.views import MethodView
 
 from br.com.monkeyconsulting.domain.services.dieta_service import DietasTreinosService
@@ -32,22 +32,20 @@ class ClientesController(MethodView):
         return self.get_editar(id_cliente)
 
     def delete(self, id_cliente):
-        print(f'delete:: {id_cliente}')
+        try:
+            self.clientes_service.desativar_cliente(id_cliente)
+            return jsonify(), 200
+        except Exception as e:
+            return jsonify(f'Erro interno: {e} '), 500
 
     def post(self):
         formulario = request.form
-
-        if 'id_cliente' in formulario:
-            print(formulario['id_cliente'])
-            return formulario['id_cliente']
 
         try:
             data = {
                 'nome': formulario['nome'],
                 'telefone': formulario['telefone'],
-                'id_plano': 4,  # alterar para nao obrigatorio
-                'id_dieta': 2,  # alterar para nao obrigatorio
-                'indicador_cliente_ativo': 1  # manter
+                'indicador_cliente_ativo': True
             }
         except Exception as e:
             data = request.json
@@ -55,8 +53,7 @@ class ClientesController(MethodView):
         try:
             cliente_request = ClienteRequest().load(data)
             response = self.clientes_service.insere_cliente(cliente_request)
-            # return format_response(response.to_json())
-            return 'Sucesso'
+            return jsonify(format_response(response.to_json())), 201
         except Exception as e:
             print(e)
             return e

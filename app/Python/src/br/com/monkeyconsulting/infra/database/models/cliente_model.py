@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy import Column, String, Integer, ForeignKey, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -12,13 +12,14 @@ Base = declarative_base()
 class ClienteModel(Base):
     __tablename__ = 'CLIENTES'
 
+    nome = Column(String, nullable=False)
+    telefone = Column(String, nullable=False)
+    indicador_cliente_ativo = Column(Boolean, nullable=False)
+
     id_cliente = Column(Integer, primary_key=True)
     id_plano = Column(Integer, ForeignKey(PlanoModel.id_plano), nullable=False)
     id_dieta = Column(Integer, ForeignKey(DietaTreinoModel.id_dieta), nullable=False)
     id_data = Column(Integer, ForeignKey(DataModel.id_data), nullable=False)
-    nome = Column(String, nullable=False)
-    telefone = Column(String, nullable=False)
-    indicador_cliente_ativo = Column(Integer, nullable=False)
 
     plano = relationship(PlanoModel, lazy=False)
     dieta = relationship(DietaTreinoModel)
