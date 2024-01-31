@@ -1,3 +1,5 @@
+import json
+
 from flask import request, render_template, jsonify
 from flask.views import MethodView
 
@@ -39,7 +41,11 @@ class ClientesController(MethodView):
             return jsonify(f'Erro interno: {e} '), 500
 
     def post(self):
-        formulario = request.form
+        if request.form.get('_method') == 'PATCH':
+            return self.edita_cliente(request.form)
+        return self.cria_cliente(request.form)
+
+    def cria_cliente(self, formulario):
 
         try:
             data = {
@@ -53,10 +59,37 @@ class ClientesController(MethodView):
         try:
             cliente_request = ClienteRequest().load(data)
             response = self.clientes_service.insere_cliente(cliente_request)
-            return jsonify(format_response(response.to_json())), 201
+            # return jsonify(format_response(response.to_json()))
+            return "Sucesso", 201
         except Exception as e:
             print(e)
             return e
+
+    def edita_cliente(self, formulario):
+        try:
+
+            plano = json.load(formulario['plano'])
+
+            data = {
+                'id_cliente': formulario['id_cliente'],
+                'data': formulario['nome'],
+                'telefone': formulario['telefone'],
+                'plano': formulario['plano'],
+                'treino': formulario['treino'],
+                'id_plano': formulario['plano'],
+                'id_dieta': formulario['treino']
+            }
+        except Exception as e:
+            data = request.json
+
+        try:
+            cliente_request = ClienteRequest.load(data)
+            print(cliente_request)
+        except Exception as e:
+            print(e)
+            raise e
+
+        return 'teste', 200
 
     def get_editar(self, id_cliente):
         cliente = self.clientes_service.busca_cliente_por_id(id_cliente)
