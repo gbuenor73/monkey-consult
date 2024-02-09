@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Registrar Pagamento</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+    <h1>Registrar Pagamento</h1>
+
+    <form id="registar_pagamento" action="/cliente/pagamento/{{cliente.id_cliente}}" method="POST">
+        <label id="data_pagamento">Selecione a Data</label><br>
+        <input type="date" id="data_pagamento" name="data"><br><br>
+        <input type="submit" onclick="enviar_formulario()" value="Enviar" />
+        <button onclick="window.close()">Voltar</button>
+    </form>
+
+    <script>
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                window.close();
+            }
+        });
+        function enviar_formulario() {
+            formulario = document.forms[0];
+
+            if (formulario.nome.value == "" || formulario.telefone.value == "") {
+                alert("Ao menos os campos obrigatorios devem ser preenchidos");
+                return;
+            } else {
+                formulario.submit();
+                setTimeout(function () {
+                    window.opener.location.reload();
+                    window.close();
+                }, 100);
+            }
+        }
+    </script>
+</body>
+
+</html>

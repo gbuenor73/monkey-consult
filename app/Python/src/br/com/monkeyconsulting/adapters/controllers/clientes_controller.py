@@ -1,8 +1,8 @@
-import json
-
 from flask import request, render_template, jsonify
 from flask.views import MethodView
 
+from br.com.monkeyconsulting.adapters.controllers.requests.edit_cliente_req import EditClienteRequest
+from br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
 from br.com.monkeyconsulting.domain.services.dieta_service import DietasTreinosService
 from br.com.monkeyconsulting.domain.services.planos_service import PlanosService
 from src.br.com.monkeyconsulting.adapters.controllers.requests.cliente_req import ClienteRequest
@@ -30,7 +30,7 @@ class ClientesController(MethodView):
 
     def get(self, id_cliente=None):
         if id_cliente is None:
-            return render_template('form_cliente.html')
+            return render_template('insere_cliente.html')
         return self.get_editar(id_cliente)
 
     def delete(self, id_cliente):
@@ -51,14 +51,16 @@ class ClientesController(MethodView):
             data = {
                 'nome': formulario['nome'],
                 'telefone': formulario['telefone'],
-                'indicador_cliente_ativo': True
+                'indicador_cliente_ativo': True,
+                'id_dieta':1,
+                'id_plano':1
             }
         except Exception as e:
             data = request.json
 
         try:
             cliente_request = ClienteRequest().load(data)
-            response = self.clientes_service.insere_cliente(cliente_request)
+            self.clientes_service.insere_cliente(ClienteDTO().from_req_to_dto(cliente_request))
             # return jsonify(format_response(response.to_json()))
             return "Sucesso", 201
         except Exception as e:
@@ -67,29 +69,24 @@ class ClientesController(MethodView):
 
     def edita_cliente(self, formulario):
         try:
-
-            plano = json.load(formulario['plano'])
-
             data = {
-                'id_cliente': formulario['id_cliente'],
-                'data': formulario['nome'],
+                'nome': formulario['nome'],
                 'telefone': formulario['telefone'],
-                'plano': formulario['plano'],
-                'treino': formulario['treino'],
-                'id_plano': formulario['plano'],
-                'id_dieta': formulario['treino']
+                'indicador_cliente_ativo': formulario['indicador_cliente_ativo'],
+                'id_cliente': formulario['id_cliente'],
+                'id_plano': formulario['id_plano'],
+                'id_dieta': formulario['id_dieta'],
             }
         except Exception as e:
             data = request.json
 
         try:
-            cliente_request = ClienteRequest.load(data)
-            print(cliente_request)
+            edit_cliente_request = EditClienteRequest().load(data)
+            self.clientes_service.edita_cliente(ClienteDTO().from_req_to_dto(edit_cliente_request))
+            return "Sucesso", 200
         except Exception as e:
             print(e)
             raise e
-
-        return 'teste', 200
 
     def get_editar(self, id_cliente):
         cliente = self.clientes_service.busca_cliente_por_id(id_cliente)
@@ -99,4 +96,4 @@ class ClientesController(MethodView):
         planos = format_response(list_to_json(planos_dto))
         treinos = format_response(list_to_json(dietas_treinos_dto))
 
-        return render_template('editar.html', planos=planos, cliente=cliente, treinos=treinos)
+        return render_template('edita_cliente.html', planos=planos, cliente=cliente, treinos=treinos)

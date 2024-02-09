@@ -2,6 +2,7 @@ from sqlalchemy import Column, String, Integer, ForeignKey, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
+from br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
 from br.com.monkeyconsulting.infra.database.models.datas_model import DataModel
 from src.br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
 from src.br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
@@ -25,13 +26,14 @@ class ClienteModel(Base):
     dieta = relationship(DietaTreinoModel)
     data = relationship(DataModel)
 
-    def to_model(self, dto) -> 'ClienteModel':
-        self.nome = dto.get('nome')
-        self.telefone = dto.get('telefone')
-        self.indicador_cliente_ativo = dto.get('indicador_cliente_ativo')
-        self.id_plano = dto.get('id_plano')
-        self.id_dieta = dto.get('id_dieta')
-        self.id_data = dto.get('id_data')
+    def dto_to_model(self, dto: ClienteDTO) -> 'ClienteModel':
+        self.id_cliente = dto.id
+        self.nome = dto.nome
+        self.telefone = dto.telefone
+        self.indicador_cliente_ativo = dto.indicador_cliente_ativo
+        self.id_plano = dto.plano.id_plano if dto.plano is not None else None
+        self.id_dieta = dto.dieta.id_dieta if dto.dieta is not None else None
+        self.id_data = dto.data.id_data if dto.data is not None else None
         return self
 
     def __repr__(self):

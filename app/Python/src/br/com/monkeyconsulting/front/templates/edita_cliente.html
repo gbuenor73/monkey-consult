@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Editar Cliente</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body onblur="window.close()">
+  <h1>Editar</h1>
+
+  <form id="editara_cliente" action="/cliente" method="POST">
+    <input type="hidden" name="_method" value="PATCH" />
+
+    <label class="ocultar" for="id_cliente">ID:</label>
+    <input class="ocultar" type="text" id="id_cliente" name="id_cliente" value="{{ cliente.id_cliente }}" readonly />
+
+    <input class="ocultar" for="indicador_cliente_ativo">Cliente Ativo</input>
+    <input class="ocultar" type="text" id="indicador_cliente_ativo" name="indicador_cliente_ativo"
+      value="{{ cliente.indicador_cliente_ativo }}" />
+
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" value="{{ cliente.nome }}" required />
+    <br>
+
+    <label for="telefone">Telefone:</label>
+    <input type="tel" id="telefone" name="telefone" pattern="[0-9]{11}" maxlength="11" placeholder="Apenas números"
+      value="{{ cliente.telefone }}" required />
+    <br>
+
+    <label for="planos">Selecione o Plano:</label>
+    <select id="planos" name="id_plano">
+      {% for item in planos.data %}
+      <option value="{{ item.id_plano }}" {% if item.id_plano==cliente.plano.id_plano %} selected {% endif %}>
+        {{item.descricao}}</option>
+      {% endfor %}
+    </select>
+    <br>
+
+    <label for="treinos">Selecione o Treino:</label>
+    <select id="treinos" name="id_dieta">
+      {% for item in treinos.data %}
+      <option value="{{ item.id_dieta }}" {% if item.id_dieta==cliente.dieta.id_dieta %} selected {% endif %}>
+        {{item.descricao}}</option>
+      {% endfor %}
+    </select>
+    <br>
+
+    <button type="submit" onclick="enviar_formulario()" value="Enviar">
+      Enviar
+    </button>
+    <button onclick="window.close()">Voltar</button>
+  </form>
+
+  <script>
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        window.close();
+      }
+    });
+    function enviar_formulario() {
+      formulario = document.forms[0];
+
+      if (formulario.nome.value == "" || formulario.telefone.value == "") {
+        alert("Ao menos os campos obrigatorios devem ser preenchidos");
+        return;
+      } else {
+        formulario.submit();
+        setTimeout(function () {
+          window.opener.location.reload();
+          window.close();
+        }, 100);
+      }
+    }
+  </script>
+</body>
+
+</html>

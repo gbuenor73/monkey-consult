@@ -11,14 +11,17 @@ app = Flask(__name__, static_folder='front/static', template_folder='front/templ
 CORS(app)
 
 app.add_url_rule('/', view_func=NegocioController.as_view('negocio'))
+
 app.add_url_rule('/planos', view_func=PlanosController.as_view('planos'))
 app.add_url_rule('/dietas', view_func=DietasController.as_view('dietas'))
 app.add_url_rule('/datas', view_func=DatasController.as_view('datas'))
+
 app.add_url_rule('/clientes', view_func=ClientesController.as_view('listar_clientes'))
-# app.add_url_rule('/clientes', view_func=ClientesController.as_view('cria_cliente'))
-app.add_url_rule('/clientes', view_func=ClientesController.as_view('edita_cliente'))
-app.add_url_rule('/clientes/<int:id_cliente>', view_func=ClientesController.as_view('deletar_clientes'))
-app.add_url_rule('/clientes/detalhar/<int:id_cliente>', view_func=ClientesController.as_view('detalhar_cliente'))
+app.add_url_rule('/cliente', view_func=ClientesController.as_view('cria_cliente'))
+app.add_url_rule('/cliente', view_func=ClientesController.as_view('edita_cliente'))
+app.add_url_rule('/cliente/<int:id_cliente>', view_func=ClientesController.as_view('deletar_clientes'))
+app.add_url_rule('/cliente/detalhar/<int:id_cliente>', view_func=ClientesController.as_view('detalhar_cliente'))
+app.add_url_rule('/cliente/pagamento/<int:id_cliente>', view_func=DatasController.as_view('pagamento_cliente'))
 
 
 @app.route('/favicon.ico')

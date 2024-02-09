@@ -9,12 +9,12 @@ class DietasTreinosService:
 
     def busca_todas_dietas(self):
         dietas = self.repo.busca_todas_dietas()
-        return [DietaTreinoResponse(dieta) for dieta in dietas]
+        return [DietaTreinoResponse().dto_to_response(dieta) for dieta in dietas]
 
     def busca_dieta_por_id(self, id_dieta):
         dieta_dto = self.repo.busca_dietas_por_id(id_dieta)
-        return DietaTreinoResponse(dieta_dto)
+        return DietaTreinoResponse().dto_to_response(dieta_dto)
 
     def insere_dieta(self, dto):
         dto_response = self.repo.insere_dieta(dto)
-        return DietaTreinoResponse(dto_response)
+        return DietaTreinoResponse().dto_to_response(dto_response)
