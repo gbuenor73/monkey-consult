@@ -18,7 +18,8 @@ class PlanosController(MethodView):
             return format_response(list_to_json(planos))
         else:
             dto = self.repo.busca_plano_por_id(id)
-            return format_response(dto.to_json())
+            req = PlanoRequest().to_request(dto)
+            return format_response(req.to_json())
 
     def post(self):
         data = request.json

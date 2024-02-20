@@ -15,11 +15,11 @@ class PlanoRequest(Schema):
             'descricao': self.descricao
         }
 
-    def to_request(self, model):
-        self.id_plano = model.id_plano
-        self.dias_para_vencimento = model.dias_para_vencimento
-        self.dias_para_troca_da_dieta = model.dias_para_troca_da_dieta
-        self.descricao = model.descricao
+    def to_request(self, dto):
+        self.id_plano = dto.id_plano
+        self.dias_para_vencimento = dto.dias_para_vencimento
+        self.dias_para_troca_da_dieta = dto.dias_para_troca_da_dieta
+        self.descricao = dto.descricao
         return self
 
     def __init__(self, *args, **kwargs):

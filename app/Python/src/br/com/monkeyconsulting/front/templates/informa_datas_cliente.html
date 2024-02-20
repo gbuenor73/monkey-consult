@@ -5,37 +5,94 @@
     <title>Registrar Pagamento</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
 </head>
 
 <body>
 
     <h1>Registrar Pagamento</h1>
 
-    <form id="registar_pagamento" action="/cliente/pagamento/{{cliente.id_cliente}}" method="POST">
-        <label id="data_pagamento">Selecione a Data</label><br>
-        <input type="date" id="data_pagamento" name="data"><br><br>
-        <input type="submit" onclick="enviar_formulario()" value="Enviar" />
-        <button onclick="window.close()">Voltar</button>
+    <form id="registar_pagamento">
+        <label id="data_pagamento_label">Selecione a Data do Pagamento</label><br>
+        <input type="date" id="data_pagamento" name="data_pagamento"><br>
+
+        <label>Iniciar Plano?</label>
+        <input type="checkbox" id="iniciar_plano" name="iniciar_plano" onclick="inciar_plano()"><br><br>
+
+        <label id="mesma_data_label" name="mesma_data_label" style="display:none;">A data do incio do plano é mesma do
+            pagamento?</label>
+        <input type="checkbox" id="mesma_data" name="mesma_data" onclick="mesma_data()" style="display:none;"><br>
+
+        <label id="label_data_plano" name="label_data_plano" style="display:none;">Selecione a Data de inicio
+            Plano</label><br>
+        <input type="date" id="data_inicio_plano_input" name="data_inicio_plano_input" style="display:none;"><br><br>
+
     </form>
+    <input type="submit" onclick="enviar_formulario()" value="Enviar" />
+    <button onclick="window.close()">Voltar</button>
 
     <script>
+        // Supondo que você tenha a data do pagamento disponível na variável clienteDataPagamento
+        var clienteDataPagamento = "{{cliente.data.data_pagamento}}";
+
+        // Converta a data para o formato apropriado do input date (YYYY-MM-DD)
+        var formattedDate = new Date(clienteDataPagamento).toISOString().split('T')[0];
+  
+        // Atribua o valor ao campo de data
+        document.getElementById("data_pagamento").value = formattedDate;
+  
+
         document.addEventListener("keydown", function (event) {
             if (event.key === "Escape") {
                 window.close();
             }
         });
+        function inciar_plano() {
+            if (document.getElementById("iniciar_plano").checked) {
+                document.getElementById("mesma_data_label").style.display = "block"
+                document.getElementById("mesma_data").style.display = "block"
+            }
+            else {
+                document.getElementById("mesma_data_label").style.display = "none"
+                document.getElementById("mesma_data").style.display = "none"
+            }
+        }
+        function mesma_data() {
+            if (document.getElementById("iniciar_plano").checked) {
+                if (document.getElementById("mesma_data").checked) {
+                    document.getElementById("label_data_plano").style.display = "block";
+                    document.getElementById("data_inicio_plano_input").style.display = "block";
+                } else {
+                    document.getElementById("label_data_plano").style.display = "none";
+                    document.getElementById("data_inicio_plano_input").style.display = "none";
+
+                }
+            }
+        }
         function enviar_formulario() {
             formulario = document.forms[0];
 
-            if (formulario.nome.value == "" || formulario.telefone.value == "") {
-                alert("Ao menos os campos obrigatorios devem ser preenchidos");
+            if (formulario.data_pagamento.value == "") {
+                alert("Favor informar a data de pagamento.");
                 return;
             } else {
-                formulario.submit();
-                setTimeout(function () {
-                    window.opener.location.reload();
-                    window.close();
-                }, 100);
+                var formData = new FormData(formulario);
+
+                fetch("/cliente/pagamento/{{cliente.id_cliente}}", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Erro ao realizar a operação. ${response.text}. Status: ${response.status}`);
+                        }
+                        alert("Operação realizada com sucesso!");
+                        window.opener.location.reload();
+                        window.close();
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    });
             }
         }
     </script>

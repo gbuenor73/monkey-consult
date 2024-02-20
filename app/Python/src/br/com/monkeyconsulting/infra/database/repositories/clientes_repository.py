@@ -1,4 +1,3 @@
-from br.com.monkeyconsulting.domain.dtos.completo_dto import CompletoDTO
 from src.br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
 from src.br.com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
 from src.br.com.monkeyconsulting.infra.database.models.cliente_model import ClienteModel
@@ -19,6 +18,16 @@ class ClientesRepository:
             if model is not None:
                 return ClienteDTO().from_model_to_dto(model)
             raise ValueError(f'Cliente {id}, não encontrado')
+
+    def update_cliente(self, dto: ClienteDTO) -> ClienteDTO:
+        model = ClienteModel().dto_to_model(dto)
+        with DBConnectionHandler() as db:
+            try:
+                db.session.merge(model)
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
+                raise e
 
     def insere_cliente(self, dto: ClienteDTO) -> ClienteDTO:
         model = ClienteModel().dto_to_model(dto)

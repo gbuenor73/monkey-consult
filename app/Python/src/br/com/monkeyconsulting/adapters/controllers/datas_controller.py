@@ -1,6 +1,7 @@
-from flask import render_template, request
+from flask import render_template, request, Response
 from flask.views import MethodView
 
+from br.com.monkeyconsulting.adapters.controllers.responses.clientes_resp import ClienteResponse
 from br.com.monkeyconsulting.domain.services.clientes_service import ClientesService
 from src.br.com.monkeyconsulting.domain.services.datas_service import DatasService
 
@@ -8,7 +9,7 @@ from src.br.com.monkeyconsulting.domain.services.datas_service import DatasServi
 class DatasController(MethodView):
 
     def __init__(self):
-        self.repo = DatasService()
+        self.repo_data = DatasService()
         self.repo_cliente = ClientesService()
 
     # def get(self):
@@ -24,12 +25,23 @@ class DatasController(MethodView):
 
     def get(self, id_cliente):
         cliente_dto = self.repo_cliente.busca_cliente_por_id(id_cliente)
-        return render_template("informa_datas_cliente.html", cliente=cliente_dto.to_json())
+        cliente = ClienteResponse().dto_to_resp(cliente_dto)
+        return render_template("informa_datas_cliente.html", cliente=cliente.to_json())
 
     def post(self, id_cliente):
-        ass = request.form
+        try:
+            formulario = request.form
+            data_pagamento = formulario.get('data_pagamento')
+            iniciar_plano = formulario.get('iniciar_plano')
 
-        return f"{id_cliente}"
+            if data_pagamento == "":
+                raise ValueError("Favor informar a data de pagmento")
+
+            self.repo_data.insere_data(id_cliente, data_pagamento, iniciar_plano)
+            return Response(f"Sucesso ao atualizar cliente", 200)
+        except Exception as e:
+            print(e)
+            return Response(e.__str__(), 400)
 
     # def post(self):
     #     data = request.json

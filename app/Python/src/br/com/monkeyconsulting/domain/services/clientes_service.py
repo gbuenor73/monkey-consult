@@ -20,7 +20,7 @@ class ClientesService:
     def busca_cliente_por_id(self, id_cliente):
         cliente_dto = self.repo.busca_cliente_por_id(id_cliente)
         if cliente_dto is not None:
-            return ClienteResponse().dto_to_resp(cliente_dto)
+            return cliente_dto
         return None
 
     def insere_cliente(self, dto: ClienteDTO):

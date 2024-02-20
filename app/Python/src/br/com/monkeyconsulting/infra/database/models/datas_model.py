@@ -15,11 +15,11 @@ class DataModel(Base):
     vencimento_plano = Column(Date)
 
     def to_model(self, dto):
-        self.data_pagamento = dto.get('data_pagamento')
-        self.inicio_dieta_treino = dto.get('inicio_dieta_treino')
-        self.ultima_troca_dieta_treino = dto.get('ultima_troca_dieta_treino')
-        self.proxima_troca_dieta_treino = dto.get('proxima_troca_dieta_treino')
-        self.vencimento_plano = dto.get('vencimento_plano')
+        self.data_pagamento = dto.data_pagamento
+        self.inicio_dieta_treino = dto.inicio_dieta_treino
+        self.ultima_troca_dieta_treino = dto.ultima_troca_dieta_treino
+        self.proxima_troca_dieta_treino = dto.proxima_troca_dieta_treino
+        self.vencimento_plano = dto.vencimento_plano
         return self
 
     def __repr__(self):

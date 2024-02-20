@@ -2,6 +2,9 @@ from flask import request, render_template, jsonify
 from flask.views import MethodView
 
 from br.com.monkeyconsulting.adapters.controllers.requests.edit_cliente_req import EditClienteRequest
+from br.com.monkeyconsulting.adapters.controllers.responses.clientes_resp import ClienteResponse
+from br.com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
+from br.com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
 from br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
 from br.com.monkeyconsulting.domain.services.dieta_service import DietasTreinosService
 from br.com.monkeyconsulting.domain.services.planos_service import PlanosService
@@ -52,8 +55,8 @@ class ClientesController(MethodView):
                 'nome': formulario['nome'],
                 'telefone': formulario['telefone'],
                 'indicador_cliente_ativo': True,
-                'id_dieta':1,
-                'id_plano':1
+                'id_dieta': 1,
+                'id_plano': 1
             }
         except Exception as e:
             data = request.json
@@ -89,11 +92,15 @@ class ClientesController(MethodView):
             raise e
 
     def get_editar(self, id_cliente):
-        cliente = self.clientes_service.busca_cliente_por_id(id_cliente)
-        planos_dto = self.planos_service.busca_todos_planos()
-        dietas_treinos_dto = self.dietas_treinos_service.busca_todas_dietas()
+        cliente_dto = self.clientes_service.busca_cliente_por_id(id_cliente)
+        planos_dto_list = self.planos_service.busca_todos_planos()
+        treinos_dto_list = self.dietas_treinos_service.busca_todas_dietas()
 
-        planos = format_response(list_to_json(planos_dto))
-        treinos = format_response(list_to_json(dietas_treinos_dto))
+        planos_resp_list = [PlanoResponse().dto_to_response(dto) for dto in planos_dto_list]
+        treinos_resp_list = [DietaTreinoResponse().dto_to_response(dto) for dto in treinos_dto_list]
+        cliente = ClienteResponse().dto_to_resp(cliente_dto)
+
+        planos = format_response(list_to_json(planos_resp_list))
+        treinos = format_response(list_to_json(treinos_resp_list))
 
         return render_template('edita_cliente.html', planos=planos, cliente=cliente, treinos=treinos)

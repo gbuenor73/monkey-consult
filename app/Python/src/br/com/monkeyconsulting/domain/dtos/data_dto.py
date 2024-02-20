@@ -30,4 +30,6 @@ class DataDTO:
         return self
 
     def convert_date(self, data) -> str:
-        return date.strftime(data, "%d/%m/%Y")
+        if data is not None:
+            return date.strftime(data, "%d/%m/%Y")
+        return data
