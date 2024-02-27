@@ -2,6 +2,8 @@ import json
 
 from marshmallow import Schema, fields
 
+from br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
+
 
 class ClienteRequest(Schema):
     nome = fields.Str(required=True)
@@ -22,6 +24,27 @@ class ClienteRequest(Schema):
             'id_dieta': self.id_dieta,
             'id_data': self.id_data
         }
+
+    def to_dto(self):
+        dto = ClienteDTO()
+        dto.id = self.id_cliente
+        dto.nome = self.nome
+        dto.telefone = self.telefone
+        dto.indicador_cliente_ativo = self.indicador_cliente_ativo
+        dto.id_plano = self.id_plano
+        dto.id_dieta = self.id_dieta
+        dto.id_data = self.id_data
+        return dto
+
+    def from_json(self, json):
+        self.nome = json.get('nome')
+        self.telefone = json.get('telefone')
+        self.indicador_cliente_ativo = json.get('indicador_cliente_ativo')
+        self.id_cliente = json.get('id_cliente')
+        self.id_plano = json.get('id_plano')
+        self.id_dieta = json.get('id_dieta')
+        self.id_data = json.get('id_data')
+        return self
 
     def to_req(self, model):
         self.id_cliente = model.id_cliente

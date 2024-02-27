@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
 
 
@@ -34,3 +36,27 @@ class DataResponse:
             self.proxima_troca_dieta_treino = dto.proxima_troca_dieta_treino
             self.vencimento_plano = dto.vencimento_plano
         return self
+
+    def transformar_datas(self):
+        retorno = self
+        if self.data_pagamento is not None:
+            retorno.data_pagamento = self.converte_data(self.data_pagamento)
+
+        if self.inicio_dieta_treino is not None:
+            retorno.inicio_dieta_treino = self.converte_data(self.inicio_dieta_treino)
+
+        if self.ultima_troca_dieta_treino is not None:
+            retorno.ultima_troca_dieta_treino = self.converte_data(self.ultima_troca_dieta_treino)
+
+        if self.proxima_troca_dieta_treino is not None:
+            retorno.proxima_troca_dieta_treino = (
+                self.converte_data(self.proxima_troca_dieta_treino))
+
+        if self.vencimento_plano is not None:
+            retorno.vencimento_plano = self.converte_data(self.vencimento_plano)
+
+        return retorno
+
+    def converte_data(self, data):
+        data_convertida = datetime.strptime(data, "%d/%m/%Y")
+        return data_convertida.strftime("%Y-%m-%d")

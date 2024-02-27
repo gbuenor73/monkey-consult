@@ -1,7 +1,10 @@
 from flask import render_template, request, Response
 from flask.views import MethodView
+from marshmallow.fields import Date
 
+from br.com.monkeyconsulting.adapters.controllers.requests.datas_req import DataRequest
 from br.com.monkeyconsulting.adapters.controllers.responses.clientes_resp import ClienteResponse
+from br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
 from br.com.monkeyconsulting.domain.services.clientes_service import ClientesService
 from src.br.com.monkeyconsulting.domain.services.datas_service import DatasService
 
@@ -25,19 +28,26 @@ class DatasController(MethodView):
 
     def get(self, id_cliente):
         cliente_dto = self.repo_cliente.busca_cliente_por_id(id_cliente)
-        cliente = ClienteResponse().dto_to_resp(cliente_dto)
+        cliente = ClienteResponse().to_resp(cliente_dto)
+        cliente.data.transformar_datas()
         return render_template("informa_datas_cliente.html", cliente=cliente.to_json())
 
     def post(self, id_cliente):
         try:
             formulario = request.form
             data_pagamento = formulario.get('data_pagamento')
+            data_inicio_plano_input = formulario.get('data_inicio_plano_input')
             iniciar_plano = formulario.get('iniciar_plano')
+            mesma_data = formulario.get('mesma_data')
 
             if data_pagamento == "":
                 raise ValueError("Favor informar a data de pagmento")
 
-            self.repo_data.insere_data(id_cliente, data_pagamento, iniciar_plano)
+            req = DataRequest()
+            req.data_pagamento = data_pagamento
+            req.inicio_dieta_treino = data_inicio_plano_input
+
+            self.repo_data.insere_data(id_cliente, req.to_dto(), iniciar_plano)
             return Response(f"Sucesso ao atualizar cliente", 200)
         except Exception as e:
             print(e)

@@ -1,6 +1,3 @@
-from src.br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
-
-
 class DietaTreinoDTO:
     id_dieta = None
     descricao = None
@@ -10,8 +7,3 @@ class DietaTreinoDTO:
 
     def __repr__(self):
         return f"<DietaTreinoDTO(id_dieta='{self.id_dieta}')>"
-
-    def to_dto(self, dieta: DietaTreinoModel):
-        self.id_dieta = dieta.id_dieta
-        self.descricao = dieta.descricao
-        return self

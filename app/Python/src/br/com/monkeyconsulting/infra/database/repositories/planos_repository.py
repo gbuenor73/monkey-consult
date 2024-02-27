@@ -8,16 +8,16 @@ class PlanosRepository:
     def busca_todos_planos(self):
         with DBConnectionHandler() as db:
             models = db.session.query(PlanoModel).all()
-            return [PlanoDTO().to_dto(model) for model in models]
+            return [model.to_dto() for model in models]
 
     def busca_plano_por_id(self, id) -> PlanoDTO:
         with DBConnectionHandler() as db:
             model = db.session.query(PlanoModel).filter_by(id_plano=id).first()
-            return PlanoDTO().to_dto(model)
+            return model.to_dto()
 
     def insere_plano(self, dto: PlanoDTO) -> PlanoDTO:
         model = PlanoModel().to_model(dto)
         with DBConnectionHandler() as db:
             db.session.add(model)
             db.session.commit()
-            return PlanoDTO().to_dto(model)
+            return model.to_dto()

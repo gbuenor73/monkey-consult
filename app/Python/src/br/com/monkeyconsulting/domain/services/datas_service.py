@@ -13,16 +13,12 @@ class DatasService:
         self.repo_planos = PlanosRepository()
 
     def busca_todas_datas(self):
-        datas = self.repo_datas.busca_todas_datas()
-        return [DataResponse(data) for data in datas]
+        return self.repo_datas.busca_todas_datas()
 
     def busca_data_por_id(self, id):
-        data = self.repo_datas.busca_datas_por_id(id)
-        if data is not None:
-            return DataResponse(data)
-        return None
+        return self.repo_datas.busca_datas_por_id(id)
 
-    def insere_data(self, id_cliente, data_pagamento, iniciar_plano):
+    def insere_data(self, id_cliente, dto: DataDTO, iniciar_plano):
         cliente = self.repo_clientes.busca_cliente_por_id(id_cliente)
 
         # if cliente.data is not None:
@@ -34,12 +30,14 @@ class DatasService:
         if cliente.plano is None or cliente.plano.id_plano == 1:
             raise ValueError("É Necessário selecionar um PLANO primeiro")
 
-        data_dto = DataDTO()
-        data_dto.data_pagamento = data_pagamento
-        data_dto = self.repo_datas.insere_data(data_dto)
+        if cliente.data is None or cliente.data.id_data:
+            dto.id_data = cliente.data.id_data
+            data_dto = self.repo_datas.update(dto)
+        else:
+            data_dto = self.repo_datas.insere_data(dto)
 
         if iniciar_plano == 'on':
-            data_dto.inicio_dieta_treino = data_pagamento
+            data_dto.inicio_dieta_treino = dto.data_pagamento
             self.calcular_datas(cliente, data_dto)
 
         cliente.data = data_dto

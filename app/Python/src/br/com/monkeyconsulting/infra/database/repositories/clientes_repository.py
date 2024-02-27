@@ -9,18 +9,18 @@ class ClientesRepository:
         with DBConnectionHandler() as db:
             models = db.session.query(ClienteModel).filter_by(indicador_cliente_ativo=True).all()
             if models is not None:
-                return [ClienteDTO().from_model_to_dto(model) for model in models]
+                return [model.to_dto() for model in models]
             return []
 
     def busca_cliente_por_id(self, id):
         with DBConnectionHandler() as db:
             model = db.session.query(ClienteModel).filter_by(id_cliente=id).first()
             if model is not None:
-                return ClienteDTO().from_model_to_dto(model)
+                return model.to_dto()
             raise ValueError(f'Cliente {id}, não encontrado')
 
     def update_cliente(self, dto: ClienteDTO) -> ClienteDTO:
-        model = ClienteModel().dto_to_model(dto)
+        model = ClienteModel().to_model(dto)
         with DBConnectionHandler() as db:
             try:
                 db.session.merge(model)
@@ -30,7 +30,7 @@ class ClientesRepository:
                 raise e
 
     def insere_cliente(self, dto: ClienteDTO) -> ClienteDTO:
-        model = ClienteModel().dto_to_model(dto)
+        model = ClienteModel().to_model(dto)
         with DBConnectionHandler() as db:
             teste = db.session.query(ClienteModel).filter_by(telefone=model.telefone,
                                                              indicador_cliente_ativo=True).first()
@@ -40,20 +40,19 @@ class ClientesRepository:
                 try:
                     db.session.add(model)
                     db.session.commit()
-                    return ClienteDTO().from_model_to_dto(model)
+                    return model.to_dto()
                 except Exception as e:
                     db.session.rollback()
                     raise e
 
     def edita_cliente(self, dto: ClienteDTO):
-        model_atualizada = ClienteModel().dto_to_model(dto)
+        model_atualizada = ClienteModel().to_model(dto)
 
         with (DBConnectionHandler() as db):
             try:
                 model = db.session.query(ClienteModel).filter(ClienteModel.id_cliente == dto.id).first()
 
                 if model:
-
                     model.nome = model_atualizada.nome
                     model.indicador_cliente_ativo = model_atualizada.indicador_cliente_ativo
                     model.telefone = model_atualizada.telefone
@@ -62,7 +61,7 @@ class ClientesRepository:
                     model.data = model_atualizada.id_data
 
                     db.session.commit()
-                    return ClienteDTO().from_model_to_dto(model)
+                    return model.to_dto()
                 else:
                     raise ValueError(f"O cliente não existe")
             except Exception as e:
@@ -80,7 +79,7 @@ class ClientesRepository:
 
                     cliente_existente.indicador_cliente_ativo = False
                     db.session.commit()
-                    return ClienteDTO().from_model_to_dto(cliente_existente)
+                    return ClienteDTO().to_dto(cliente_existente)
                 else:
                     raise ValueError(f"Cliente de ID: {id_cliente} nao encontrado.")
             except Exception as e:

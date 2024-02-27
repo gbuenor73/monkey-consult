@@ -62,8 +62,8 @@ class ClientesController(MethodView):
             data = request.json
 
         try:
-            cliente_request = ClienteRequest().load(data)
-            self.clientes_service.insere_cliente(ClienteDTO().from_req_to_dto(cliente_request))
+            req = ClienteRequest().from_json(data)
+            self.clientes_service.insere_cliente(req.to_dto())
             # return jsonify(format_response(response.to_json()))
             return "Sucesso", 201
         except Exception as e:
@@ -84,8 +84,8 @@ class ClientesController(MethodView):
             data = request.json
 
         try:
-            edit_cliente_request = EditClienteRequest().load(data)
-            self.clientes_service.edita_cliente(ClienteDTO().from_req_to_dto(edit_cliente_request))
+            req = EditClienteRequest().from_json(data)
+            self.clientes_service.edita_cliente(req.to_dto())
             return "Sucesso", 200
         except Exception as e:
             print(e)
@@ -98,7 +98,7 @@ class ClientesController(MethodView):
 
         planos_resp_list = [PlanoResponse().dto_to_response(dto) for dto in planos_dto_list]
         treinos_resp_list = [DietaTreinoResponse().dto_to_response(dto) for dto in treinos_dto_list]
-        cliente = ClienteResponse().dto_to_resp(cliente_dto)
+        cliente = ClienteResponse().to_resp(cliente_dto)
 
         planos = format_response(list_to_json(planos_resp_list))
         treinos = format_response(list_to_json(treinos_resp_list))

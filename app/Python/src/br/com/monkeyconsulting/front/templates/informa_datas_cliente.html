@@ -13,61 +13,62 @@
     <h1>Registrar Pagamento</h1>
 
     <form id="registar_pagamento">
+        {{cliente.data}}
         <label id="data_pagamento_label">Selecione a Data do Pagamento</label><br>
+        <div id="data_pagamento2" style="display: none;">{{cliente.data.data_pagamento}}</div> <!- objeto escondido apenas para passar valor !>
         <input type="date" id="data_pagamento" name="data_pagamento"><br>
 
-        <label>Iniciar Plano?</label>
-        <input type="checkbox" id="iniciar_plano" name="iniciar_plano" onclick="inciar_plano()"><br><br>
+        <label>Iniciar Plano? </label>  
+        <input type="checkbox" id="iniciar_plano_input" name="iniciar_plano_iniput" onclick="inciar_plano()"><br>
 
-        <label id="mesma_data_label" name="mesma_data_label" style="display:none;">A data do incio do plano é mesma do
-            pagamento?</label>
-        <input type="checkbox" id="mesma_data" name="mesma_data" onclick="mesma_data()" style="display:none;"><br>
+        <label id="mesma_data_label" name="mesma_data_label" style="display:none;">A data do incio do plano é mesma do pagamento?</label>
+        <input type="checkbox" id="mesma_data_input" name="mesma_data_input" onclick="mesma_data()" style="display:none;" value=true><br>
 
-        <label id="label_data_plano" name="label_data_plano" style="display:none;">Selecione a Data de inicio
-            Plano</label><br>
-        <input type="date" id="data_inicio_plano_input" name="data_inicio_plano_input" style="display:none;"><br><br>
+        <label id="label_data_plano" name="label_data_plano" style="display:none;">Selecione a Data de inicio Plano</label>
+        <input type="date" id="data_inicio_plano_input" name="data_inicio_plano_input" style="display:none;"><br>
 
     </form>
     <input type="submit" onclick="enviar_formulario()" value="Enviar" />
     <button onclick="window.close()">Voltar</button>
 
     <script>
-        // Supondo que você tenha a data do pagamento disponível na variável clienteDataPagamento
-        var clienteDataPagamento = "{{cliente.data.data_pagamento}}";
-
-        // Converta a data para o formato apropriado do input date (YYYY-MM-DD)
+        //adiciona data pré preechida noo calendario
+        var clienteDataPagamento = document.getElementById("data_pagamento2").textContent;
         var formattedDate = new Date(clienteDataPagamento).toISOString().split('T')[0];
-  
-        // Atribua o valor ao campo de data
         document.getElementById("data_pagamento").value = formattedDate;
   
 
+        // fecha se apertar ESC
         document.addEventListener("keydown", function (event) {
             if (event.key === "Escape") {
                 window.close();
             }
         });
+
+        //logica para iniciar plano 
         function inciar_plano() {
-            if (document.getElementById("iniciar_plano").checked) {
+            console.log("tes")
+            if (document.getElementById("iniciar_plano_input").checked) {
                 document.getElementById("mesma_data_label").style.display = "block"
-                document.getElementById("mesma_data").style.display = "block"
+                document.getElementById("mesma_data_input").style.display = "block"
             }
             else {
                 document.getElementById("mesma_data_label").style.display = "none"
-                document.getElementById("mesma_data").style.display = "none"
+                document.getElementById("mesma_data_input").style.display = "none"
             }
         }
+
+        //logica para mesma data de pagamento e inicio do plano
         function mesma_data() {
-            if (document.getElementById("iniciar_plano").checked) {
-                if (document.getElementById("mesma_data").checked) {
+            // if (document.getElementById("iniciar_plano").checked) {
+                if (document.getElementById("mesma_data_input").checked) {
                     document.getElementById("label_data_plano").style.display = "block";
                     document.getElementById("data_inicio_plano_input").style.display = "block";
                 } else {
                     document.getElementById("label_data_plano").style.display = "none";
                     document.getElementById("data_inicio_plano_input").style.display = "none";
-
                 }
-            }
+            // }
         }
         function enviar_formulario() {
             formulario = document.forms[0];

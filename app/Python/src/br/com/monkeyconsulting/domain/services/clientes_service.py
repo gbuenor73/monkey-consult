@@ -18,15 +18,12 @@ class ClientesService:
         return []
 
     def busca_cliente_por_id(self, id_cliente):
-        cliente_dto = self.repo.busca_cliente_por_id(id_cliente)
-        if cliente_dto is not None:
-            return cliente_dto
-        return None
+        return self.repo.busca_cliente_por_id(id_cliente)
 
     def insere_cliente(self, dto: ClienteDTO):
         self.repo.insere_cliente(dto)
 
-    def edita_cliente(self, dto):
+    def edita_cliente(self, dto: ClienteDTO):
         self.repo.edita_cliente(dto)
 
     def desativar_cliente(self, id_cliente):

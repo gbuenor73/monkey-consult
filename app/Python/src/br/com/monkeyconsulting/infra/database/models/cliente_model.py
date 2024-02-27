@@ -26,7 +26,7 @@ class ClienteModel(Base):
     dieta = relationship(DietaTreinoModel)
     data = relationship(DataModel)
 
-    def dto_to_model(self, dto: ClienteDTO) -> 'ClienteModel':
+    def to_model(self, dto: ClienteDTO) -> 'ClienteModel':
         self.id_cliente = dto.id
         self.nome = dto.nome
         self.telefone = dto.telefone
@@ -35,6 +35,17 @@ class ClienteModel(Base):
         self.id_dieta = dto.dieta.id_dieta if dto.dieta is not None else None
         self.id_data = dto.data.id_data if dto.data is not None else None
         return self
+
+    def to_dto(self):
+        dto = ClienteDTO()
+        dto.id = self.id_cliente
+        dto.nome = self.nome
+        dto.telefone = self.telefone
+        dto.indicador_cliente_ativo = self.indicador_cliente_ativo
+        dto.plano = self.plano.to_dto() if self.plano is not None else None
+        dto.dieta = self.dieta.to_dto() if self.dieta is not None else None
+        dto.data = self.data.to_dto() if self.data is not None else None
+        return dto
 
     def __repr__(self):
         return f"<ClienteModel(id='{self.id_cliente}')>"
