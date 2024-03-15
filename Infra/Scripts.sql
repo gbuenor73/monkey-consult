@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS DIETAS_TREINOS (
 );
 
 CREATE TABLE IF NOT EXISTS DATAS (
-    id_data INT AUTO_INCREMENT PRIMARY KEY, data_pagamento DATE, inicio_dieta_treino DATE, ultima_troca_dieta_treino DATE, proxima_troca_dieta_treino DATE, vencimento_plano DATE
+    id_data INT AUTO_INCREMENT PRIMARY KEY, data_pagamento DATE, inicio_dieta_treino DATE, inicio_plano DATE, ultima_troca_dieta_treino DATE, proxima_troca_dieta_treino DATE, vencimento_plano DATE
 );
 
 CREATE TABLE IF NOT EXISTS CLIENTES (
@@ -54,10 +54,10 @@ VALUES ('Sem treino'),
 
 INSERT INTO
     DATAS (
-        data_pagamento, inicio_dieta_treino, ultima_troca_dieta_treino, proxima_troca_dieta_treino, vencimento_plano
+        data_pagamento, inicio_dieta_treino, inicio_plano, ultima_troca_dieta_treino, proxima_troca_dieta_treino, vencimento_plano
     )
 VALUES (
-        NOW(), NOW(), NOW(), NOW(), NOW()
+        NOW(), NOW(), NOW(), NOW(), NOW(), NOW()
     );
 
 INSERT INTO

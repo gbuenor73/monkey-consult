@@ -9,34 +9,61 @@
 </head>
 
 <body>
-
     <h1>Registrar Pagamento</h1>
 
     <form id="registar_pagamento">
-        {{cliente.data}}
-        <label id="data_pagamento_label">Selecione a Data do Pagamento</label><br>
-        <div id="data_pagamento2" style="display: none;">{{cliente.data.data_pagamento}}</div> <!- objeto escondido apenas para passar valor !>
-        <input type="date" id="data_pagamento" name="data_pagamento"><br>
+        <input type="text" id="id_data" name="id_data" value="{{ cliente.data.id_data }}" readonly style="display: none;"/>
+        <br>
+        <label id="data_pagamento_label">Selecione a Data do Pagamento</label><br />
+        <div id="data_pagamento2" style="display: none">{{cliente.data.data_pagamento}}</div> <!- objeto escondido apenas para passar valor !>
+        <input type="date" id="data_pagamento" name="data_pagamento" />
+        <br>
 
-        <label>Iniciar Plano? </label>  
-        <input type="checkbox" id="iniciar_plano_input" name="iniciar_plano_iniput" onclick="inciar_plano()"><br>
+        <br>
+        <div onclick="inciar_plano()" >
+            <label>Iniciar Plano?</label>
+            <input type="checkbox" id="iniciar_plano_check" name="iniciar_plano_check"/>
+            <br>
+        </div>
 
-        <label id="mesma_data_label" name="mesma_data_label" style="display:none;">A data do incio do plano é mesma do pagamento?</label>
-        <input type="checkbox" id="mesma_data_input" name="mesma_data_input" onclick="mesma_data()" style="display:none;" value=true><br>
+        <div id="div_iniciar_plano" style="display: none">
+            <br>
+            <div onclick="mesma_data()">    
+                <label id="mesma_data_label" name="mesma_data_label">A data de inicio do plano é mesma do pagamento?</label>
+                <input type="checkbox" id="mesma_data_check" name="mesma_data_check" checked/>
+                <br>
+            </div>
 
-        <label id="label_data_plano" name="label_data_plano" style="display:none;">Selecione a Data de inicio Plano</label>
-        <input type="date" id="data_inicio_plano_input" name="data_inicio_plano_input" style="display:none;"><br>
-
+            <div id="div_mesma_data" style="display: none">
+                <br>
+                <label id="label_data_plano" name="label_data_plano">Selecione a Data de inicio Plano</label>
+                <br>
+                <div id="inicio_plano2" style="display: none">{{cliente.data.inicio_plano}}</div>
+                <input type="date" id="inicio_plano" name="inicio_plano"/>
+                <br>
+            </div>
+        </div>
+        <div id="inicio_dieta_treino" style="display: none">{{cliente.data.inicio_dieta_treino}}</div>
     </form>
+    <br>
     <input type="submit" onclick="enviar_formulario()" value="Enviar" />
     <button onclick="window.close()">Voltar</button>
 
     <script>
         //adiciona data pré preechida noo calendario
-        var clienteDataPagamento = document.getElementById("data_pagamento2").textContent;
-        var formattedDate = new Date(clienteDataPagamento).toISOString().split('T')[0];
-        document.getElementById("data_pagamento").value = formattedDate;
-  
+        var data_pagamento = document.getElementById("data_pagamento2");
+        var inicio_plano = document.getElementById("inicio_plano2")
+        var inicio_dieta_treino = document.getElementById("inicio_dieta_treino")      
+
+        if (data_pagamento.textContent != "")
+            document.getElementById("data_pagamento").value = new Date(data_pagamento.textContent).toISOString().split("T")[0];
+        
+        if (inicio_plano.textContent != "")
+            document.getElementById("inicio_plano").value = new Date(inicio_plano.textContent).toISOString().split("T")[0];
+
+        if (inicio_dieta_treino.textContent != "")
+            document.getElementById("inicio_dieta_treino").value = new Date(inicio_dieta_treino.textContent).toISOString().split("T")[0];
+                
 
         // fecha se apertar ESC
         document.addEventListener("keydown", function (event) {
@@ -45,31 +72,27 @@
             }
         });
 
-        //logica para iniciar plano 
+        //logica para iniciar plano
         function inciar_plano() {
-            console.log("tes")
-            if (document.getElementById("iniciar_plano_input").checked) {
-                document.getElementById("mesma_data_label").style.display = "block"
-                document.getElementById("mesma_data_input").style.display = "block"
-            }
-            else {
-                document.getElementById("mesma_data_label").style.display = "none"
-                document.getElementById("mesma_data_input").style.display = "none"
-            }
+            var display = "none"
+
+            if (document.getElementById("iniciar_plano_check").checked) 
+                display = "block"
+            
+            document.getElementById("div_iniciar_plano").style.display = display;
         }
 
         //logica para mesma data de pagamento e inicio do plano
         function mesma_data() {
-            // if (document.getElementById("iniciar_plano").checked) {
-                if (document.getElementById("mesma_data_input").checked) {
-                    document.getElementById("label_data_plano").style.display = "block";
-                    document.getElementById("data_inicio_plano_input").style.display = "block";
-                } else {
-                    document.getElementById("label_data_plano").style.display = "none";
-                    document.getElementById("data_inicio_plano_input").style.display = "none";
-                }
-            // }
+            var checked = "none"
+
+            if (!document.getElementById("mesma_data_check").checked) {
+                checked = "block";
+            }
+
+            document.getElementById("div_mesma_data").style.display = checked;
         }
+
         function enviar_formulario() {
             formulario = document.forms[0];
 
@@ -81,17 +104,20 @@
 
                 fetch("/cliente/pagamento/{{cliente.id_cliente}}", {
                     method: "POST",
-                    body: formData
+                    body: formData,
                 })
-                    .then(response => {
+                    .then((response) => {
                         if (!response.ok) {
-                            throw new Error(`Erro ao realizar a operação. ${response.text}. Status: ${response.status}`);
+                            console.log(response)
+                            throw new Error(
+                                `Erro ao realizar a operação. ${response.text}. Status: ${response.status}`
+                            );
                         }
                         alert("Operação realizada com sucesso!");
                         window.opener.location.reload();
                         window.close();
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         alert(error.message);
                     });
             }

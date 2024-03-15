@@ -1,10 +1,8 @@
 from flask import render_template, request, Response
 from flask.views import MethodView
-from marshmallow.fields import Date
 
-from br.com.monkeyconsulting.adapters.controllers.requests.datas_req import DataRequest
-from br.com.monkeyconsulting.adapters.controllers.responses.clientes_resp import ClienteResponse
-from br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
+from br.com.monkeyconsulting.adapters.controllers.requests.data_req import DataRequest
+from br.com.monkeyconsulting.adapters.controllers.responses.cliente_resp import ClienteResponse
 from br.com.monkeyconsulting.domain.services.clientes_service import ClientesService
 from src.br.com.monkeyconsulting.domain.services.datas_service import DatasService
 
@@ -35,23 +33,24 @@ class DatasController(MethodView):
     def post(self, id_cliente):
         try:
             formulario = request.form
+            id_data = formulario.get('id_data')
             data_pagamento = formulario.get('data_pagamento')
-            data_inicio_plano_input = formulario.get('data_inicio_plano_input')
-            iniciar_plano = formulario.get('iniciar_plano')
-            mesma_data = formulario.get('mesma_data')
-
-            if data_pagamento == "":
-                raise ValueError("Favor informar a data de pagmento")
+            iniciar_plano_check = formulario.get('iniciar_plano_check')
+            mesma_data_check = formulario.get('mesma_data_check')
+            inicio_plano = formulario.get('inicio_plano')
 
             req = DataRequest()
-            req.data_pagamento = data_pagamento
-            req.inicio_dieta_treino = data_inicio_plano_input
+            req.id_data = id_data if id_data != '' else None
+            req.iniciar_plano_check = iniciar_plano_check == 'on'
+            req.mesma_data_check = mesma_data_check == 'on'
+            req.data_pagamento = data_pagamento if data_pagamento != '' else None
+            req.inicio_plano = inicio_plano if inicio_plano != '' else None
 
-            self.repo_data.insere_data(id_cliente, req.to_dto(), iniciar_plano)
+            self.repo_data.insere_data(id_cliente, req.to_dto())
+
             return Response(f"Sucesso ao atualizar cliente", 200)
         except Exception as e:
-            print(e)
-            return Response(e.__str__(), 400)
+            return Response("TESTE", 400)
 
     # def post(self):
     #     data = request.json

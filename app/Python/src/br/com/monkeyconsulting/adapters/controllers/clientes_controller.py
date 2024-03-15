@@ -2,7 +2,7 @@ from flask import request, render_template, jsonify
 from flask.views import MethodView
 
 from br.com.monkeyconsulting.adapters.controllers.requests.edit_cliente_req import EditClienteRequest
-from br.com.monkeyconsulting.adapters.controllers.responses.clientes_resp import ClienteResponse
+from br.com.monkeyconsulting.adapters.controllers.responses.cliente_resp import ClienteResponse
 from br.com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
 from br.com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
 from br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO

@@ -1,7 +1,7 @@
 import http
 
 from br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
-from src.br.com.monkeyconsulting.adapters.controllers.responses.clientes_resp import ClienteResponse
+from src.br.com.monkeyconsulting.adapters.controllers.responses.cliente_resp import ClienteResponse
 from src.br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
 
 

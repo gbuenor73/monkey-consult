@@ -1,7 +1,8 @@
+from datetime import timedelta
+
 from br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
 from br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
 from br.com.monkeyconsulting.infra.database.repositories.planos_repository import PlanosRepository
-from src.br.com.monkeyconsulting.adapters.controllers.responses.data_resp import DataResponse
 from src.br.com.monkeyconsulting.infra.database.repositories.datas_repository import DatasRepository
 
 
@@ -18,11 +19,8 @@ class DatasService:
     def busca_data_por_id(self, id):
         return self.repo_datas.busca_datas_por_id(id)
 
-    def insere_data(self, id_cliente, dto: DataDTO, iniciar_plano):
+    def insere_data(self, id_cliente, data_dto: DataDTO):
         cliente = self.repo_clientes.busca_cliente_por_id(id_cliente)
-
-        # if cliente.data is not None:
-        #     raise ValueError("A data de pagamento ja foi informada")
 
         if cliente.indicador_cliente_ativo is False:
             raise ValueError("Este cliente não esta ativo.")
@@ -30,26 +28,24 @@ class DatasService:
         if cliente.plano is None or cliente.plano.id_plano == 1:
             raise ValueError("É Necessário selecionar um PLANO primeiro")
 
-        if cliente.data is None or cliente.data.id_data:
-            dto.id_data = cliente.data.id_data
-            data_dto = self.repo_datas.update(dto)
+        self.calcular_datas(cliente, data_dto)
+
+        if cliente.data is None or cliente.data.id_data is None:
+            data_dto = self.repo_datas.insere_data(data_dto)
+            cliente.data = data_dto
+            self.repo_clientes.update_cliente(cliente)
         else:
-            data_dto = self.repo_datas.insere_data(dto)
-
-        if iniciar_plano == 'on':
-            data_dto.inicio_dieta_treino = dto.data_pagamento
-            self.calcular_datas(cliente, data_dto)
-
-        cliente.data = data_dto
-        self.repo_clientes.update_cliente(cliente)
+            self.repo_datas.update(data_dto)
 
     def calcular_datas(self, cliente, data_dto):
         plano = self.repo_planos.busca_plano_por_id(cliente.plano.id_plano)
-        dias_para_vencimento = plano.dias_para_vencimento
-        dias_para_troca = plano.dias_para_troca_da_dieta
 
-        # data_dto.
+        if data_dto.iniciar_plano_check and data_dto.mesma_data_check:
+            data_dto.inicio_plano = data_dto.data_pagamento
 
-        vencimento_plano = plano.inicio_dieta_trerin
+        inicio_plano = data_dto.inicio_plano
+
+        data_dto.vencimento_plano = inicio_plano + timedelta(plano.dias_para_vencimento)
+        data_dto.proxima_troca_dieta_treino = inicio_plano + timedelta(plano.dias_para_troca_da_dieta)
 
         return data_dto

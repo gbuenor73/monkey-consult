@@ -7,6 +7,7 @@ class CompletoDTO:
     clientes = None
     data_pagamento = None
     inicio_dieta_treino = None
+    iniciar_plano = None
     ultima_troca_dieta_treino = None
     proxima_troca_dieta_treino = None
     vencimento_plano = None

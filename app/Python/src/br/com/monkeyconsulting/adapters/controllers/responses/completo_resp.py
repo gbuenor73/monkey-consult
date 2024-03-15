@@ -67,6 +67,7 @@ class CompletoResponse:
                 self.data = DataResponse().dto_to_response(dto.data)
                 self.data_pagamento = dto.data.data_pagamento
                 self.inicio_dieta_treino = dto.data.inicio_dieta_treino
+                self.inicio_plano = dto.data.inicio_plano
                 self.ultima_troca_dieta_treino = dto.data.ultima_troca_dieta_treino
                 self.proxima_troca_dieta_treino = dto.data.proxima_troca_dieta_treino
                 self.vencimento_plano = dto.data.vencimento_plano

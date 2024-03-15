@@ -7,6 +7,7 @@ class DataResponse:
     id_data = None
     data_pagamento = None
     inicio_dieta_treino = None
+    inicio_plano = None
     ultima_troca_dieta_treino = None
     proxima_troca_dieta_treino = None
     vencimento_plano = None
@@ -22,6 +23,7 @@ class DataResponse:
             'id_data': self.id_data if self.id_data is not None else '',
             'data_pagamento': self.data_pagamento if self.data_pagamento is not None else '',
             'inicio_dieta_treino': self.inicio_dieta_treino if self.inicio_dieta_treino is not None else '',
+            'inicio_plano': self.inicio_plano if self.inicio_plano is not None else '',
             'ultima_troca_dieta_treino': self.ultima_troca_dieta_treino if self.ultima_troca_dieta_treino is not None else '',
             'proxima_troca_dieta_treino': self.proxima_troca_dieta_treino if self.proxima_troca_dieta_treino is not None else '',
             'vencimento_plano': self.vencimento_plano if self.vencimento_plano is not None else ''
@@ -32,6 +34,7 @@ class DataResponse:
             self.id_data = dto.id_data
             self.data_pagamento = dto.data_pagamento
             self.inicio_dieta_treino = dto.inicio_dieta_treino
+            self.inicio_plano = dto.inicio_plano
             self.ultima_troca_dieta_treino = dto.ultima_troca_dieta_treino
             self.proxima_troca_dieta_treino = dto.proxima_troca_dieta_treino
             self.vencimento_plano = dto.vencimento_plano
@@ -44,6 +47,9 @@ class DataResponse:
 
         if self.inicio_dieta_treino is not None:
             retorno.inicio_dieta_treino = self.converte_data(self.inicio_dieta_treino)
+
+        if self.inicio_plano is not None:
+            retorno.inicio_plano = self.converte_data(self.inicio_plano)
 
         if self.ultima_troca_dieta_treino is not None:
             retorno.ultima_troca_dieta_treino = self.converte_data(self.ultima_troca_dieta_treino)

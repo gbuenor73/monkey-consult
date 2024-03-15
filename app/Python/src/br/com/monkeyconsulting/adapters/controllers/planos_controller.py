@@ -1,7 +1,7 @@
 from flask import request
 from flask.views import MethodView
 
-from src.br.com.monkeyconsulting.adapters.controllers.requests.planos_req import PlanoRequest
+from src.br.com.monkeyconsulting.adapters.controllers.requests.plano_req import PlanoRequest
 from src.br.com.monkeyconsulting.domain.services.planos_service import PlanosService
 from src.br.com.monkeyconsulting.domain.utils.utils import list_to_json, format_response
 
