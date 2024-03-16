@@ -25,10 +25,11 @@ class DatasService:
         if cliente.indicador_cliente_ativo is False:
             raise ValueError("Este cliente não esta ativo.")
 
-        if cliente.plano is None or cliente.plano.id_plano == 1:
-            raise ValueError("É Necessário selecionar um PLANO primeiro")
-
-        self.calcular_datas(cliente, data_dto)
+        if (data_dto.iniciar_plano_check):
+            if (cliente.plano is None or cliente.plano.id_plano == 1):
+                raise ValueError("É Necessário selecionar um PLANO primeiro")
+            else:
+                self.calcular_datas(cliente, data_dto)
 
         if cliente.data is None or cliente.data.id_data is None:
             data_dto = self.repo_datas.insere_data(data_dto)

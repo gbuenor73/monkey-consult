@@ -11,7 +11,7 @@
 <body>
     <h1>Registrar Pagamento</h1>
 
-    <form id="registar_pagamento">
+    <form id="registar_pagamento" name="registar_pagamento">
         <input type="text" id="id_data" name="id_data" value="{{ cliente.data.id_data }}" readonly style="display: none;"/>
         <br>
         <label id="data_pagamento_label">Selecione a Data do Pagamento</label><br />
@@ -46,7 +46,7 @@
         <div id="inicio_dieta_treino" style="display: none">{{cliente.data.inicio_dieta_treino}}</div>
     </form>
     <br>
-    <input type="submit" onclick="enviar_formulario()" value="Enviar" />
+    <input type="submit" onclick="enviar_formulario('{{cliente.id_cliente}}')" value="Enviar" />
     <button onclick="window.close()">Voltar</button>
 
     <script>
@@ -89,37 +89,37 @@
             if (!document.getElementById("mesma_data_check").checked) {
                 checked = "block";
             }
-
             document.getElementById("div_mesma_data").style.display = checked;
         }
 
-        function enviar_formulario() {
-            formulario = document.forms[0];
+        function enviar_formulario(id_cliente) {
+            formulario = document.getElementById("registar_pagamento")
 
             if (formulario.data_pagamento.value == "") {
                 alert("Favor informar a data de pagamento.");
                 return;
             } else {
+                
                 var formData = new FormData(formulario);
 
-                fetch("/cliente/pagamento/{{cliente.id_cliente}}", {
+                fetch("/cliente/pagamento/" + id_cliente, {
                     method: "POST",
                     body: formData,
                 })
-                    .then((response) => {
+                .then(response => {
+                    response.text().then(message => {
                         if (!response.ok) {
-                            console.log(response)
-                            throw new Error(
-                                `Erro ao realizar a operação. ${response.text}. Status: ${response.status}`
-                            );
+                                alert(`Erro ao realizar a operação. \n${message}.`)
+                        } else {
+                            alert("Operação realizada com sucesso!");
+                            window.opener.location.reload();
+                            window.close();
                         }
-                        alert("Operação realizada com sucesso!");
-                        window.opener.location.reload();
-                        window.close();
                     })
-                    .catch((error) => {
-                        alert(error.message);
-                    });
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
             }
         }
     </script>

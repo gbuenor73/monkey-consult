@@ -50,17 +50,4 @@ class DatasController(MethodView):
 
             return Response(f"Sucesso ao atualizar cliente", 200)
         except Exception as e:
-            return Response("TESTE", 400)
-
-    # def post(self):
-    #     data = request.json
-    #     try:
-    #         dto = DataRequest().load(data)
-    #         response = self.repo.insere_data(dto)
-    #         return format_response(response.to_json())
-    #     except IntegrityError as e:
-    #         print(e)
-    #         return {'error': 'Cliente não encontrado'}, 400
-    #     except Exception as e:
-    #         print(e)
-    #         return e
+            return Response(e.__str__(), 400)
