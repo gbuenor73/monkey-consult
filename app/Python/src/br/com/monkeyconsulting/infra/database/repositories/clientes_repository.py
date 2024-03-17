@@ -32,9 +32,9 @@ class ClientesRepository:
     def insere_cliente(self, dto: ClienteDTO) -> ClienteDTO:
         model = ClienteModel().to_model(dto)
         with (DBConnectionHandler() as db):
-            teste = db.session.query(ClienteModel)\
+            model = db.session.query(ClienteModel)\
                 .filter_by(telefone=model.telefone,indicador_cliente_ativo=True).first()
-            if teste:
+            if model:
                 raise ValueError('Este numero de telefone ja existe.')
             else:
                 try:
@@ -58,7 +58,7 @@ class ClientesRepository:
                     model.telefone = model_atualizada.telefone
                     model.id_plano = model_atualizada.id_plano
                     model.id_dieta = model_atualizada.id_dieta
-                    model.data = model_atualizada.id_data
+                    # model.id_data = model_atualizada.id_data
 
                     db.session.commit()
                     return model.to_dto()
