@@ -1,4 +1,4 @@
-from src.br.com.monkeyconsulting.adapters.controllers.requests.dietas_treinos_req import DietaRequest
+from src.br.com.monkeyconsulting.adapters.controllers.requests.dieta_treinos_req import DietaRequest
 from src.br.com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
 from src.br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
 

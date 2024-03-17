@@ -7,24 +7,13 @@ class ClienteDTO:
     id = None
     nome = None
     telefone = None
-    indicador_ativo = None
-    plano = PlanoDTO(None, None, None, None)
-    dieta = DietaTreinoDTO(None, None)
-    data = DataDTO(None, None, None, None, None, None)
+    indicador_cliente_ativo = None
+    plano = PlanoDTO()
+    dieta = DietaTreinoDTO()
+    data = DataDTO()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def __repr__(self):
         return f"<ClienteDTO(id='{self.id}')>"
-
-    # @staticmethod
-    def to_dto(self, req):
-        self.id = req.id_cliente
-        self.nome = req.nome
-        self.telefone = req.telefone
-        self.indicador_ativo = req.indicador_cliente_ativo
-        self.plano = PlanoDTO.to_dto(req.plano)
-        self.dieta = DietaTreinoDTO.to_dto(req.dieta)
-        self.data = DataDTO.to_dto(req.data)
-        return self

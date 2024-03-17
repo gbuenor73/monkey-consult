@@ -1,17 +1,15 @@
-from src.br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
-
-
 class PlanoDTO:
-    def __init__(self, id_plano, dias_para_vencimento, dias_para_troca_da_dieta, descricao):
-        self.id_plano = id_plano
-        self.dias_para_vencimento = dias_para_vencimento
-        self.dias_para_troca_da_dieta = dias_para_troca_da_dieta
-        self.descricao = descricao
+    id_plano = None
+    dias_para_vencimento = None
+    dias_para_troca_da_dieta = None
+    descricao = None
 
-    @staticmethod
-    def to_dto(model: PlanoModel):
-        PlanoDTO.id_plano = model.id_plano
-        PlanoDTO.dias_para_vencimento = model.dias_para_vencimento
-        PlanoDTO.dias_para_troca_da_dieta = model.dias_para_troca_da_dieta
-        PlanoDTO.descricao = model.descricao
-        return PlanoDTO
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return f"<PlanoDTO(id_plano='{self.id_plano}')>"
+
+    def set_id(self, id_plano):
+        self.id_plano = id_plano
+        return self

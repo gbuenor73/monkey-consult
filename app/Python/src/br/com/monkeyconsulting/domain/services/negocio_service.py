@@ -1,19 +1,13 @@
-from src.br.com.monkeyconsulting.adapters.controllers.responses.completo_resp import \
-    CompletoResponse
-from src.br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
-from src.br.com.monkeyconsulting.infra.database.repositories.datas_repository import DatasRepository
-from src.br.com.monkeyconsulting.infra.database.repositories.dieta_repository import DietasRepository
-from src.br.com.monkeyconsulting.infra.database.repositories.planos_repository import PlanosRepository
+from br.com.monkeyconsulting.infra.database.repositories.completo_repository import CompletoRepository
+from src.br.com.monkeyconsulting.adapters.controllers.responses.completo_resp import CompletoResponse
 
 
 class NegocioService:
 
     def __init__(self):
-        self.clientes_repo = ClientesRepository()
-        self.datas_repo = DatasRepository()
-        self.planos_repo = PlanosRepository()
-        self.dietas_repo = DietasRepository()
+        self.repo = CompletoRepository()
 
     def obtem_todos_dados(self):
-        completo_responses = self.clientes_repo.busca_todos_clientes()
-        return [CompletoResponse(completo_response) for completo_response in completo_responses]
+        completo_dto = self.repo.busca_completa()
+
+        return [CompletoResponse().dto_to_response(dto) for dto in completo_dto]
