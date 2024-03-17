@@ -1,24 +1,28 @@
 .title {
-    color: white;
+  color: white;
 }
 
 .body {
-    /* background-color: grey; */
+  /* background-color: grey; */
 }
 
 table {
-    border-collapse: collapse;
-    border: 3px solid black;
-    width: 100%;
-    background: white
+  border-collapse: collapse;
+  border: 3px solid black;
+  width: 100%;
+  background: white;
 }
 
 /* Estilo para as células da tabela */
 td {
-    padding: 8px;
-    border: 1px solid black;
+  padding: 8px;
+  border: 1px solid black;
 }
 
 thead {
-    border: 1px solid yellow;
+  border: 1px solid yellow;
+}
+
+.ocultar {
+  display: none;
 }

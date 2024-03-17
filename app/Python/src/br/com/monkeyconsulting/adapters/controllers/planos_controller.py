@@ -1,7 +1,7 @@
 from flask import request
 from flask.views import MethodView
 
-from src.br.com.monkeyconsulting.adapters.controllers.requests.planos_req import PlanoRequest
+from src.br.com.monkeyconsulting.adapters.controllers.requests.plano_req import PlanoRequest
 from src.br.com.monkeyconsulting.domain.services.planos_service import PlanosService
 from src.br.com.monkeyconsulting.domain.utils.utils import list_to_json, format_response
 
@@ -18,7 +18,8 @@ class PlanosController(MethodView):
             return format_response(list_to_json(planos))
         else:
             dto = self.repo.busca_plano_por_id(id)
-            return format_response(dto.to_json())
+            req = PlanoRequest().to_request(dto)
+            return format_response(req.to_json())
 
     def post(self):
         data = request.json

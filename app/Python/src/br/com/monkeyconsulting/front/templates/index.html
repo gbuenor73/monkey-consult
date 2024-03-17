@@ -2,49 +2,93 @@
 <html lang="pt">
 
 <head>
-    <title>Monkey Consulting</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-<!--     <script type="module" src="https://pyscript.net/latest/pyscript.js"></script>-->
+  <title>Monkey Consulting</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+  <!--     <script type="module" src="https://pyscript.net/latest/pyscript.js"></script>-->
 </head>
 
 <body class="body">
-    <h1 class="py-title">Monkey Consulting</h1>
-    <br />
-    <!--        <input type="text" id="teste" placeholder="Digite o id">-->
-    <a href="clientes"><button class="py-button" id="teste1" type="button" onclick="">Adicionar Cliente</button></a>
-    <button class="py-button" id="teste2" type="button" onclick="teste">Selecionar Plano</button>
-    <button class="py-button" >Selecionar Dieta/Treino</button>
-    <br>
-    <br>
-    <table>
-        <thead>
-            <tr class="marked_row">
-                <th>Nome</th>
-                <th>Telefone</th>
-                <th>Plano</th>
-                <th>Dieta</th>
-                <th>Data da Troca Plano</th>
-                <th>Data de Vencimento Plano</th>
-                <th>Data de Pagamento</th>
-            </tr>
-        </thead>
-        <tbody>
-             {% for cliente
-             in data['data'] %}
-                <tr class="marked_row">
-                    <td>{{ cliente['nome'] }}</td>
-                    <td>{{ cliente['telefone'] }}</td>
-                    <td>{{ cliente['plano']['descricao'] }}</td>
-                    <td>{{ cliente['dieta']['descricao'] }}</td>
-                    <td>{{ cliente['proxima_troca_dieta_treino'] }}</td>
-                    <td>{{ cliente['vencimento_plano'] }}</td>
-                    <td>{{ cliente['data_pagamento'] }}</td>
-                </tr>
-             {% endfor %}
-        </tbody>
-    </table>
+  <br>
+  <h1 class="py-title">Monkey Consulting</h1>
+  <div class="py-title">Sistema de Gestão</div>
+  <br />
+  <button class="py-button" onclick="openPopup('clientes')">
+    Adicionar Cliente
+  </button>
+  <br />
+  <br />
+  <table>
+    <thead>
+      <tr style="background-color: wheat" class="marked_row">
+        <th>Nome</th>
+        <th>Telefone</th>
+        <th>Dieta / Treino</th>
+        <th>Plano</th>
+        <th>Data da Troca Plano</th>
+        <th>Data de Vencimento Plano</th>
+        <th>Data de Pagamento</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cliente in dados.data %}
+      <tr class="marked_row">
+        <!-- <td>{{ cliente.id_cliente }}</td> -->
+        <td>{{ cliente.nome }}</td>
+        <td>{{ cliente.telefone }}</td>
+        <td>{{ cliente.dieta.descricao }}</td>
+        <td>{{ cliente.plano.descricao }}</td>
+        <td>{{ cliente.data.proxima_troca_dieta_treino }}</td>
+        <td>{{ cliente.data.vencimento_plano }}</td>
+        <td>{{ cliente.data.data_pagamento }}</td>
+        <td>
+          <button id="editar_cliente" title="Editar Cliente"
+            onclick="openPopup('cliente/detalhar/{{ cliente.id_cliente }}')">
+            &#9998;
+          </button>
+          <button id="informar_pagamento" title="Informar Pagamentos"
+            onclick="openPopup('cliente/pagamento/{{ cliente.id_cliente }}')">
+            $$
+          </button>
+          <button onclick="desativar_cliente('{{cliente.id_cliente}}')" title="Cancelar Cliente" >&#9940;</button>
+          <button onclick="congelar_cliente('{{cliente.id_cliente}}')" title="Congelar Cliente, Função não disponível" disabled>&#129482;</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <br>
+
+  <script>
+    function openPopup(url) {
+      var style = "width=500, height=500, scrollbars=yes";
+      window.open(url, "_blank", style);
+    }
+
+    function desativar_cliente(id_cliente) {
+      var confirm = window.confirm("Deletar Cliente?");
+      if (confirm == true) {
+        var req = new XMLHttpRequest();
+        req.open("DELETE", "/cliente/" + id_cliente, true);
+        req.onreadystatechange = function () {
+          if (req.readyState === 4) {
+            if (req.status === 200) {
+              console.log(req.responseText);
+              window.location.reload();
+            }
+            console.log("Erro na requisicao", req.status, req.statusText);
+          }
+        };
+        req.send();
+      }
+    }
+
+    function congelar_cliente(id_cliente) {
+      alert("Função ainda não disponível")
+    }
+  </script>
 </body>
 
 </html>
