@@ -68,6 +68,25 @@ VALUES (
         'gabriel', '11951269909', true, 1, 2, 1
     );
 
+INSERT INTO
+    CLIENTES (
+        nome,
+        telefone,
+        indicador_cliente_ativo,
+        id_plano,
+        id_dieta,
+        id_data
+    )
+VALUES (
+        'gabriel',
+        '11951269909',
+        true,
+        1,
+        2,
+        1
+    );
+
+
 SELECT *
 FROM
     `CLIENTES` c
