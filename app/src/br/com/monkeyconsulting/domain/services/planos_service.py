@@ -1,5 +1,5 @@
-from src.br.com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
-from src.br.com.monkeyconsulting.infra.database.repositories.planos_repository import PlanosRepository
+from com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
+from com.monkeyconsulting.infra.database.repositories.planos_repository import PlanosRepository
 
 
 class PlanosService:

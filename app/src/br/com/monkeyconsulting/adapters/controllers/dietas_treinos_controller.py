@@ -3,9 +3,9 @@ import json
 from flask import request
 from flask.views import MethodView
 
-from src.br.com.monkeyconsulting.adapters.controllers.requests.dieta_treinos_req import DietaRequest
-from src.br.com.monkeyconsulting.domain.services.dieta_service import DietasTreinosService
-from src.br.com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
+from com.monkeyconsulting.adapters.controllers.requests.dieta_treinos_req import DietaRequest
+from com.monkeyconsulting.domain.services.dieta_service import DietasTreinosService
+from com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
 
 
 class DietasController(MethodView):

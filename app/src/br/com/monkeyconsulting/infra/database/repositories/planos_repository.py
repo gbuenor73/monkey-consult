@@ -1,7 +1,7 @@
-from br.com.monkeyconsulting.domain.dtos.plano_dto import PlanoDTO
-from src.br.com.monkeyconsulting.adapters.controllers.requests.plano_req import PlanoRequest
-from src.br.com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
-from src.br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
+from com.monkeyconsulting.domain.dtos.plano_dto import PlanoDTO
+from com.monkeyconsulting.adapters.controllers.requests.plano_req import PlanoRequest
+from com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
+from com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
 
 
 class PlanosRepository:

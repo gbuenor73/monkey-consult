@@ -1,9 +1,9 @@
 import json
 
-from br.com.monkeyconsulting.adapters.controllers.responses.data_resp import DataResponse
-from br.com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
-from br.com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
-from src.br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
+from com.monkeyconsulting.adapters.controllers.responses.data_resp import DataResponse
+from com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
+from com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
+from com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
 
 
 class ClienteResponse:

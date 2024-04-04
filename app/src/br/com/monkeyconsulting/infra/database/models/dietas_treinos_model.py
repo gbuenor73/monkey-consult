@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
-from br.com.monkeyconsulting.domain.dtos.dieta_treino_dto import DietaTreinoDTO
+from com.monkeyconsulting.domain.dtos.dieta_treino_dto import DietaTreinoDTO
 
 Base = declarative_base()
 

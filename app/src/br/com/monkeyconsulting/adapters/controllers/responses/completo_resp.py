@@ -1,9 +1,9 @@
 from _datetime import datetime
 
-from br.com.monkeyconsulting.adapters.controllers.responses.data_resp import DataResponse
-from br.com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
-from br.com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
-from br.com.monkeyconsulting.domain.dtos.completo_dto import CompletoDTO
+from com.monkeyconsulting.adapters.controllers.responses.data_resp import DataResponse
+from com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
+from com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
+from com.monkeyconsulting.domain.dtos.completo_dto import CompletoDTO
 
 
 class CompletoResponse:

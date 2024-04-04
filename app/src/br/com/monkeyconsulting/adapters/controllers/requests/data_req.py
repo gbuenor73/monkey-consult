@@ -2,7 +2,7 @@ from datetime import datetime
 
 from marshmallow import Schema, fields
 
-from br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
+from com.monkeyconsulting.domain.dtos.data_dto import DataDTO
 
 
 class DataRequest(Schema):

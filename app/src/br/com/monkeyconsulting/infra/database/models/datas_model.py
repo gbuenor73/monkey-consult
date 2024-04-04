@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, Date
 from sqlalchemy.ext.declarative import declarative_base
 
-from br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
+from com.monkeyconsulting.domain.dtos.data_dto import DataDTO
 
 Base = declarative_base()
 

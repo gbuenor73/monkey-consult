@@ -2,7 +2,7 @@ import json
 
 from marshmallow import Schema, fields
 
-from br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
+from com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
 
 
 class EditClienteRequest(Schema):
