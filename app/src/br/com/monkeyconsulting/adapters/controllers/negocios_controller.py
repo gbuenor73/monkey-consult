@@ -1,8 +1,8 @@
 from flask import render_template
 from flask.views import MethodView
 
-from br.com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
-from src.br.com.monkeyconsulting.domain.services.negocio_service import NegocioService
+from com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
+from com.monkeyconsulting.domain.services.negocio_service import NegocioService
 
 
 class NegocioController(MethodView):

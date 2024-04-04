@@ -1,4 +1,4 @@
-from br.com.monkeyconsulting.infra.database.models.cliente_model import ClienteModel
+from com.monkeyconsulting.infra.database.models.cliente_model import ClienteModel
 
 
 class CompletoDTO:

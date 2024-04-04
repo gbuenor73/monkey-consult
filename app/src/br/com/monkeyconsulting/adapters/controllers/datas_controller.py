@@ -1,10 +1,10 @@
 from flask import render_template, request, Response
 from flask.views import MethodView
 
-from br.com.monkeyconsulting.adapters.controllers.requests.data_req import DataRequest
-from br.com.monkeyconsulting.adapters.controllers.responses.cliente_resp import ClienteResponse
-from br.com.monkeyconsulting.domain.services.clientes_service import ClientesService
-from src.br.com.monkeyconsulting.domain.services.datas_service import DatasService
+from com.monkeyconsulting.adapters.controllers.requests.data_req import DataRequest
+from com.monkeyconsulting.adapters.controllers.responses.cliente_resp import ClienteResponse
+from com.monkeyconsulting.domain.services.clientes_service import ClientesService
+from com.monkeyconsulting.domain.services.datas_service import DatasService
 
 
 class DatasController(MethodView):

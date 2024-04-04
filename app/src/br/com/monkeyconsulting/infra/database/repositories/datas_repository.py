@@ -1,6 +1,6 @@
-from src.br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
-from src.br.com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
-from src.br.com.monkeyconsulting.infra.database.models.datas_model import DataModel
+from com.monkeyconsulting.domain.dtos.data_dto import DataDTO
+from com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
+from com.monkeyconsulting.infra.database.models.datas_model import DataModel
 
 
 class DatasRepository:

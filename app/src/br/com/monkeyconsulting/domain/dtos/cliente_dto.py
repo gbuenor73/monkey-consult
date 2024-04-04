@@ -1,6 +1,6 @@
-from br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
-from src.br.com.monkeyconsulting.domain.dtos.dieta_treino_dto import DietaTreinoDTO
-from src.br.com.monkeyconsulting.domain.dtos.plano_dto import PlanoDTO
+from com.monkeyconsulting.domain.dtos.data_dto import DataDTO
+from com.monkeyconsulting.domain.dtos.dieta_treino_dto import DietaTreinoDTO
+from com.monkeyconsulting.domain.dtos.plano_dto import PlanoDTO
 
 
 class ClienteDTO:

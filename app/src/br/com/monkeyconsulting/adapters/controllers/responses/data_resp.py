@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from src.br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
+from com.monkeyconsulting.domain.dtos.data_dto import DataDTO
 
 
 class DataResponse:

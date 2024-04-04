@@ -1,5 +1,5 @@
-from br.com.monkeyconsulting.infra.database.repositories.completo_repository import CompletoRepository
-from src.br.com.monkeyconsulting.adapters.controllers.responses.completo_resp import CompletoResponse
+from com.monkeyconsulting.infra.database.repositories.completo_repository import CompletoRepository
+from com.monkeyconsulting.adapters.controllers.responses.completo_resp import CompletoResponse
 
 
 class NegocioService:

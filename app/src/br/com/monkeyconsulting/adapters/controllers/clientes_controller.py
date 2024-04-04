@@ -1,16 +1,15 @@
 from flask import request, render_template, jsonify
 from flask.views import MethodView
 
-from br.com.monkeyconsulting.adapters.controllers.requests.edit_cliente_req import EditClienteRequest
-from br.com.monkeyconsulting.adapters.controllers.responses.cliente_resp import ClienteResponse
-from br.com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
-from br.com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
-from br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
-from br.com.monkeyconsulting.domain.services.dieta_service import DietasTreinosService
-from br.com.monkeyconsulting.domain.services.planos_service import PlanosService
-from src.br.com.monkeyconsulting.adapters.controllers.requests.cliente_req import ClienteRequest
-from src.br.com.monkeyconsulting.domain.services.clientes_service import ClientesService
-from src.br.com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
+from com.monkeyconsulting.adapters.controllers.requests.cliente_req import ClienteRequest
+from com.monkeyconsulting.adapters.controllers.requests.edit_cliente_req import EditClienteRequest
+from com.monkeyconsulting.adapters.controllers.responses.cliente_resp import ClienteResponse
+from com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
+from com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
+from com.monkeyconsulting.domain.services.clientes_service import ClientesService
+from com.monkeyconsulting.domain.services.dieta_service import DietasTreinosService
+from com.monkeyconsulting.domain.services.planos_service import PlanosService
+from com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
 
 
 class ClientesController(MethodView):

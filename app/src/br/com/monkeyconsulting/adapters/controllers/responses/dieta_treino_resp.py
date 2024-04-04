@@ -1,6 +1,6 @@
 import json
 
-from src.br.com.monkeyconsulting.domain.dtos.dieta_treino_dto import DietaTreinoDTO
+from com.monkeyconsulting.domain.dtos.dieta_treino_dto import DietaTreinoDTO
 
 
 class DietaTreinoResponse:

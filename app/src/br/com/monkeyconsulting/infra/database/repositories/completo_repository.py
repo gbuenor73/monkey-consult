@@ -1,5 +1,5 @@
-from src.br.com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
-from src.br.com.monkeyconsulting.infra.database.models.cliente_model import ClienteModel
+from com.monkeyconsulting.infra.database.config_db import DBConnectionHandler
+from com.monkeyconsulting.infra.database.models.cliente_model import ClienteModel
 
 
 class CompletoRepository:

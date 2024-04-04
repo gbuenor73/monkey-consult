@@ -1,5 +1,5 @@
-from src.br.com.monkeyconsulting.domain.services.clientes_service import ClientesService
-from src.br.com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
+from com.monkeyconsulting.domain.services.clientes_service import ClientesService
+from com.monkeyconsulting.domain.utils.utils import format_response, list_to_json
 
 
 class ClientesEntrypoint:

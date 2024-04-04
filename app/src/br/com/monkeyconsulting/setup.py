@@ -1,12 +1,12 @@
 from flask import Flask
 from flask_cors import CORS
 
-from src.br.com.monkeyconsulting.adapters.controllers.clientes_controller import ClientesController
-from src.br.com.monkeyconsulting.adapters.controllers.datas_controller import DatasController
+from com.monkeyconsulting.adapters.controllers.clientes_controller import ClientesController
+from com.monkeyconsulting.adapters.controllers.datas_controller import DatasController
 
-from src.br.com.monkeyconsulting.adapters.controllers.dietas_treinos_controller import DietasController
-from src.br.com.monkeyconsulting.adapters.controllers.negocios_controller import NegocioController
-from src.br.com.monkeyconsulting.adapters.controllers.planos_controller import PlanosController
+from com.monkeyconsulting.adapters.controllers.dietas_treinos_controller import DietasController
+from com.monkeyconsulting.adapters.controllers.negocios_controller import NegocioController
+from com.monkeyconsulting.adapters.controllers.planos_controller import PlanosController
 
 app = Flask(__name__, static_folder='front/static', template_folder='front/templates')
 CORS(app)

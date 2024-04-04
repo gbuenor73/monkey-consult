@@ -1,9 +1,9 @@
 from datetime import timedelta
 
-from br.com.monkeyconsulting.domain.dtos.data_dto import DataDTO
-from br.com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
-from br.com.monkeyconsulting.infra.database.repositories.planos_repository import PlanosRepository
-from src.br.com.monkeyconsulting.infra.database.repositories.datas_repository import DatasRepository
+from com.monkeyconsulting.domain.dtos.data_dto import DataDTO
+from com.monkeyconsulting.infra.database.repositories.clientes_repository import ClientesRepository
+from com.monkeyconsulting.infra.database.repositories.planos_repository import PlanosRepository
+from com.monkeyconsulting.infra.database.repositories.datas_repository import DatasRepository
 
 
 class DatasService:

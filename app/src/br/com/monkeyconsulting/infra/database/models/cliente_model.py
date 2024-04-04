@@ -2,10 +2,10 @@ from sqlalchemy import Column, String, Integer, ForeignKey, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from br.com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
-from br.com.monkeyconsulting.infra.database.models.datas_model import DataModel
-from src.br.com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
-from src.br.com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
+from com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
+from com.monkeyconsulting.infra.database.models.datas_model import DataModel
+from com.monkeyconsulting.infra.database.models.dietas_treinos_model import DietaTreinoModel
+from com.monkeyconsulting.infra.database.models.planos_model import PlanoModel
 
 Base = declarative_base()
 
