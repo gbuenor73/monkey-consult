@@ -14,8 +14,11 @@ def date_handler(obj):
 
 
 def format_response(obj):
-    if type(obj) is list:
-        json_dump = json.dumps(obj, default=date_handler)
-    else:
-        json_dump = json.dumps([obj], default=date_handler)
-    return {"data": json.loads(json_dump)}
+    try:
+        if type(obj) is list:
+            json_dump = json.dumps(obj, default=date_handler)
+        else:
+            json_dump = json.dumps([obj], default=date_handler)
+        return {"data": json.loads(json_dump)}
+    except Exception as e:
+        print(e)

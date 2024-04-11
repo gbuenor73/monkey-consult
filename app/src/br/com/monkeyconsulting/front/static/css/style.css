@@ -2,7 +2,7 @@
   color: white;
 }
 
-.body {
+body {
   /* background-color: grey; */
 }
 
@@ -17,6 +17,7 @@ table {
 td {
   padding: 8px;
   border: 1px solid black;
+  text-align: center;
 }
 
 thead {
@@ -25,4 +26,19 @@ thead {
 
 .ocultar {
   display: none;
+}
+
+.valor-monetario {
+  display: inline-block;
+  text-align: left;
+}
+
+.body_edit_client {
+  height: auto;
+  width: auto;
+}
+
+.form_client {
+  max-height: 400px;
+  max-width: 400px;
 }

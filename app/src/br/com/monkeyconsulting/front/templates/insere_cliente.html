@@ -1,64 +1,79 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Editar Cliente</title>
-    <meta charset="UTF-8" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='css/style.css') }}"
-    />
-  </head>
 
-  <body>
-    <h1>Editar Cliente</h1>
+<head>
+  <title>Editar Cliente</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
 
-    <form id="novo_cliente" action="/cliente" method="POST">
-      <label for="nome">Nome:</label>
-      <input
-        type="text"
-        id="nome"
-        name="nome"
-        placeholder="Nome Completo"
-        required
-      /><br />
+<body>
+  <h1>Editar Cliente</h1>
 
-      <label for="telefone">Telefone:</label>
-      <input
-        type="tel"
-        id="telefone"
-        name="telefone"
-        pattern="[0-9]{11}"
-        maxlength="11"
-        placeholder="Apenas números"
-        required
-      />
-      <br /><br />
-      <input type="submit" onclick="enviar_formulario()" value="Enviar" />
-      <button onclick="window.close()">Voltar</button>
-    </form>
+  <form id="novo_cliente" action="/cliente" method="POST">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" placeholder="Nome Completo" required /><br />
 
-    <!-- #include virtual="default/footer"-->
+    <label for="telefone">Telefone:</label>
+    <input type="tel" id="telefone" name="telefone" pattern="[0-9]{11}" maxlength="11" placeholder="Apenas números" required onkeyup="formatarTelefone(this)"/><br />
 
-    <script>
-      function enviar_formulario() {
-        formulario = document.forms[0];
+    <label for="valor_bruto">Valor Bruto:</label>
+    <input type="text" id="valor_bruto" onkeyup="formatarMoeda(this)">
 
-        if (formulario.nome.value == "" || formulario.telefone.value == "") {
-          alert("Ao menos os campos obrigatorios devem ser preenchidos");
-          return;
-        } else {
-          formulario.submit();
-          setTimeout(function () {
-            window.opener.location.reload();
-            window.close();
-          }, 100);
-        }
+    <br>
+    <input type="submit" onclick="enviar_formulario()" value="Enviar" />
+    <button onclick="window.close()">Voltar</button>
+  </form>
+
+  <!-- #include virtual="default/footer"-->
+
+  <script>
+    function enviar_formulario() {
+      formulario = document.forms[0];
+
+      if (formulario.nome.value == "" || formulario.telefone.value == "") {
+        alert("Ao menos os campos obrigatorios devem ser preenchidos");
+        return;
+      } else {
+        formulario.submit();
+        setTimeout(function () {
+          window.opener.location.reload();
+          window.close();
+        }, 100);
+      }
+    }
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") window.close();
+    });
+
+    function formatarMoeda(input) {
+      let valor = input.value;
+      valor = valor.replace(/\D/g, '');
+      valor = (Number(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      input.value = valor;
+    }
+
+    function formatarTelefone(input) {
+      // Obtém o valor do campo de entrada
+      let telefone = input.value;
+
+      // Remove todos os caracteres não numéricos
+      telefone = telefone.replace(/\D/g, '');
+
+      // Verifica o comprimento do número de telefone
+      if (telefone.length === 11) {
+        // Formata o telefone no formato (XX)XXXXX-XXXX
+        telefone = telefone.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1)$2-$3');
+      } else if (telefone.length === 10) {
+        // Formata o telefone no formato (XX)XXXX-XXXX
+        telefone = telefone.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1)$2-$3');
       }
 
-      document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape") window.close();
-      });
-    </script>
-  </body>
+      // Atualiza o valor do campo de entrada
+      input.value = telefone;
+    }
+  </script>
+</body>
+
 </html>

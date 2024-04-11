@@ -1,22 +1,41 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Formulário de Cliente</title>
 </head>
+
 <body>
+    <div>
 
-    <h1>Formulário de Cliente</h1>
+        <h1>Formulário de Cliente</h1>
 
-    <form action="/clientes" method="post" content="">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" required><br><br>
+        <form action="/clientes" method="post" content="">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required><br><br>
 
-        <label for="telefone">Telefone:</label>
-        <input type="tel" id="telefone" name="telefone" pattern="[0-9]{10}" placeholder="Apenas números" required><br><br>
+            <label for="telefone">Telefone:</label>
+            <input type="tel" id="telefone" name="telefone" pattern="[0-9]{10}" placeholder="Apenas números"
+                required><br><br>
 
-        <input type="submit" value="Enviar">
-        <a href="/" >Voltar</a>
-    </form>
+            <label for="valor_bruto">Valor Bruto:</label>
+            <input type="text" id="valor_bruto" onkeyup="formatarMoeda(this)">
+
+            <input type="submit" value="Enviar">
+            <a href="/">Voltar</a>
+        </form>
+    </div>
+
+
+    <script>
+        function formatarMoeda(input) {
+            let valor = input.value;
+            valor = valor.replace(/\D/g, '');
+            valor = (Number(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            input.value = valor;
+        }
+    </script>
 
 </body>
+
 </html>

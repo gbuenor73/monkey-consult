@@ -1,8 +1,7 @@
-from _datetime import datetime
-
 from com.monkeyconsulting.adapters.controllers.responses.data_resp import DataResponse
 from com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
 from com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
+from com.monkeyconsulting.adapters.controllers.responses.valor_resp import ValorResponse
 from com.monkeyconsulting.domain.dtos.completo_dto import CompletoDTO
 
 
@@ -14,6 +13,7 @@ class CompletoResponse:
     plano = PlanoResponse()
     dieta = DietaTreinoResponse()
     data = DataResponse()
+    valor = ValorResponse()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -48,7 +48,8 @@ class CompletoResponse:
             'indicador_cliente_ativo': self.indicador_cliente_ativo,
             'dieta': self.dieta.to_json() if self.dieta is not None else {},
             'plano': self.plano.to_json() if self.plano is not None else {},
-            'data': self.data.to_json() if self.data is not None else {}
+            'data': self.data.to_json() if self.data is not None else {},
+            'valor': self.valor.to_json() if self.valor is not None else {}
         }
 
     def dto_to_response(self, dto: CompletoDTO):
@@ -65,10 +66,7 @@ class CompletoResponse:
 
             if dto.data is not None:
                 self.data = DataResponse().dto_to_response(dto.data)
-                self.data_pagamento = dto.data.data_pagamento
-                self.inicio_dieta_treino = dto.data.inicio_dieta_treino
-                self.inicio_plano = dto.data.inicio_plano
-                self.ultima_troca_dieta_treino = dto.data.ultima_troca_dieta_treino
-                self.proxima_troca_dieta_treino = dto.data.proxima_troca_dieta_treino
-                self.vencimento_plano = dto.data.vencimento_plano
+
+            if dto.valor is not None:
+                self.valor = ValorResponse().dto_to_response(dto.valor)
         return self

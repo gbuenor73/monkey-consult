@@ -29,6 +29,9 @@
         <th>Data da Troca Plano</th>
         <th>Data de Vencimento Plano</th>
         <th>Data de Pagamento</th>
+        <th>Vlr. Bruto</th>
+        <th>Vlr. Liquid.</th>
+        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -42,7 +45,9 @@
         <td>{{ cliente.data.proxima_troca_dieta_treino }}</td>
         <td>{{ cliente.data.vencimento_plano }}</td>
         <td>{{ cliente.data.data_pagamento }}</td>
-        <td>
+        <td><span class="valor-monetario">{{ cliente.valor.valor_bruto }}</span></td>
+        <td><span class="valor-monetario">{{ cliente.valor.valor_liquido }}</span></td>
+        <td style="margin: 0; padding: 0; position: relative  ;">
           <button id="editar_cliente" title="Editar Cliente"
             onclick="openPopup('cliente/detalhar/{{ cliente.id_cliente }}')">
             &#9998;
@@ -87,7 +92,32 @@
 
     function congelar_cliente(id_cliente) {
       alert("Função ainda não disponível")
+    } 
+
+    function formatarValor(valor) {
+      valor = valor.replace(/[^\d.]/g, '');
+      valor = parseFloat(valor).toFixed(2); 
+      valor = valor.replace('.', ',')
+      return "R$ " + valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
+
+      // Função para formatar os valores monetários nas células da tabela
+    function formatarValoresMonetarios() {
+      try {
+        var cells = document.querySelectorAll('.valor-monetario');
+        cells.forEach(cell => {
+            var valor = cell.textContent.trim();
+            cell.textContent = formatarValor(valor)
+            }
+          )
+        }
+        catch (error) {
+          console.log(error)
+        }
+    }
+
+    // Chama a função para formatar os valores monetários quando a página é carregada
+    window.onload = formatarValoresMonetarios;
   </script>
 </body>
 
