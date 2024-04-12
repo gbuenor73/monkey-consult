@@ -53,9 +53,11 @@ class ClientesController(MethodView):
             data = {
                 'nome': formulario['nome'],
                 'telefone': formulario['telefone'],
+                'valor_bruto': formulario['valor_bruto'],
+                'valor_liquido': formulario['valor_liquido'],
                 'indicador_cliente_ativo': True,
                 'id_dieta': 1,
-                'id_plano': 1
+                'id_plano': 1,
             }
         except Exception as e:
             data = request.json

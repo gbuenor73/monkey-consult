@@ -56,8 +56,9 @@
             onclick="openPopup('cliente/pagamento/{{ cliente.id_cliente }}')">
             $$
           </button>
-          <button onclick="desativar_cliente('{{cliente.id_cliente}}')" title="Cancelar Cliente" >&#9940;</button>
-          <button onclick="congelar_cliente('{{cliente.id_cliente}}')" title="Congelar Cliente, Função não disponível" disabled>&#129482;</button>
+          <button onclick="desativar_cliente('{{cliente.id_cliente}}')" title="Cancelar Cliente">&#9940;</button>
+          <button onclick="congelar_cliente('{{cliente.id_cliente}}')" title="Congelar Cliente, Função não disponível"
+            disabled>&#129482;</button>
         </td>
       </tr>
       {% endfor %}
@@ -92,28 +93,30 @@
 
     function congelar_cliente(id_cliente) {
       alert("Função ainda não disponível")
-    } 
-
-    function formatarValor(valor) {
-      valor = valor.replace(/[^\d.]/g, '');
-      valor = parseFloat(valor).toFixed(2); 
-      valor = valor.replace('.', ',')
-      return "R$ " + valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
-      // Função para formatar os valores monetários nas células da tabela
+    function formatarValor(valor) {
+      if (valor != '') {
+        valor = valor.replace(/[^\d.]/g, '');
+        valor = parseFloat(valor).toFixed(2);
+        valor = valor.replace('.', ',')
+        return "R$ " + valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+    }
+
+    // Função para formatar os valores monetários nas células da tabela
     function formatarValoresMonetarios() {
       try {
         var cells = document.querySelectorAll('.valor-monetario');
         cells.forEach(cell => {
-            var valor = cell.textContent.trim();
-            cell.textContent = formatarValor(valor)
-            }
-          )
+          var valor = cell.textContent.trim();
+          cell.textContent = formatarValor(valor)
         }
-        catch (error) {
-          console.log(error)
-        }
+        )
+      }
+      catch (error) {
+        console.log(error)
+      }
     }
 
     // Chama a função para formatar os valores monetários quando a página é carregada

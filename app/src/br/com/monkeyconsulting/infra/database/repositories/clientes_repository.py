@@ -19,7 +19,7 @@ class ClientesRepository:
                 return model.to_dto()
             raise ValueError(f'Cliente {id}, não encontrado')
 
-    def update_cliente(self, dto: ClienteDTO) -> ClienteDTO:
+    def update_cliente(self, dto: ClienteDTO):
         model = ClienteModel().to_model(dto)
         with DBConnectionHandler() as db:
             try:

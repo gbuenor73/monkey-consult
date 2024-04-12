@@ -12,7 +12,6 @@ app = Flask(__name__, static_folder='front/static', template_folder='front/templ
 CORS(app)
 
 app.add_url_rule('/', view_func=NegocioController.as_view('negocio'))
-
 app.add_url_rule('/planos', view_func=PlanosController.as_view('planos'))
 app.add_url_rule('/dietas', view_func=DietasController.as_view('dietas'))
 app.add_url_rule('/datas', view_func=DatasController.as_view('datas'))

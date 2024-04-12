@@ -36,7 +36,11 @@ class ClienteModel(Base):
         self.nome = dto.nome
         self.telefone = dto.telefone
         self.indicador_cliente_ativo = dto.indicador_cliente_ativo
+
+        self.valor = ValorModel().to_model(dto.valor) if dto.valor is not None else None
+
         self.id_plano = dto.plano.id_plano if dto.plano is not None else None
+
         self.id_dieta = dto.dieta.id_dieta if dto.dieta is not None else None
         self.id_data = dto.data.id_data if dto.data is not None else None
         self.id_valor = dto.valor.id_valor if dto.valor is not None else None
