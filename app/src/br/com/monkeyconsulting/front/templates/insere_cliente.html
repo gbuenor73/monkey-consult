@@ -11,19 +11,19 @@
   <h1>Editar Cliente</h1>
 
   <form id="novo_cliente" action="/cliente" method="POST">
-    <label for="nome">Nome:</label>
+    <label for="nome_label">Nome:</label>
     <input type="text" id="nome" name="nome" placeholder="Nome Completo" required />
 
     <br>
-    <label for="telefone">Telefone:</label>
+    <label for="telefone_label">Telefone:</label>
     <input type="tel" id="telefone" name="telefone" pattern="[0-9]{11}" maxlength="11" placeholder="Apenas números" required/>
 
     <br>
-    <label for="valor_bruto">Valor Bruto:</label>
+    <label for="valor_bruto_label">Valor Bruto:</label>
     <input value="R$ 0,00" type="text" id="valor_bruto" name="valor_bruto" onkeyup="formatarMoeda(this)">
 
     <br>
-    <label for="valor_liquido">Valor Liquido:</label>
+    <label for="valor_liquido_label">Valor Liquido:</label>
     <input value="R$ 0,00" type="text" id="valor_liquido" name="valor_liquido" onkeyup="formatarMoeda(this)">
 
     <br>

@@ -8,8 +8,6 @@ from com.monkeyconsulting.domain.dtos.cliente_dto import ClienteDTO
 class ClienteRequest(Schema):
     nome = fields.Str(required=True)
     telefone = fields.Str(required=True)
-    valor_bruto = fields.Str(required=True)
-    valor_liquido = fields.Str(required=True)
     indicador_cliente_ativo = fields.Bool(required=True)
     id_cliente = fields.Int(required=False)
     id_plano = fields.Int(required=False)
@@ -32,8 +30,6 @@ class ClienteRequest(Schema):
         dto.id = self.id_cliente
         dto.nome = self.nome
         dto.telefone = self.telefone
-        dto.valor.valor_bruto = self.valor_bruto
-        dto.valor.valor_liquido = self.valor_liquido
         dto.indicador_cliente_ativo = self.indicador_cliente_ativo
         dto.id_plano = self.id_plano
         dto.id_dieta = self.id_dieta
@@ -43,8 +39,6 @@ class ClienteRequest(Schema):
     def from_json(self, json):
         self.nome = json.get('nome')
         self.telefone = json.get('telefone')
-        self.valor_bruto = json.get('valor_bruto')
-        self.valor_liquido = json.get('valor_liquido')
         self.indicador_cliente_ativo = json.get('indicador_cliente_ativo')
         self.id_cliente = json.get('id_cliente')
         self.id_plano = json.get('id_plano')
@@ -56,8 +50,6 @@ class ClienteRequest(Schema):
         self.id_cliente = model.id_cliente
         self.nome = model.nome
         self.telefone = model.telefone
-        self.valor_bruto = model.valor_bruto
-        self.valor_liquido = model.valor_liquido
         self.indicador_cliente_ativo = model.indicador_cliente_ativo
         self.id_plano = model.id_plano
         self.id_dieta = model.id_dieta

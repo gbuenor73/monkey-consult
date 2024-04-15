@@ -3,6 +3,7 @@ from flask.views import MethodView
 
 from com.monkeyconsulting.adapters.controllers.requests.cliente_req import ClienteRequest
 from com.monkeyconsulting.adapters.controllers.requests.edit_cliente_req import EditClienteRequest
+from com.monkeyconsulting.adapters.controllers.requests.valor_req import ValorRequest
 from com.monkeyconsulting.adapters.controllers.responses.cliente_resp import ClienteResponse
 from com.monkeyconsulting.adapters.controllers.responses.dieta_treino_resp import DietaTreinoResponse
 from com.monkeyconsulting.adapters.controllers.responses.plano_resp import PlanoResponse
@@ -63,8 +64,9 @@ class ClientesController(MethodView):
             data = request.json
 
         try:
-            req = ClienteRequest().from_json(data)
-            self.clientes_service.insere_cliente(req.to_dto())
+            cliente_req = ClienteRequest().from_json(data)
+            valor_req = ValorRequest().from_json(data)
+            self.clientes_service.insere_cliente(cliente_req.to_dto(), valor_req.to_dto())
             # return jsonify(format_response(response.to_json()))
             return "Sucesso", 201
         except Exception as e:

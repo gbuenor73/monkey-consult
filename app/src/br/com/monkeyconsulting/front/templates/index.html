@@ -95,7 +95,7 @@
       alert("Função ainda não disponível")
     }
 
-    function formatarValor(valor) {
+    function formatarValor(valor) { 
       if (valor != '') {
         valor = valor.replace(/[^\d.]/g, '');
         valor = parseFloat(valor).toFixed(2);
@@ -119,6 +119,25 @@
       }
     }
 
+    function formatarTelefone(input) {
+      let numeros = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+      let formatado = '';
+
+      // Adiciona os parênteses ao redor dos dois primeiros dígitos
+      if (numeros.length > 2) {
+        formatado = '(' + numeros.substring(0, 2) + ') ';
+        numeros = numeros.substring(2);
+      }
+
+      // Adiciona o hífen após o quarto ou quinto dígito
+      if (numeros.length > 4) {
+        formatado += numeros.substring(0, 5) + '-' + numeros.substring(5);
+      } else {
+        formatado += numeros;
+      }
+
+      input.value = formatado;
+    }
     // Chama a função para formatar os valores monetários quando a página é carregada
     window.onload = formatarValoresMonetarios;
   </script>

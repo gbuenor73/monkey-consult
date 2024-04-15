@@ -2,16 +2,19 @@ from flask import render_template, request, Response
 from flask.views import MethodView
 
 from com.monkeyconsulting.adapters.controllers.requests.data_req import DataRequest
+from com.monkeyconsulting.adapters.controllers.requests.valor_req import ValorRequest
 from com.monkeyconsulting.adapters.controllers.responses.cliente_resp import ClienteResponse
 from com.monkeyconsulting.domain.services.clientes_service import ClientesService
 from com.monkeyconsulting.domain.services.datas_service import DatasService
+from com.monkeyconsulting.domain.services.valor_service import ValorService
 
 
 class DatasController(MethodView):
 
     def __init__(self):
-        self.repo_data = DatasService()
         self.repo_cliente = ClientesService()
+        self.repo_data = DatasService()
+        self.repo_valor = ValorService()
 
     # def get(self):
     #     id = request.args.get('id')
@@ -38,15 +41,24 @@ class DatasController(MethodView):
             iniciar_plano_check = formulario.get('iniciar_plano_check')
             mesma_data_check = formulario.get('mesma_data_check')
             inicio_plano = formulario.get('inicio_plano')
+            id_valor = formulario.get('id_valor')
+            valor_bruto = formulario.get('valor_bruto')
+            valor_liquido = formulario.get('valor_liquido')
 
-            req = DataRequest()
-            req.id_data = id_data if id_data != '' else None
-            req.iniciar_plano_check = iniciar_plano_check == 'on'
-            req.mesma_data_check = mesma_data_check == 'on'
-            req.data_pagamento = data_pagamento if data_pagamento != '' else None
-            req.inicio_plano = inicio_plano if inicio_plano != '' else None
+            dataReq = DataRequest()
+            dataReq.id_data = id_data if id_data != '' else None
+            dataReq.iniciar_plano_check = iniciar_plano_check == 'on'
+            dataReq.mesma_data_check = mesma_data_check == 'on'
+            dataReq.data_pagamento = data_pagamento if data_pagamento != '' else None
+            dataReq.inicio_plano = inicio_plano if inicio_plano != '' else None
 
-            self.repo_data.insere_data(id_cliente, req.to_dto())
+            valorReq = ValorRequest()
+            valorReq.id_valor = id_valor if id_valor != '' else None
+            valorReq.valor_bruto = valor_bruto if valor_bruto != '' else None
+            valorReq.valor_liquido = valor_liquido if valor_liquido != '' else None
+
+            self.repo_data.insere_data(id_cliente, dataReq.to_dto())
+            self.repo_valor.insere_data(id_cliente, valorReq.to_dto())
 
             return Response(f"Sucesso ao atualizar cliente", 200)
         except Exception as e:

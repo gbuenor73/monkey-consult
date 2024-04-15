@@ -1,7 +1,6 @@
 from com.monkeyconsulting.domain.dtos.data_dto import DataDTO
 from com.monkeyconsulting.domain.dtos.dieta_treino_dto import DietaTreinoDTO
 from com.monkeyconsulting.domain.dtos.plano_dto import PlanoDTO
-from com.monkeyconsulting.domain.dtos.valor_dto import ValorDTO
 
 
 class ClienteDTO:
@@ -12,7 +11,6 @@ class ClienteDTO:
     plano = PlanoDTO()
     dieta = DietaTreinoDTO()
     data = DataDTO()
-    valor = ValorDTO()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

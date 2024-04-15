@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS monkey_consulting;
+
 USE monkey_consulting;
 
 CREATE TABLE IF NOT EXISTS PLANOS (
@@ -12,20 +14,19 @@ CREATE TABLE IF NOT EXISTS DATAS (
     id_data INT AUTO_INCREMENT PRIMARY KEY, data_pagamento DATE, inicio_dieta_treino DATE, inicio_plano DATE, ultima_troca_dieta_treino DATE, proxima_troca_dieta_treino DATE, vencimento_plano DATE
 );
 
-CREATE TABLE IF NOT EXISTS VALORES (
-    id_valor INT AUTO_INCREMENT PRIMARY KEY, valor_liquido DECIMAL(10,2), valor_bruto DECIMAL(10,2)
-);
-
 CREATE TABLE IF NOT EXISTS CLIENTES (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY, nome VARCHAR(200), telefone VARCHAR(20), indicador_cliente_ativo BOOLEAN,
     id_plano INT,
     id_dieta INT,
     id_data INT,
-    id_valor INT,
     FOREIGN KEY (id_plano) REFERENCES PLANOS (id_plano),
     FOREIGN KEY (id_dieta) REFERENCES DIETAS_TREINOS (id_dieta),
-    FOREIGN KEY (id_data) REFERENCES DATAS (id_data),
-    FOREIGN KEY (id_valor) REFERENCES VALORES (id_valor)
+    FOREIGN KEY (id_data) REFERENCES DATAS (id_data)
+);
+
+CREATE TABLE IF NOT EXISTS VALORES (
+    id_valor INT AUTO_INCREMENT PRIMARY KEY, valor_liquido DECIMAL(10,2), valor_bruto DECIMAL(10,2),
+    id_cliente INT, FOREIGN KEY (id_cliente) REFERENCES CLIENTES (id_cliente)
 );
 
 ALTER TABLE CLIENTES
@@ -37,8 +38,8 @@ ADD CONSTRAINT fk_clientes_dietas FOREIGN KEY (id_dieta) REFERENCES DIETAS_TREIN
 ALTER TABLE CLIENTES
 ADD CONSTRAINT fk_clientes_datas FOREIGN KEY (id_data) REFERENCES DATAS (id_data);
 
-ALTER TABLE CLIENTES
-ADD CONSTRAINT fk_clientes_valores FOREIGN KEY (id_valor) REFERENCES VALORES (id_valor);
+ALTER TABLE VALORES
+ADD CONSTRAINT fk_valores_clientes FOREIGN KEY (id_cliente) REFERENCES CLIENTES (id_cliente);
 
 INSERT INTO PLANOS
     (dias_para_vencimento, dias_para_troca_da_dieta, descricao)
@@ -105,7 +106,6 @@ FROM
     `CLIENTES` c
     JOIN `PLANOS` p ON c.id_plano = p.id_plano
     JOIN `DIETAS_TREINOS` dt ON c.id_dieta = dt.id_dieta
-    JOIN `DATAS` ds ON c.id_data = ds.id_data
-    JOIN `VALORES` v ON v.id_valor = c.id_valor;
+    JOIN `DATAS` ds ON c.id_data = ds.id_data;
 
 SELECT * FROM `CLIENTES` c ORDER BY `id_cliente` DESC

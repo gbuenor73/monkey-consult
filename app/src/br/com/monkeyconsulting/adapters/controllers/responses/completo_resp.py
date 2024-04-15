@@ -67,6 +67,6 @@ class CompletoResponse:
             if dto.data is not None:
                 self.data = DataResponse().dto_to_response(dto.data)
 
-            if dto.valor is not None:
-                self.valor = ValorResponse().dto_to_response(dto.valor)
+            # if dto.valor is not None:
+            #     self.valor = ValorResponse().dto_to_response(dto.valor)
         return self
