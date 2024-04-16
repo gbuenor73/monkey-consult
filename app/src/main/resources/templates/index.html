@@ -7,6 +7,7 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
   <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
   <!--     <script type="module" src="https://pyscript.net/latest/pyscript.js"></script>-->
+  <script src="http://localhost:35729/livereload.js"></script>
 </head>
 
 <body class="body">
@@ -17,6 +18,8 @@
   <button class="py-button" onclick="openPopup('clientes')">
     Adicionar Cliente
   </button>
+
+  <h1 th:text="${clientes}"></h1>
   <br />
   <br />
   <table>
@@ -35,16 +38,16 @@
       </tr>
     </thead>
     <tbody>
-      {% for cliente in dados.data %}
-      <tr class="marked_row">
+      <tr class="marked_row" th:each="cliente : ${clientes}">
         <!-- <td>{{ cliente.id_cliente }}</td> -->
-        <td>{{ cliente.nome }}</td>
-        <td>{{ cliente.telefone }}</td>
-        <td>{{ cliente.dieta.descricao }}</td>
-        <td>{{ cliente.plano.descricao }}</td>
-        <td>{{ cliente.data.proxima_troca_dieta_treino }}</td>
-        <td>{{ cliente.data.vencimento_plano }}</td>
-        <td>{{ cliente.data.data_pagamento }}</td>
+        <td th:text="${cliente.nome}"></td>
+        <td th:text="${cliente.telefone}"></td>
+        <td th:text="${cliente.dietaTreinoModel.descricao}"></td>
+        <td th:text="${cliente.planoModel.descricao}"></td>
+        <!--
+        <td th:text="${cliente.datasModel.proxima_troca_dieta_treino}"></td>
+        <td th:text="${cliente.data.vencimento_plano}"></td>
+        <td th:text="${cliente.data.data_pagamento}"></td> -->
         <td><span class="valor-monetario">{{ cliente.valor.valor_bruto }}</span></td>
         <td><span class="valor-monetario">{{ cliente.valor.valor_liquido }}</span></td>
         <td style="margin: 0; padding: 0; position: relative  ;">
@@ -67,7 +70,7 @@
 
   <br>
 
-  <script>
+  <script th:inline="javascript">
     function openPopup(url) {
       var style = "width=500, height=500, scrollbars=yes";
       window.open(url, "_blank", style);

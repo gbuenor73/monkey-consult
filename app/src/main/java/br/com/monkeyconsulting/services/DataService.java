@@ -17,4 +17,8 @@ public class DataService {
         return this.jpa.findAll();
     }
 
+    public DataModel buscaUltimaDataPeloCliente(Integer idCliente) {
+        return this.jpa.findLastDataByClientesModelIdCliente(idCliente);
+    }
+
 }

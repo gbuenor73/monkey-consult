@@ -3,22 +3,34 @@ package br.com.monkeyconsulting.controllers;
 import br.com.monkeyconsulting.models.ClienteModel;
 import br.com.monkeyconsulting.services.ClienteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/clientes")
+@Controller
+//@RequestMapping("/clientes")
 @RequiredArgsConstructor
 public class ClienteController {
 
     private final ClienteService clienteService;
 
-    @GetMapping
-    public List<ClienteModel> obtemClientes(){
-        return this.clienteService.buscaClientes();
+    @GetMapping("/")
+    public String obtemClientes(Model model){
+        List<ClienteModel> clienteModels = this.clienteService.buscaClientes();
+        model.addAttribute("clientes", clienteModels);
+
+        return "index";
+    }
+
+    @GetMapping("/clientes")
+    @ResponseBody
+    public List<ClienteModel> obtemTodosClientes(){
+        List<ClienteModel> clienteModels = this.clienteService.buscaClientes();
+
+        return clienteModels;
     }
 
 }

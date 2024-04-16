@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DataRepository extends JpaRepository<DataModel, Integer> {
+    DataModel findLastDataByClientesModelIdCliente(Integer idCliente);
 }
