@@ -13,8 +13,8 @@ public class DietaTreinoService {
 
     public final DietaTreinoRepository jpa;
 
-    public List<DietaTreinoModel> buscaDietasTreinos(){
-        return  this.jpa.findAll();
+    public List<DietaTreinoModel> buscaDietasTreinos() {
+        return this.jpa.findAll();
     }
 
 }

@@ -17,7 +17,7 @@ public class PlanosController {
     private final PlanoService service;
 
     @GetMapping
-    public List<PlanoModel> obtemPlanos(){
+    public List<PlanoModel> obtemPlanos() {
         return this.service.buscaPlanos();
     }
 

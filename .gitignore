@@ -35,3 +35,6 @@ replay_pid*
 
 # Docker
 *data
+
+# vscode
+*.vscode

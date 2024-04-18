@@ -28,4 +28,13 @@ public class ValorModel {
     @JsonBackReference
     @JsonProperty("id_cliente")
     private ClienteModel clientesModel;
+
+    @Override
+    public String toString() {
+        return "ValorModel{" +
+                "idValor=" + idValor +
+                ", valorBruto=" + valorBruto +
+                ", valorLiquido=" + valorLiquido +
+                '}';
+    }
 }

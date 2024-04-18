@@ -13,7 +13,7 @@ public class ValorService {
 
     public final ValorRepository jpa;
 
-    public void buscaValor(){
+    public void buscaValor() {
         List<ValorModel> all = this.jpa.findAll();
 
         System.out.println();

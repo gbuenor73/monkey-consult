@@ -2,28 +2,28 @@
 <html>
 
 <head>
-  <title>Editar Cliente</title>
+  <title>Novo Cliente</title>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
 </head>
 
 <body>
   <h1>Editar Cliente</h1>
 
-  <form id="novo_cliente" action="/cliente" method="POST">
-    <label for="nome_label">Nome:</label>
+  <form id="novo_cliente" th:action="@{/insere}" method="POST">
+    <label >Nome:</label>
     <input type="text" id="nome" name="nome" placeholder="Nome Completo" required />
 
     <br>
-    <label for="telefone_label">Telefone:</label>
+    <label >Telefone:</label>
     <input type="tel" id="telefone" name="telefone" pattern="[0-9]{11}" maxlength="11" placeholder="Apenas números" required/>
 
     <br>
-    <label for="valor_bruto_label">Valor Bruto:</label>
+    <label >Valor Bruto:</label>
     <input value="R$ 0,00" type="text" id="valor_bruto" name="valor_bruto" onkeyup="formatarMoeda(this)">
 
     <br>
-    <label for="valor_liquido_label">Valor Liquido:</label>
+    <label >Valor Liquido:</label>
     <input value="R$ 0,00" type="text" id="valor_liquido" name="valor_liquido" onkeyup="formatarMoeda(this)">
 
     <br>
@@ -36,7 +36,11 @@
   <script>
     function enviar_formulario() {
       formulario = document.forms[0];
+      console.log("form valor_bruto")
+      console.log(formulario.valor_bruto.value)
       formulario.valor_bruto.value = formulario.valor_bruto.value.replace(/[^\d,]/g, '').replace(',','.')
+      console.log("form valor_bruto formatario")
+      console.log(formulario.valor_bruto.value)
       formulario.valor_liquido.value = formulario.valor_liquido.value.replace(/[^\d,]/g, '').replace(',','.')
 
       if (formulario.nome.value == "" || formulario.telefone.value == "") {

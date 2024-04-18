@@ -15,7 +15,7 @@ public class DietaTreinoController {
     private final DietaTreinoService dietaTreinoService;
 
     @GetMapping
-    public ResponseEntity obtemDietas(){
+    public ResponseEntity obtemDietas() {
         return ResponseEntity.ok().body(this.dietaTreinoService.buscaDietasTreinos());
     }
 

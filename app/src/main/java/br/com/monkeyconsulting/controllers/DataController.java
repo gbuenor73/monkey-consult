@@ -15,7 +15,7 @@ public class DataController {
     private final DataService dataService;
 
     @GetMapping
-    public ResponseEntity obtemDatas(){
+    public ResponseEntity obtemDatas() {
         return ResponseEntity.ok(this.dataService.buscaDatas());
     }
 

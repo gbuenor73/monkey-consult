@@ -1,5 +1,6 @@
 package br.com.monkeyconsulting.services;
 
+import br.com.monkeyconsulting.models.ClienteModel;
 import br.com.monkeyconsulting.models.DataModel;
 import br.com.monkeyconsulting.repository.DataRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +14,12 @@ public class DataService {
 
     public final DataRepository jpa;
 
-    public List<DataModel> buscaDatas(){
+    public List<DataModel> buscaDatas() {
         return this.jpa.findAll();
     }
 
-    public DataModel buscaUltimaDataPeloCliente(Integer idCliente) {
-        return this.jpa.findLastDataByClientesModelIdCliente(idCliente);
+    public DataModel buscaUltimaDataPeloCliente(ClienteModel cliente) {
+        return this.jpa.findLastByClientesModel(cliente);
     }
 
 }

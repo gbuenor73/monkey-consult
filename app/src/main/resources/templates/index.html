@@ -4,8 +4,8 @@
 <head>
   <title>Monkey Consulting</title>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
-  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
   <!--     <script type="module" src="https://pyscript.net/latest/pyscript.js"></script>-->
   <script src="http://localhost:35729/livereload.js"></script>
 </head>
@@ -15,11 +15,9 @@
   <h1 class="py-title">Monkey Consulting</h1>
   <div class="py-title">Sistema de Gestão</div>
   <br />
-  <button class="py-button" onclick="openPopup('clientes')">
+  <button class="py-button" onclick="openPopup('novo')">
     Adicionar Cliente
   </button>
-
-  <h1 th:text="${clientes}"></h1>
   <br />
   <br />
   <table>
@@ -39,32 +37,58 @@
     </thead>
     <tbody>
       <tr class="marked_row" th:each="cliente : ${clientes}">
-        <!-- <td>{{ cliente.id_cliente }}</td> -->
+<!--         <td th:text="${cliente.idCliente}"></td>-->
         <td th:text="${cliente.nome}"></td>
         <td th:text="${cliente.telefone}"></td>
-        <td th:text="${cliente.dietaTreinoModel.descricao}"></td>
-        <td th:text="${cliente.planoModel.descricao}"></td>
-        <!--
-        <td th:text="${cliente.datasModel.proxima_troca_dieta_treino}"></td>
-        <td th:text="${cliente.data.vencimento_plano}"></td>
-        <td th:text="${cliente.data.data_pagamento}"></td> -->
-        <td><span class="valor-monetario">{{ cliente.valor.valor_bruto }}</span></td>
-        <td><span class="valor-monetario">{{ cliente.valor.valor_liquido }}</span></td>
+        <td th:if="${cliente.dietaTreinoModel != null}"
+            th:text="${cliente.dietaTreinoModel.descricao}"></td>
+            <td th:unless="${cliente.dietaTreinoModel != null}">Nenhum Trieno definido</td>
+
+        <td th:if="${cliente.planoModel != null}"
+            th:text="${cliente.planoModel.descricao}"></td>
+            <td th:unless="${cliente.planoModel != null}">Nenhum Plano definido</td>
+
+        <td th:if="${cliente.datasModel != null and cliente.datasModel.size() > 0 and cliente.datasModel[0].proximaTrocaDietaTreino != 0}"
+            th:text="${cliente.datasModel[0].proximaTrocaDietaTreino}"></td>
+        <td th:unless="${cliente.datasModel != null and cliente.datasModel.size() > 0 and cliente.datasModel[0].proximaTrocaDietaTreino != 0}"></td>
+
+        <td th:if="${cliente.datasModel != null and cliente.datasModel.size() > 0 and cliente.datasModel[0].vencimentoPlano != 0}"
+            th:text="${cliente.datasModel[0].vencimentoPlano}"></td>
+            <td th:unless="${cliente.datasModel != null and cliente.datasModel.size() > 0 and cliente.datasModel[0].vencimentoPlano != 0}"></td>
+
+        <td th:if="${cliente.datasModel != null and cliente.datasModel.size() > 0 and cliente.datasModel[0].dataPagamento != 0}"
+            th:text="${cliente.datasModel[0].dataPagamento}"></td>
+            <td th:unless="${cliente.datasModel != null and cliente.datasModel.size() > 0 and cliente.datasModel[0].dataPagamento != 0}"></td>
+
+        <td th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null}">
+          <span th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null}"
+            th:text="${cliente.valoresModel[0].valorBruto}"></span>
+        </td>
+          <td th:unless="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null}">
+            <span th:unless="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null}"></span>
+          </td>
+
+        <td th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null}">
+          <span th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null}"
+            th:text="${cliente.valoresModel[0].valorLiquido}"></span>
+        </td>
+          <td th:unless="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null}" >
+              <span th:unless="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null}"></span>
+          </td>
         <td style="margin: 0; padding: 0; position: relative  ;">
           <button id="editar_cliente" title="Editar Cliente"
-            onclick="openPopup('cliente/detalhar/{{ cliente.id_cliente }}')">
+            onclick="openPopup('cliente/detalhar/{{ cliente.idCliente }}')">
             &#9998;
           </button>
           <button id="informar_pagamento" title="Informar Pagamentos"
-            onclick="openPopup('cliente/pagamento/{{ cliente.id_cliente }}')">
+            onclick="openPopup('cliente/pagamento/{{ cliente.idCliente }}')">
             $$
           </button>
-          <button onclick="desativar_cliente('{{cliente.id_cliente}}')" title="Cancelar Cliente">&#9940;</button>
-          <button onclick="congelar_cliente('{{cliente.id_cliente}}')" title="Congelar Cliente, Função não disponível"
+          <button onclick="desativar_cliente(${cliente.idCliente})" title="Cancelar Cliente">&#9940;</button>
+          <button onclick="congelar_cliente('${cliente.idCliente}')" title="Congelar Cliente, Função não disponível"
             disabled>&#129482;</button>
         </td>
       </tr>
-      {% endfor %}
     </tbody>
   </table>
 
@@ -76,11 +100,13 @@
       window.open(url, "_blank", style);
     }
 
-    function desativar_cliente(id_cliente) {
-      var confirm = window.confirm("Deletar Cliente?");
-      if (confirm == true) {
+    function desativar_cliente(idCliente) {
+      if (window.confirm("Deletar Cliente?")) {
+        fetch('/desativar')
+
+
         var req = new XMLHttpRequest();
-        req.open("DELETE", "/cliente/" + id_cliente, true);
+        req.open("DELETE", "/desativar/" + idCliente, true);
         req.onreadystatechange = function () {
           if (req.readyState === 4) {
             if (req.status === 200) {
@@ -94,7 +120,7 @@
       }
     }
 
-    function congelar_cliente(id_cliente) {
+    function congelar_cliente(idCliente) {
       alert("Função ainda não disponível")
     }
 
@@ -122,26 +148,28 @@
       }
     }
 
-    function formatarTelefone(input) {
-      let numeros = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
-      let formatado = '';
+    // function formatarTelefone(input) {
+    //   let numeros = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    //   let formatado = '';
 
-      // Adiciona os parênteses ao redor dos dois primeiros dígitos
-      if (numeros.length > 2) {
-        formatado = '(' + numeros.substring(0, 2) + ') ';
-        numeros = numeros.substring(2);
-      }
+    //   // Adiciona os parênteses ao redor dos dois primeiros dígitos
+    //   if (numeros.length > 2) {
+    //     formatado = '(' + numeros.substring(0, 2) + ') ';
+    //     numeros = numeros.substring(2);
+    //   }
 
-      // Adiciona o hífen após o quarto ou quinto dígito
-      if (numeros.length > 4) {
-        formatado += numeros.substring(0, 5) + '-' + numeros.substring(5);
-      } else {
-        formatado += numeros;
-      }
+    //   // Adiciona o hífen após o quarto ou quinto dígito
+    //   if (numeros.length > 4) {
+    //     formatado += numeros.substring(0, 5) + '-' + numeros.substring(5);
+    //   } else {
+    //     formatado += numeros;
+    //   }
 
-      input.value = formatado;
-    }
+    //   input.value = formatado;
+    // }
     // Chama a função para formatar os valores monetários quando a página é carregada
+
+
     window.onload = formatarValoresMonetarios;
   </script>
 </body>

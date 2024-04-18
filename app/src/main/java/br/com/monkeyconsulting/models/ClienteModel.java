@@ -10,6 +10,7 @@ import lombok.Data;
 import java.util.List;
 
 
+//@EqualsAndHashCode(callSuper = true)
 @Entity(name = "CLIENTES")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_cliente")
 @Data
@@ -18,21 +19,25 @@ public class ClienteModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cliente")
-    private Integer id_cliente;
-    
+    @JsonProperty("id_cliente")
+    private Integer idCliente;
+
     @Column(name = "nome")
+    @JsonProperty("nome")
     private String nome;
-    
+
     @Column(name = "telefone")
+    @JsonProperty("telefone")
     private Long telefone;
-    
+
     @Column(name = "indicador_cliente_ativo")
-    private Boolean indicador_cliente_ativo;
+    @JsonProperty("indicador_cliente_ativo")
+    private Boolean indicadorClienteAtivo;
 
     @ManyToOne
     @JsonProperty("plano")
     @JoinColumn(name = "id_plano")
-    private PlanoModel  planoModel;
+    private PlanoModel planoModel;
 
     @ManyToOne
     @JsonProperty("dieta")

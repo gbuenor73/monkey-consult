@@ -13,7 +13,7 @@ public class PlanoService {
 
     public final PlanoRepository jpa;
 
-    public List<PlanoModel> buscaPlanos(){
+    public List<PlanoModel> buscaPlanos() {
         return this.jpa.findAll();
     }
 

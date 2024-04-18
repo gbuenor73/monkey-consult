@@ -1,6 +1,6 @@
 package br.com.monkeyconsulting.controllers;
 
-import br.com.monkeyconsulting.services.*;
+import br.com.monkeyconsulting.services.ValorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,7 @@ public class ValorController {
     private final ValorService service;
 
     @GetMapping
-    public String obtemValores(){
+    public String obtemValores() {
         this.service.buscaValor();
         return "TESTE Valores";
     }
