@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
   <title>Editar Cliente</title>
@@ -11,46 +11,56 @@
   <div class="form_client">
     <h1>Editar</h1>
 
-    <form id="editara_cliente" action="/cliente" method="POST">
-      <input type="hidden" name="_method" value="PATCH" />
+    <form id="editar_cliente" action="/editar" method="post">
+      <div th.text="${cliente}"></div>
 
       <label class="ocultar" for="id_cliente">ID: </label>
-      <input class="ocultar" type="text" id="id_cliente" name="id_cliente" value="{{ cliente.id_cliente }}" readonly />
+      <input class="ocultar" type="text" id="id_cliente" name="id_cliente" th:value="${ cliente.idCliente }" readonly />
 
       <label class="ocultar" for="indicador_cliente_ativo">Cliente Ativo: </label>
       <input class="ocultar" type="text" id="indicador_cliente_ativo" name="indicador_cliente_ativo"
-        value="{{ cliente.indicador_cliente_ativo }}" readonlys />
+        th:value="${ cliente.indicadorClienteAtivo }" readonlys />
 
       <label for="nome">Nome: </label>
-      <input type="text" id="nome" name="nome" value="{{ cliente.nome }}" required />
+      <input type="text" id="nome" name="nome" th:value="${ cliente.nome }" required />
       <br>
 
       <label for="telefone">Telefone: </label>
       <input type="tel" id="telefone" name="telefone" pattern="[0-9]{11}" maxlength="11" placeholder="Apenas números"
-        value="{{ cliente.telefone }}" required />
+        th:value="${ cliente.telefone }" required />
       <br>
 
-      <label for="planos">Selecione o Plano: </label>
-      <select id="planos" name="id_plano">
-        {% for item in planos.data %}
-        <option value="{{ item.id_plano }}" {% if item.id_plano==cliente.plano.id_plano %} selected {% endif %}>
-          {{item.descricao}}</option>
-        {% endfor %}
+      <label for="plano">Selecione o Plano: </label>
+      <select id="plano" name="plano">
+        <th:block th:if="${cliente.planoModel != null}">
+          <option th:each="plano : ${planos}" th:text="${plano.descricao}" th:value="${plano.idPlano}"
+            th:selected="${plano.idPlano == cliente.planoModel.idPlano}">
+          </option>
+        </th:block>
+        <th:block th:unless="${cliente.planoModel != null}">
+          <option th:each="plano : ${planos}" th:text="${plano.descricao}" th:value="${plano.idPlano}">
+          </option>
+        </th:block>
       </select>
 
       <br>
-      <label for="treinos">Selecione o Treino: </label>
-      <select id="treinos" name="id_dieta">
-        {% for item in treinos.data %}
-        <option value="{{ item.id_dieta }}" {% if item.id_dieta==cliente.dieta.id_dieta %} selected {% endif %}>
-          {{item.descricao}}</option>
-        {% endfor %}
+      <label for="dieta">Selecione o Treino: </label>
+      <select id="dieta" name="dieta">
+        <th:block th:if="${cliente.dietaTreinoModel != null}">
+          <option th:each="dieta : ${dietas}" th:text="${dieta.descricao}" th:value="${dieta.idDieta}"
+            th:selected="${dieta.idDieta == cliente.dietaTreinoModel.idDieta}">
+          </option>
+        </th:block>
+        <th:block th:unless="${cliente.dietaTreinoModel != null}">
+          <option th:each="dieta : ${dietas}" th:text="${dieta.descricao}" th:value="${dieta.idDieta}">
+          </option>
+        </th:block>
       </select>
 
       <br>
     </form>
 
-    <button type="submit" onclick="enviar_formulario()" value="Enviar">Enviar</button>
+    <button type="submit" onclick="enviar_formulario()">Enviar</button>
     <button onclick="window.close()">Voltar</button>
 
     <script>
@@ -70,7 +80,7 @@
       }
 
       document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape") 
+        if (event.key === "Escape")
           window.close();
       });
     </script>

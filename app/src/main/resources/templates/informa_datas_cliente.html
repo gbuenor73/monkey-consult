@@ -11,13 +11,13 @@
 <body>
   <h1>Registrar Pagamento</h1>
 
-  <form id="registar_pagamento" name="registar_pagamento" action="\datas" method="POST">
-
+  <form id="registar_pagamento" name="registar_pagamento" action="/datas/editar" method="post">
     <!-- objeto escondido apenas para passar valor -->
-    <div class="ocultar" id="id_data" readonly>{{ cliente.data.id_data }}</div>
-    <div class="ocultar" id="data_pagamento" readonly>{{ cliente.data.data_pagamento }}</div>
-    <div class="ocultar" id="valor_bruto" readonly>{{ cliente.valor.valor_bruto }}</div>
-    <div class="ocultar" id="valor_liquido" readonly>{{ cliente.valor.valor_liquido }}</div>
+    <!--    class="ocultar" -->
+    <div id="id_data" th:text="${cliente.datasModel[0].idData}" readonly></div>
+    <div id="data_pagamento" th:text="${cliente.datasModel[0].dataPagamento}" readonly></div>
+    <div id="valor_bruto" th:text="${cliente.valoresModel[0].valorBruto}" readonly></div>
+    <div id="valor_liquido" th:text="${cliente.valoresModel[0].valorLiquido}" readonly></div>
 
     <label id="data_pagamento_label">Selecione a Data do Pagamento: </label>
     <input type="date" id="data_pagamento_input" name="data_pagamento_input" />
@@ -28,7 +28,8 @@
 
     <br>
     <label id="valor_liquido_label">Informe o valor Liquido: </label>
-    <input type="text" id="valor_liquido_input" name="valor_liquido_input" onkeyup="formatarMoeda(this)" />
+    <input type="text" id="valor_liquido_input" name="valor_liquido_input"
+      th:value="${cliente.valoresModel[0].valorLiquido}" onkeyup="formatarMoeda(this)" />
 
     <br /> <br>
     <div onclick="inciar_plano()">
@@ -49,34 +50,39 @@
         <br />
         <label id="label_data_plano" name="label_data_plano">Selecione a Data de inicio Plano</label>
         <br />
-        <div id="inicio_plano_div" style="display: none">
-          {{cliente.data.inicio_plano}}
+        <div id="inicio_plano_div" style="display: none" th:text="${cliente.datasModel[0].inicioPlano}">
+
         </div>
         <input type="date" id="inicio_plano_input" name="inicio_plano_input" />
         <br />
       </div>
     </div>
-    <div id="inicio_dieta_treino" style="display: none">
-      {{cliente.data.inicio_dieta_treino}}
-    </div>
   </form>
   <br />
-  <button type="submit" onclick="enviar_formulario('{{cliente.id_cliente}}')" value="Enviar">Enviar</button>
+  <button type="submit" onclick="enviar_formulario('${cliente.idCliente}')" value="Enviar">Enviar</button>
   <button onclick="window.close()">Voltar</button>
 
-  <script>
-    //adiciona data pré preechida noo calendario
+  <script th:inline="javascript">
+    //adiciona data pré preechida no calendario
     var data_pagamento = document.getElementById("data_pagamento");
     var inicio_plano = document.getElementById("inicio_plano_div");
     var inicio_dieta_treino = document.getElementById("inicio_dieta_treino");
     var valor_bruto = document.getElementById("valor_bruto");
     var valor_liquido = document.getElementById("valor_liquido");
 
-    console.log('inicio_plano', inicio_plano.textContent)
-    console.log('inicio_dieta_treino', inicio_dieta_treino.textContent)
-    console.log(`data_pagamento`, data_pagamento.textContent)
-    console.log('valor_bruto', valor_bruto.textContent)
-    console.log('valor_liquido', valor_liquido.textContent)
+    if (valor_bruto.textContent != "") {
+      console.log("valor_bruto", valor_bruto.textContent)
+      document.getElementById("valor_bruto_input").value = "R$ " + valor_bruto.textContent.replace(".", ",");
+    } else {
+      document.getElementById("valor_bruto_input").value = "R$ 00,00";
+    }
+
+    if (valor_liquido.textContent != "") {
+      console.log("valor_liquido", valor_liquido.textContent)
+      document.getElementById("valor_liquido_input").value = "R$ " + valor_liquido.textContent.replace(".", ",");
+    } else {
+      document.getElementById("valor_liquido_input").value = "R$ 0,00";
+    }
 
     if (data_pagamento.textContent != "") {
       console.log(`data_pagamento`, data_pagamento.textContent)
@@ -92,16 +98,7 @@
       ).toISOString().split("T")[0];
     }
 
-    if (inicio_dieta_treino.textContent != "") {
-      console.log('inicio_dieta_treino', inicio_dieta_treino.textContent)
-      document.getElementById("inicio_dieta_treino_input").value = new Date(
-        inicio_dieta_treino.textContent
-      ).toISOString().split("T")[0];
-    }
-
-
-
-    //logica para iniciar plano
+    // logica para iniciar plano
     function inciar_plano() {
       var display = "none";
 
@@ -132,11 +129,11 @@
 
         console.log(formData)
 
-        fetch("/cliente/pagamento/" + id_cliente, {
+        fetch("/datas/editar", {
           method: "POST",
           body: formData,
         })
-          .then((response) => { 
+          .then((response) => {
             response.text().then((message) => {
               if (!response.ok)
                 alert(`Erro ao realizar a operação. \n${message}.`);
