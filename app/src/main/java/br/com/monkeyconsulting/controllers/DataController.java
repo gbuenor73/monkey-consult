@@ -1,16 +1,18 @@
 package br.com.monkeyconsulting.controllers;
 
 import br.com.monkeyconsulting.models.ClienteModel;
+import br.com.monkeyconsulting.models.DataModel;
+import br.com.monkeyconsulting.models.ValorModel;
 import br.com.monkeyconsulting.services.ClienteService;
 import br.com.monkeyconsulting.services.DataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 @RequestMapping("/datas")
@@ -28,15 +30,41 @@ public class DataController {
     @GetMapping("/detalhar/{id_cliente}")
     public String obtemPlanoPorId(Model model, @PathVariable("id_cliente") Integer idCliente) {
         ClienteModel clienteModel = this.clienteService.buscaClientePorId(idCliente);
+
+        if (clienteModel.getDatasModel().isEmpty())
+            clienteModel.setDatasModel(List.of(new DataModel()));
+
+        if (clienteModel.getValoresModel().isEmpty())
+            clienteModel.setValoresModel(List.of(new ValorModel()));
+
         model.addAttribute("cliente", clienteModel);
         return "informa_datas_cliente";
     }
 
     @PostMapping("/editar")
-    public ResponseEntity informaDatas() {
-        System.out.println();
+    public ResponseEntity informaDatas(
+            @RequestParam("id_cliente") Integer idCliente,
+            @RequestParam(value = "id_data", defaultValue = "") Integer idData,
+            @RequestParam("data_pagamento_input") LocalDate dataPagamento,
+            @RequestParam(value = "inicio_plano_input", defaultValue = "") LocalDate inicioPlano,
+            @RequestParam(value = "id_valor", defaultValue = "") Integer idValor,
+            @RequestParam("valor_bruto_input") String valorBrutoString,
+            @RequestParam("valor_liquido_input") String valorLiquidoString,
+            @RequestParam(value = "mesma_data_check", defaultValue = "") String mesmaDataString,
+            @RequestParam(value = "iniciar_plano_check", defaultValue = "") String iniciarPlanoString
+    ) {
+        var valorBrutoFloat = Float.parseFloat(valorBrutoString.replaceAll(",", ".").replace("R$", ""));
+        var valorLiquidoFloat = Float.parseFloat(valorLiquidoString.replaceAll(",", ".").replace("R$", ""));
+
+        var valorBruto = valorBrutoFloat == Float.valueOf(0) ? null : valorBrutoFloat;
+        var valorLiquido = valorLiquidoFloat == Float.valueOf(0) ? null : valorLiquidoFloat;
+
+        ClienteModel clienteModel = this.clienteService.buscaClientePorId(idCliente);
+        DataModel dataModel = new DataModel(idData, dataPagamento, null, inicioPlano, null, null, null, clienteModel);
+        ValorModel valorModel = new ValorModel(idValor, valorBruto, valorLiquido, clienteModel);
+
+        this.dataService.atualizarDatas(dataModel, valorModel, "on".equals(iniciarPlanoString), "on".equals(mesmaDataString));
 
         return ResponseEntity.ok().build();
     }
-
 }

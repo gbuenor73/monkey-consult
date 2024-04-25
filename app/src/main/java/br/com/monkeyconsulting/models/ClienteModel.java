@@ -54,4 +54,9 @@ public class ClienteModel {
     @JsonManagedReference
     private List<DataModel> datasModel;
 
+    public void mergeModels(DataModel datas, ValorModel valor){
+        this.datasModel.add(datas);
+        this.valoresModel.add(valor);
+    }
+
 }

@@ -19,4 +19,11 @@ public class ValorService {
         System.out.println();
     }
 
+    public void update(ValorModel valorModel) {
+        try {
+            this.jpa.save(valorModel);
+        } catch (Exception e) {
+            throw new RuntimeException("Houve um erro ao inserir o valor, tente novamente: ".concat(e.getMessage()));
+        }
+    }
 }

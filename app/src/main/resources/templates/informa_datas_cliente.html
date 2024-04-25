@@ -8,28 +8,34 @@
   <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
 </head>
 
-<body>
+<body style=" min-width: 450px; max-width: 450px; min-height: 550px; max-height: auto; padding: 15px; margin: 10px">
   <h1>Registrar Pagamento</h1>
 
   <form id="registar_pagamento" name="registar_pagamento" action="/datas/editar" method="post">
     <!-- objeto escondido apenas para passar valor -->
-    <!--    class="ocultar" -->
-    <div id="id_data" th:text="${cliente.datasModel[0].idData}" readonly></div>
-    <div id="data_pagamento" th:text="${cliente.datasModel[0].dataPagamento}" readonly></div>
-    <div id="valor_bruto" th:text="${cliente.valoresModel[0].valorBruto}" readonly></div>
-    <div id="valor_liquido" th:text="${cliente.valoresModel[0].valorLiquido}" readonly></div>
+
+<!--    <div class="ocultar" id="id_data" th:text="${cliente.datasModel[0].idData}" readonly></div>-->
+    <div class="ocultar" id="data_pagamento" th:text="${cliente.datasModel[0].dataPagamento}" readonly></div>
+    <div class="ocultar" id="valor_bruto" th:text="${cliente.valoresModel[0].valorBruto}" readonly></div>
+    <div class="ocultar" id="valor_liquido" th:text="${cliente.valoresModel[0].valorLiquido}" readonly></div>
+
+    <input type="hidden" name="id_cliente" th:value="${cliente.idCliente}">
+    <input type="hidden" name="id_data" th:value="${cliente.datasModel[0].idData}">
+    <input type="hidden" name="id_valor" th:value="${cliente.valoresModel[0].idValor}">
 
     <label id="data_pagamento_label">Selecione a Data do Pagamento: </label>
     <input type="date" id="data_pagamento_input" name="data_pagamento_input" />
 
     <br> <br>
     <label id="valor_bruto_label">Informe o valor Bruto: </label>
-    <input type="text" id="valor_bruto_input" name="valor_bruto_input" onkeyup="formatarMoeda(this)" />
+    <input class="valor-monetario" type="text" id="valor_bruto_input" name="valor_bruto_input"
+    th:value="${cliente.valoresModel[0].valorBruto}" onkeyup="formatarMoeda(this)" />
 
     <br>
     <label id="valor_liquido_label">Informe o valor Liquido: </label>
-    <input type="text" id="valor_liquido_input" name="valor_liquido_input"
+    <input class="valor-monetario" type="text" id="valor_liquido_input" name="valor_liquido_input"
       th:value="${cliente.valoresModel[0].valorLiquido}" onkeyup="formatarMoeda(this)" />
+
 
     <br /> <br>
     <div onclick="inciar_plano()">
@@ -70,29 +76,13 @@
     var valor_bruto = document.getElementById("valor_bruto");
     var valor_liquido = document.getElementById("valor_liquido");
 
-    if (valor_bruto.textContent != "") {
-      console.log("valor_bruto", valor_bruto.textContent)
-      document.getElementById("valor_bruto_input").value = "R$ " + valor_bruto.textContent.replace(".", ",");
-    } else {
-      document.getElementById("valor_bruto_input").value = "R$ 00,00";
-    }
-
-    if (valor_liquido.textContent != "") {
-      console.log("valor_liquido", valor_liquido.textContent)
-      document.getElementById("valor_liquido_input").value = "R$ " + valor_liquido.textContent.replace(".", ",");
-    } else {
-      document.getElementById("valor_liquido_input").value = "R$ 0,00";
-    }
-
     if (data_pagamento.textContent != "") {
-      console.log(`data_pagamento`, data_pagamento.textContent)
       document.getElementById("data_pagamento_input").value = new Date(
         data_pagamento.textContent
       ).toISOString().split("T")[0];
     }
 
     if (inicio_plano.textContent != "") {
-      console.log('inicio_plano', inicio_plano.textContent)
       document.getElementById("inicio_plano_input").value = new Date(
         inicio_plano.textContent
       ).toISOString().split("T")[0];
@@ -119,19 +109,31 @@
     }
 
     function enviar_formulario(id_cliente) {
+      formulario = document.forms[0]
+
+      console.log(formulario.data_pagamento_input)
+      if (formulario.data_pagamento_input.value == "") {
+        alert("Favor informar a data de pagamento.");
+        return;
+      } else {
+        formulario.submit();
+        setTimeout(function () {
+          window.opener.location.reload();
+          window.close();
+        }, 100);
+      }
+    }
+
+    function enviar_formulario_old(id_cliente) {
       formulario = document.getElementById("registar_pagamento");
 
       if (formulario.data_pagamento_input.value == "") {
         alert("Favor informar a data de pagamento.");
         return;
       } else {
-        var formData = new FormData(formulario);
-
-        console.log(formData)
-
         fetch("/datas/editar", {
           method: "POST",
-          body: formData,
+          body: new FormData(formulario),
         })
           .then((response) => {
             response.text().then((message) => {
@@ -162,6 +164,36 @@
       if (event.key === "Escape")
         window.close();
     });
+
+    function formatarValor(valor) {
+      if (valor != "") {
+        valor = valor.replace(/[^\d.]/g, "");
+        valor = parseFloat(valor).toFixed(2);
+        valor = valor.replace(".", ",");
+        return "R$ " + valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      } else {
+        return "R$ 0,00";
+      }
+    }
+
+    // Função para formatar os valores monetários nas células da tabela
+    function formatarValoresMonetarios() {
+      try {
+        var cells = document.querySelectorAll(".valor-monetario");
+        cells.forEach((cell) => {
+          var valor = cell.value.trim();
+          cell.value = formatarValor(valor);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    window.onload = function () {
+      // Define o tamanho da janela igual ao tamanho do body
+      window.resizeTo(document.body.offsetWidth, document.body.offsetHeight);
+      formatarValoresMonetarios()
+    };
   </script>
 </body>
 
