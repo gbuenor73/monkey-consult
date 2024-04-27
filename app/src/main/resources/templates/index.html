@@ -40,13 +40,13 @@
         <!--         <td th:text="${cliente.idCliente}"></td>-->
         <td th:text="${cliente.nome}"></td>
         <td th:text="${cliente.telefone}"></td>
-        <td th:if="${cliente.dietaTreinoModel != null}" th:text="${cliente.dietaTreinoModel.descricao}"></td>
-        <td th:unless="${cliente.dietaTreinoModel != null}">
-          Nenhum Trieno definido
+        <td th:if="${cliente.dietaTreinoModel != null and cliente.dietaTreinoModel.idDieta != 1}" th:text="${cliente.dietaTreinoModel.descricao}"></td>
+        <td th:unless="${cliente.dietaTreinoModel != null and cliente.dietaTreinoModel.idDieta != 1}">
+          Nenhum Treino definido
         </td>
 
-        <td th:if="${cliente.planoModel != null}" th:text="${cliente.planoModel.descricao}"></td>
-        <td th:unless="${cliente.planoModel != null}">
+        <td th:if="${cliente.planoModel != null and cliente.planoModel.idPlano != 1}" th:text="${cliente.planoModel.descricao}"></td>
+        <td th:unless="${cliente.planoModel != null and cliente.planoModel.idPlano != 1}">
           Nenhum Plano definido
         </td>
 
@@ -72,27 +72,27 @@
         </td>
 
         <td
-          th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null}">
+          th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null and cliente.valoresModel[0].valorBruto != 0.00}">
           <span class="valor-monetario"
-            th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null}"
+            th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null and cliente.valoresModel[0].valorBruto != 0.00}"
             th:text="${cliente.valoresModel[0].valorBruto}"></span>
         </td>
         <td
-          th:unless="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null}">
+          th:unless="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null and cliente.valoresModel[0].valorBruto != 0.00}">
           <span class="valor-monetario"
-            th:unless="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null}"></span>
+            th:unless="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null and cliente.valoresModel[0].valorBruto != 0.00}"></span>
         </td>
 
         <td
-          th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null}">
+          th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null and cliente.valoresModel[0].valorLiquido != 0.00}">
           <span class="valor-monetario"
-            th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null}"
+            th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null and cliente.valoresModel[0].valorLiquido != 0.00}"
             th:text="${cliente.valoresModel[0].valorLiquido}"></span>
         </td>
         <td
-          th:unless="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null}">
+          th:unless="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null and cliente.valoresModel[0].valorLiquido != 0.00}">
           <span class="valor-monetario"
-            th:unless="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null}"></span>
+            th:unless="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null and cliente.valoresModel[0].valorLiquido != 0.00}"></span>
         </td>
         <td style="margin: 0; padding: 0; position: relative">
           <button id="editar_cliente" title="Editar Cliente"

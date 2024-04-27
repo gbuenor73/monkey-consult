@@ -7,65 +7,87 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
 </head>
 
-<body>
-  <h1>Editar Cliente</h1>
+<body style="
+      min-width: 450px;
+      max-width: 450px;
+      min-height: 550px;
+      max-height: auto;
+      padding: 15px;
+      margin: 10px;
+    ">
+  <h1>Novo Cliente</h1>
 
   <form id="novo_cliente" th:action="@{/insere}" method="POST">
-    <label >Nome:</label>
+    <label>Nome:</label>
     <input type="text" id="nome" name="nome" placeholder="Nome Completo" required />
 
-    <br>
-    <label >Telefone:</label>
-    <input type="tel" id="telefone" name="telefone" pattern="[0-9]{11}" maxlength="11" placeholder="Apenas números" required/>
+    <br />
+    <label>Telefone:</label>
+    <input type="tel" id="telefone" name="telefone" pattern="[0-9]{11}" maxlength="11" placeholder="Apenas números"
+      required />
 
-    <br>
-    <label >Valor Bruto:</label>
-    <input value="R$ 0,00" type="text" id="valor_bruto" name="valor_bruto" onkeyup="formatarMoeda(this)">
+    <br />
+    <label>Valor Bruto:</label>
+    <input value="R$ 0,00" type="text" id="valor_bruto" name="valor_bruto" onkeyup="formatarMoeda(this)" />
 
-    <br>
-    <label >Valor Liquido:</label>
-    <input value="R$ 0,00" type="text" id="valor_liquido" name="valor_liquido" onkeyup="formatarMoeda(this)">
+    <br />
+    <label>Valor Liquido:</label>
+    <input value="R$ 0,00" type="text" id="valor_liquido" name="valor_liquido" onkeyup="formatarMoeda(this)" />
 
-    <br>
+    <br />
     <input type="submit" onclick="enviar_formulario()" value="Enviar" />
-    <button onclick="window.close()">Voltar</button>    
+    <button onclick="window.close()">Voltar</button>
   </form>
 
   <!-- #include virtual="default/footer"-->
 
-  <script>
+  <script th:inline="javascript">
     function enviar_formulario() {
       formulario = document.forms[0];
-      console.log("form valor_bruto")
-      console.log(formulario.valor_bruto.value)
-      formulario.valor_bruto.value = formulario.valor_bruto.value.replace(/[^\d,]/g, '').replace(',','.')
-      console.log("form valor_bruto formatario")
-      console.log(formulario.valor_bruto.value)
-      formulario.valor_liquido.value = formulario.valor_liquido.value.replace(/[^\d,]/g, '').replace(',','.')
+
+      formulario.valor_bruto.value = formulario.valor_bruto.value.replace(/[^\d,]/g, "").replace(",", ".");
+      formulario.valor_liquido.value = formulario.valor_liquido.value.replace(/[^\d,]/g, "").replace(",", ".");
 
       if (formulario.nome.value == "" || formulario.telefone.value == "") {
         alert("Ao menos os campos obrigatorios devem ser preenchidos");
         return;
       } else {
-        formulario.submit();
-        setTimeout(function () {
-          window.opener.location.reload();
-          window.close();
-        }, 100);
+        fetch(formulario.action, {
+          method: formulario.method,
+          body: new FormData(formulario)
+        }).then(response => { 
+          if (!response.ok) {
+            response.text().then(errorMessage => {
+              alert("Erro ao cadastrar cliente: " + errorMessage);
+            });
+          } else {
+            window.opener.location.reload();
+            window.close();
+          }
+        }).catch(error => {
+          console.log('error',error)
+          alert("Erro ao enviar o formulário: " + error);
+        });
       }
     }
+
+    function formatarMoeda(input) {
+      let valor = input.value;
+      valor = valor.replace(/\D/g, "");
+      valor = (Number(valor) / 100).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      });
+      input.value = valor;
+    }
+
+    window.onload = function () {
+      window.resizeTo(document.body.offsetWidth, document.body.offsetHeight);
+    };
 
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") window.close();
     });
-
-    function formatarMoeda(input) {
-      let valor = input.value;
-      valor = valor.replace(/\D/g, '');
-      valor = (Number(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-      input.value = valor;
-    }
-
   </script>
 </body>
 

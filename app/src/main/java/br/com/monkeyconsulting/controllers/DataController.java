@@ -48,23 +48,23 @@ public class DataController {
             @RequestParam("data_pagamento_input") LocalDate dataPagamento,
             @RequestParam(value = "inicio_plano_input", defaultValue = "") LocalDate inicioPlano,
             @RequestParam(value = "id_valor", defaultValue = "") Integer idValor,
-            @RequestParam("valor_bruto_input") String valorBrutoString,
-            @RequestParam("valor_liquido_input") String valorLiquidoString,
+            @RequestParam("valor_bruto_input") Float valorBrutoString,
+            @RequestParam("valor_liquido_input") Float valorLiquidoString,
             @RequestParam(value = "mesma_data_check", defaultValue = "") String mesmaDataString,
-            @RequestParam(value = "iniciar_plano_check", defaultValue = "") String iniciarPlanoString
-    ) {
-        var valorBrutoFloat = Float.parseFloat(valorBrutoString.replaceAll(",", ".").replace("R$", ""));
-        var valorLiquidoFloat = Float.parseFloat(valorLiquidoString.replaceAll(",", ".").replace("R$", ""));
+            @RequestParam(value = "iniciar_plano_check", defaultValue = "") String iniciarPlanoString    ) {
 
-        var valorBruto = valorBrutoFloat == Float.valueOf(0) ? null : valorBrutoFloat;
-        var valorLiquido = valorLiquidoFloat == Float.valueOf(0) ? null : valorLiquidoFloat;
+//        var valorBrutoFloat = Float.parseFloat(valorBrutoString.replaceAll(",", ".").replace("R$ ", ""));
+//        var valorLiquidoFloat = Float.parseFloat(valorLiquidoString.replaceAll(",", ".").replace("R$ ", ""));
+
+//        var valorBruto = valorBrutoFloat == Float.valueOf(0) ? null : valorBrutoFloat;
+//        var valorLiquido = valorLiquidoFloat == Float.valueOf(0) ? null : valorLiquidoFloat;
 
         ClienteModel clienteModel = this.clienteService.buscaClientePorId(idCliente);
         DataModel dataModel = new DataModel(idData, dataPagamento, null, inicioPlano, null, null, null, clienteModel);
-        ValorModel valorModel = new ValorModel(idValor, valorBruto, valorLiquido, clienteModel);
+        ValorModel valorModel = new ValorModel(idValor, valorBrutoString, valorLiquidoString, clienteModel);
 
         this.dataService.atualizarDatas(dataModel, valorModel, "on".equals(iniciarPlanoString), "on".equals(mesmaDataString));
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("<script>window.close()</script>");
     }
 }

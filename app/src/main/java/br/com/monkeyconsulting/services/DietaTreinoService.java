@@ -19,8 +19,8 @@ public class DietaTreinoService {
         return this.jpa.findAll();
     }
 
-    public DietaTreinoModel buscaPorId(Integer idDieta) {
-        Optional<DietaTreinoModel> optional = this.jpa.findById(idDieta);
+    public DietaTreinoModel buscaPorId(Integer id) {
+        Optional<DietaTreinoModel> optional = this.jpa.findById(id);
         return (DietaTreinoModel) Utils.validaRetorno(optional);
     }
 

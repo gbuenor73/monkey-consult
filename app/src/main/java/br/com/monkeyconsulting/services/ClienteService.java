@@ -36,7 +36,7 @@ public class ClienteService {
         return (ClienteModel) Utils.validaRetorno(optional);
     }
 
-    public ClienteModel insereCliente(ClienteModel clienteModel) {
+    public ClienteModel insere(ClienteModel clienteModel) {
         try {
             ClienteModel save = this.jpa.save(clienteModel);
             return save;
@@ -58,8 +58,8 @@ public class ClienteService {
 
     public ClienteModel editaCliente(Integer idCliente, String indicadorClienteAtivo, String nome, Long telefone, Integer idPlano, Integer idDieta) {
         ClienteModel clienteModel = this.buscaClientePorId(idCliente);
-        PlanoModel planoModel = this.planoService.buscaPorId(idDieta);
-        DietaTreinoModel dietaTreinoModel = this.dietaTreinoService.buscaPorId(idPlano);
+        PlanoModel planoModel = this.planoService.buscaPorId(idPlano);
+        DietaTreinoModel dietaTreinoModel = this.dietaTreinoService.buscaPorId(idDieta);
 
         clienteModel.setNome(nome);
         clienteModel.setTelefone(telefone);

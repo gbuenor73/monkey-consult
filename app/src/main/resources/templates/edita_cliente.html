@@ -7,7 +7,7 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
 </head>
 
-<body>
+<body style=" min-width: 450px; max-width: 450px; min-height: 550px; max-height: auto; padding: 15px; margin: 10px">
   <div class="form_client">
     <h1>Editar</h1>
 
@@ -63,7 +63,7 @@
     <button type="submit" onclick="enviar_formulario()">Enviar</button>
     <button onclick="window.close()">Voltar</button>
 
-    <script >
+    <script th:inline="javascript">
       function enviar_formulario() {
         formulario = document.forms[0];
 
@@ -72,10 +72,8 @@
           return;
         } else {
           formulario.submit();
-          setTimeout(function () {
-            window.opener.location.reload();
-            window.close();
-          }, 100);
+          window.opener.location.reload();
+          // window.close();
         }
       }
 

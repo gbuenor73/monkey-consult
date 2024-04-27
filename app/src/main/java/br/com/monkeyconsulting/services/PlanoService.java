@@ -20,8 +20,8 @@ public class PlanoService {
         return this.jpa.findAll();
     }
 
-    public PlanoModel buscaPorId(Integer idDieta) {
-        Optional<PlanoModel> optional = this.jpa.findById(idDieta);
+    public PlanoModel buscaPorId(Integer id) {
+        Optional<PlanoModel> optional = this.jpa.findById(id);
         return (PlanoModel) Utils.validaRetorno(optional);
     }
 

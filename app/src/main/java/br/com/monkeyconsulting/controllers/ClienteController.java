@@ -7,6 +7,7 @@ import br.com.monkeyconsulting.models.ValorModel;
 import br.com.monkeyconsulting.services.ClienteService;
 import br.com.monkeyconsulting.services.DietaTreinoService;
 import br.com.monkeyconsulting.services.PlanoService;
+import br.com.monkeyconsulting.services.ValorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,11 +21,11 @@ import static java.util.Objects.nonNull;
 
 
 @Controller
-//@RequestMapping("/clientes")
 @RequiredArgsConstructor
 public class ClienteController {
 
     private final ClienteService clienteService;
+    private final ValorService valorService;
     private final PlanoService planoService;
     private final DietaTreinoService dietaTreinoService;
 
@@ -56,42 +57,60 @@ public class ClienteController {
 
     @PostMapping("/editar")
     public ResponseEntity editar(@RequestParam("id_cliente") Integer idCliente,
-                               @RequestParam("indicador_cliente_ativo") String indicador,
-                               @RequestParam("nome") String nome,
-                               @RequestParam("telefone") Long telefone,
-                               @RequestParam("plano") Integer idPlano,
-                               @RequestParam("dieta") Integer idDieta){
+                                 @RequestParam("indicador_cliente_ativo") String indicador,
+                                 @RequestParam("nome") String nome,
+                                 @RequestParam("telefone") Long telefone,
+                                 @RequestParam("plano") Integer idPlano,
+                                 @RequestParam("dieta") Integer idDieta) {
 
-        return ResponseEntity.ok(this.clienteService.editaCliente(idCliente, indicador, nome, telefone, idPlano, idDieta));
+        this.clienteService.editaCliente(idCliente, indicador, nome, telefone, idPlano, idDieta);
+        return ResponseEntity.ok().body("<script>window.close()</script>");
     }
 
     @PostMapping("/insere")
     public ResponseEntity<String> insereCliente(@RequestParam("nome") String nome,
-                                        @RequestParam("telefone") Long telefone,
-                                        @RequestParam("valor_bruto") Float valorBruto,
-                                        @RequestParam("valor_liquido") Float valorLiquido) {
-
-        var valorModel = new ValorModel();
-        valorModel.setValorBruto(valorBruto);
-        valorModel.setValorLiquido(valorLiquido);
+                                                @RequestParam("telefone") Long telefone,
+                                                @RequestParam("valor_bruto") Float valorBruto,
+                                                @RequestParam("valor_liquido") Float valorLiquido) {
 
         var cliente = new ClienteModel();
         cliente.setNome(nome);
         cliente.setTelefone(telefone);
         cliente.setIndicadorClienteAtivo(true);
-        cliente.setValoresModel(List.of(valorModel));
+
+
+//        valorModel.setValorBruto(valorBruto);
+//        valorModel.setValorLiquido(valorLiquido);
+
 
         ClienteModel clienteModel = this.clienteService.buscaClientePorTelefone(cliente.getTelefone());
 
         if (nonNull(clienteModel) && nonNull(clienteModel.getTelefone()) && clienteModel.getTelefone().equals(telefone))
             throw new RuntimeException("Cliente ja existente!");
 
-        this.clienteService.insereCliente(cliente);
+        this.clienteService.insere(cliente);
+
+        if (nonNull(valorBruto) || nonNull(valorLiquido)) {
+            var valorModel = new ValorModel();
+
+            if (nonNull(valorBruto))
+                valorModel.setValorBruto(valorBruto);
+
+            if (nonNull(valorLiquido))
+                valorModel.setValorLiquido(valorLiquido);
+
+            valorModel.setClientesModel(cliente);
+            cliente.setValoresModel(List.of(valorModel));
+
+            this.valorService.insere(valorModel);
+        } else {
+            throw new RuntimeException("Valores inválidoos!");
+        }
         return ResponseEntity.ok().body("<script>window.close()</script>");
     }
 
     @DeleteMapping("/desativar/{id_cliente}")
-    public ResponseEntity desativar(@PathVariable("id_cliente") Integer idCliente){
+    public ResponseEntity desativar(@PathVariable("id_cliente") Integer idCliente) {
 
         ClienteModel clienteModel = this.clienteService.buscaClientePorId(idCliente);
 
@@ -99,7 +118,6 @@ public class ClienteController {
             throw new RuntimeException("Cliente Não encontrado");
 
         this.clienteService.cancelarCliente(clienteModel.getIdCliente());
-
         return ResponseEntity.ok("Sucessp");
     }
 

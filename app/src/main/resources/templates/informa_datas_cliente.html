@@ -110,12 +110,27 @@
 
     function enviar_formulario(id_cliente) {
       formulario = document.forms[0]
-
-      console.log(formulario.data_pagamento_input)
       if (formulario.data_pagamento_input.value == "") {
         alert("Favor informar a data de pagamento.");
         return;
       } else {
+        console.log(formulario.valor_bruto_input.value)
+
+        formulario.valor_bruto_input.value = parseFloat(formulario.valor_bruto_input.value.replace('R$', '').replace(',', '.'));
+        formulario.valor_liquido_input.value = parseFloat(formulario.valor_liquido_input.value.replace('R$', '').replace(',', '.'));
+
+        if (formulario.iniciar_plano_check.checked) {
+          if (formulario.mesma_data_check.checked) {
+            formulario.inicio_plano_input.value = formulario.data_pagamento_input.value;
+          } else {
+            console.log(formulario.inicio_plano_input.value)
+            if (formulario.inicio_plano_input.value == "") {
+              alert("Favor informar a data de inicio do plano")
+              return;
+            }
+          }
+        }
+
         formulario.submit();
         setTimeout(function () {
           window.opener.location.reload();
@@ -189,6 +204,7 @@
       }
     }
 
+    formatarValoresMonetarios
     window.onload = function () {
       // Define o tamanho da janela igual ao tamanho do body
       window.resizeTo(document.body.offsetWidth, document.body.offsetHeight);

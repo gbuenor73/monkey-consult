@@ -20,6 +20,10 @@ public class ValorService {
     }
 
     public void update(ValorModel valorModel) {
+        this.insere(valorModel);
+    }
+
+    public void insere(ValorModel valorModel) {
         try {
             this.jpa.save(valorModel);
         } catch (Exception e) {

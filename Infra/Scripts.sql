@@ -11,7 +11,10 @@ CREATE TABLE IF NOT EXISTS DIETAS_TREINOS (
 );
 
 CREATE TABLE IF NOT EXISTS CLIENTES (
-    id_cliente INT AUTO_INCREMENT PRIMARY KEY, nome VARCHAR(200), telefone VARCHAR(20), indicador_cliente_ativo BOOLEAN,
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY, 
+    nome VARCHAR(200), 
+    telefone VARCHAR(20) UNIQUE, 
+    indicador_cliente_ativo BOOLEAN,
     id_plano INT,
     id_dieta INT,
     FOREIGN KEY (id_plano) REFERENCES PLANOS (id_plano),
