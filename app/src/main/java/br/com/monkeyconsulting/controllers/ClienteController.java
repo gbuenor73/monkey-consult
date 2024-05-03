@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -71,23 +72,22 @@ public class ClienteController {
     public ResponseEntity<String> insereCliente(@RequestParam("nome") String nome,
                                                 @RequestParam("telefone") Long telefone,
                                                 @RequestParam("valor_bruto") Float valorBruto,
-                                                @RequestParam("valor_liquido") Float valorLiquido) {
+                                                @RequestParam("valor_liquido") Float valorLiquido,
+                                                Model model) {
 
         var cliente = new ClienteModel();
         cliente.setNome(nome);
         cliente.setTelefone(telefone);
-        cliente.setIndicadorClienteAtivo(true);
-
-
-//        valorModel.setValorBruto(valorBruto);
-//        valorModel.setValorLiquido(valorLiquido);
-
 
         ClienteModel clienteModel = this.clienteService.buscaClientePorTelefone(cliente.getTelefone());
 
-        if (nonNull(clienteModel) && nonNull(clienteModel.getTelefone()) && clienteModel.getTelefone().equals(telefone))
-            throw new RuntimeException("Cliente ja existente!");
+        if (nonNull(clienteModel) && nonNull(clienteModel.getTelefone()) && clienteModel.getTelefone().equals(telefone)) {
+            return ResponseEntity.badRequest().body(Map.of("error_message","Telefone ja cadastrado!",
+                    "indicador_cliente_ativo",clienteModel.getIndicadorClienteAtivo(),
+                    "id_cliente",clienteModel.getIdCliente()).toString());
+        }
 
+        cliente.setIndicadorClienteAtivo(true);
         this.clienteService.insere(cliente);
 
         if (nonNull(valorBruto) || nonNull(valorLiquido)) {
@@ -121,12 +121,20 @@ public class ClienteController {
         return ResponseEntity.ok("Sucessp");
     }
 
+    @PostMapping("/reativar-cliente")
+    public ResponseEntity reativar(@RequestParam("id_cliente") Integer idCliente,
+                                   @RequestBody String body) {
+
+        System.out.println(idCliente);
+
+        return ResponseEntity.ok().build();
+    }
+
 
     @GetMapping("/lista")
     @ResponseBody
     public List<ClienteModel> obtemTodosClientes() {
         List<ClienteModel> clienteModels = this.clienteService.buscaClientes();
-
         return clienteModels;
     }
 

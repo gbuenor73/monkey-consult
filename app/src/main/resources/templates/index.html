@@ -27,7 +27,7 @@
         <th>Telefone</th>
         <th>Dieta / Treino</th>
         <th>Plano</th>
-        <th>Data da Troca Plano</th>
+        <th>Data da Troca Treino</th>
         <th>Data de Vencimento Plano</th>
         <th>Data de Pagamento</th>
         <th>Vlr. Bruto</th>
@@ -40,39 +40,48 @@
         <!--         <td th:text="${cliente.idCliente}"></td>-->
         <td th:text="${cliente.nome}"></td>
         <td th:text="${cliente.telefone}"></td>
-        <td th:if="${cliente.dietaTreinoModel != null and cliente.dietaTreinoModel.idDieta != 1}" th:text="${cliente.dietaTreinoModel.descricao}"></td>
+        <td th:if="${cliente.dietaTreinoModel != null and cliente.dietaTreinoModel.idDieta != 1}"
+          th:text="${cliente.dietaTreinoModel.descricao}"></td>
         <td th:unless="${cliente.dietaTreinoModel != null and cliente.dietaTreinoModel.idDieta != 1}">
           Nenhum Treino definido
         </td>
 
-        <td th:if="${cliente.planoModel != null and cliente.planoModel.idPlano != 1}" th:text="${cliente.planoModel.descricao}"></td>
+        <td th:if="${cliente.planoModel != null and cliente.planoModel.idPlano != 1}"
+          th:text="${cliente.planoModel.descricao}"></td>
         <td th:unless="${cliente.planoModel != null and cliente.planoModel.idPlano != 1}">
           Nenhum Plano definido
         </td>
 
         <td
+          class="data"
           th:if="${cliente.datasModel != null and cliente.datasModel.size() > 0 and cliente.datasModel[0].proximaTrocaDietaTreino != 0}"
-          th:text="${cliente.datasModel[0].proximaTrocaDietaTreino}"></td>
+          th:text="${cliente.datasModel[0].proximaTrocaDietaTreino}">
+        </td>
         <td
           th:unless="${cliente.datasModel != null and cliente.datasModel.size() > 0 and cliente.datasModel[0].proximaTrocaDietaTreino != 0}">
         </td>
 
         <td
+          class="data"
           th:if="${cliente.datasModel != null and cliente.datasModel.size() > 0 and cliente.datasModel[0].vencimentoPlano != 0}"
-          th:text="${cliente.datasModel[0].vencimentoPlano}"></td>
+          th:text="${cliente.datasModel[0].vencimentoPlano}">
+        </td>
         <td
           th:unless="${cliente.datasModel != null and cliente.datasModel.size() > 0 and cliente.datasModel[0].vencimentoPlano != 0}">
         </td>
 
         <td
+          class="data"
           th:if="${cliente.datasModel != null and cliente.datasModel.size() > 0 and cliente.datasModel[0].dataPagamento != 0}"
-          th:text="${cliente.datasModel[0].dataPagamento}"></td>
+          th:text="${cliente.datasModel[0].dataPagamento}">
+        </td>
         <td
           th:unless="${cliente.datasModel != null and cliente.datasModel.size() > 0 and cliente.datasModel[0].dataPagamento != 0}">
         </td>
 
         <td
           th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null and cliente.valoresModel[0].valorBruto != 0.00}">
+          <div style="display:  inline;">R$ </div>
           <span class="valor-monetario"
             th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorBruto != null and cliente.valoresModel[0].valorBruto != 0.00}"
             th:text="${cliente.valoresModel[0].valorBruto}"></span>
@@ -85,6 +94,7 @@
 
         <td
           th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null and cliente.valoresModel[0].valorLiquido != 0.00}">
+          <div style="display:  inline;">R$ </div>
           <span class="valor-monetario"
             th:if="${cliente.valoresModel != null and cliente.valoresModel.size() > 0 and cliente.valoresModel[0].valorLiquido != null and cliente.valoresModel[0].valorLiquido != 0.00}"
             th:text="${cliente.valoresModel[0].valorLiquido}"></span>
@@ -145,17 +155,7 @@
     function congelar_cliente(idCliente) {
       alert("Função ainda não disponível");
     }
-
-    function formatarValor(valor) {
-      if (valor != "") {
-        valor = valor.replace(/[^\d.]/g, "");
-        valor = parseFloat(valor).toFixed(2);
-        valor = valor.replace(".", ",");
-        return "R$ " + valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      }
-    }
-
-    // Função para formatar os valores monetários nas células da tabela
+    
     function formatarValoresMonetarios() {
       try {
         var cells = document.querySelectorAll(".valor-monetario");
@@ -165,6 +165,48 @@
         });
       } catch (error) {
         console.log(error);
+      }
+    }
+    
+    // Função para formatar os valores monetários nas células da tabela
+    function formatarValor(valor) {
+      if (valor != "") {
+        valor = valor.replace(/[^\d.]/g, "");
+        valor = parseFloat(valor).toFixed(2);
+        return valor.replace(".", ",");
+        // valor = valor.replace(".", ",");
+        // return "R$ " + valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+    }
+
+    function formatarDatas(){
+      try{
+        var cells = document.querySelectorAll(".data");
+        
+        cells.forEach((cell) => {
+          var data = cell.textContent.trim();
+          cell.textContent = formatarData(data);
+        })
+      } catch (error){
+        console.log(error);
+      }
+    }
+
+    function formatarData(data){
+      
+      let regExp = /^\d{4}-\d{2}-\d{2}$/;
+      if (data != "" && regExp.test(data)) {
+        let partesData = data.split('-'); // Divide a string da data em partes: [ano, mês, dia]
+        let ano_antes = parseInt(partesData[0], 10);
+        let mes_antes = parseInt(partesData[1], 10) - 1; // Mês é base 0 (janeiro é 0)
+        let dia_antes = parseInt(partesData[2], 10);
+
+        let dataRecebida = new Date(ano_antes, mes_antes, dia_antes);
+        let dia = dataRecebida.getDate().toString().padStart(2, '0');
+        let mes = (dataRecebida.getMonth() + 1).toString().padStart(2, '0');
+        let ano = dataRecebida.getFullYear().toString();
+
+        return `${dia}/${mes}/${ano}`;
       }
     }
 
@@ -189,7 +231,11 @@
     // }
     // Chama a função para formatar os valores monetários quando a página é carregada
 
-    window.onload = formatarValoresMonetarios;
+    window.onload = function () {
+      formatarValoresMonetarios();
+      formatarDatas();
+    }
+
   </script>
 </body>
 

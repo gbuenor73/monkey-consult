@@ -55,17 +55,18 @@
         fetch(formulario.action, {
           method: formulario.method,
           body: new FormData(formulario)
-        }).then(response => { 
+        }).then(response => {
           if (!response.ok) {
-            response.text().then(errorMessage => {
-              alert("Erro ao cadastrar cliente: " + errorMessage);
+            response.text().then(data => {
+              // alert("Erro ao cadastrar cliente: " + error_message);
+              abrirModal(data, formulario.telefone.value);
             });
           } else {
             window.opener.location.reload();
             window.close();
           }
         }).catch(error => {
-          console.log('error',error)
+          console.log('error', error)
           alert("Erro ao enviar o formulário: " + error);
         });
       }
@@ -79,6 +80,89 @@
         currency: "BRL",
       });
       input.value = valor;
+    }
+
+    function abrirModal(data, telefone) {
+      if (null != document.querySelector(".modal"))
+        fecharModal();
+
+      data = data.replace(/=/g, '": "').replace(/, /g, '", "').replace(/{/, '{"').replace(/}/, '"}');
+      var json_data = JSON.parse(data)
+
+      // Cria um elemento div para conter o modal
+      var modalContainer = document.createElement("div");
+      modalContainer.innerHTML = data
+
+      if (json_data.error_message == "Telefone ja cadastrado!") {
+        if (json_data.indicador_cliente_ativo == 'false') {
+          modalContainer.innerHTML = `
+          <div id="myModal" class="modal" style="display: block;">
+            <div class="modal-content">
+              <p>Telefone ${telefone}, ja cadastrado!</p>
+              <p>Cliente inativo. Deseja ativar o cliente?</p>
+              <button id="btnSim" name="btnSim" data_id_cliente="${json_data.id_cliente}">Sim</button>
+              <button id="btnNao">Não</button>
+            </div>
+          </div>`;
+        } else {
+          modalContainer.innerHTML = `
+            <div id="myModal" class="modal" style="display: block;">
+              <div class="modal-content">
+                <p>Telefone ${telefone}, ja cadastrado e ativo.</p>
+                <p>Tente outro numero ou pesquise pelo cliente.</p>
+              </div>
+            </div>`;
+        }
+      }
+
+      // Adiciona o modal à página atual
+      document.body.appendChild(modalContainer);
+
+      // Obtenha a referência aos botões dentro do modal
+      var btnSim = document.getElementById("btnSim");
+      var btnNao = document.getElementById("btnNao");
+
+      // Quando o usuário clicar em "Sim"
+      btnSim.onclick = function () {
+        reativarCliente(btnSim.data_id_cliente)
+      };
+
+      // Quando o usuário clicar em "Não"
+      btnNao.onclick = function () {
+        fecharModal();
+        // Faça o que você precisa fazer se o usuário clicar em "Não"
+      };
+    }
+
+    function reativarCliente(idCliente) {
+      fetch("@{/reativar-cliente}", {
+        method: "POST",
+        body: JSON.stringify({
+          idCliente: idCliente
+        })
+      }).then(response => {
+        console.log(response)
+
+        if (!response.ok) {
+          console.log("Erro ao reativar cliente", response.status, response.statusText);
+          alert("Erro ao reativar cliente: " + response.statusText);
+        } else {
+          alert("Cliente reativado.");
+          window.opener.location.reload();
+          // window.close();
+        }
+      }).catch(error => {
+        console.log("Erro ao reativar cliente", response.status, response.statusText);
+        alert("Erro ao reativar cliente: " + response.statusText);
+      });
+    }
+
+    // Função para fechar o modal
+    function fecharModal() {
+      var modalContainer = document.querySelector(".modal");
+      if (modalContainer) {
+        modalContainer.remove();
+      }
     }
 
     window.onload = function () {

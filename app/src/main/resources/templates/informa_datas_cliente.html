@@ -24,7 +24,7 @@
     <input type="hidden" name="id_valor" th:value="${cliente.valoresModel[0].idValor}">
 
     <label id="data_pagamento_label">Selecione a Data do Pagamento: </label>
-    <input type="date" id="data_pagamento_input" name="data_pagamento_input" />
+    <input type="date" id="data_pagamento_input" name="data_pagamento_input" placeholder="dd/mm/yyyy"/>
 
     <br> <br>
     <label id="valor_bruto_label">Informe o valor Bruto: </label>
@@ -114,16 +114,20 @@
         alert("Favor informar a data de pagamento.");
         return;
       } else {
-        console.log(formulario.valor_bruto_input.value)
-
         formulario.valor_bruto_input.value = parseFloat(formulario.valor_bruto_input.value.replace('R$', '').replace(',', '.'));
         formulario.valor_liquido_input.value = parseFloat(formulario.valor_liquido_input.value.replace('R$', '').replace(',', '.'));
 
         if (formulario.iniciar_plano_check.checked) {
+
+          var cliente = [[${cliente}]];
+          if (cliente.plano == null) {
+            alert("Necessário escolher o plano primeiro");
+            return;
+          }
+
           if (formulario.mesma_data_check.checked) {
             formulario.inicio_plano_input.value = formulario.data_pagamento_input.value;
           } else {
-            console.log(formulario.inicio_plano_input.value)
             if (formulario.inicio_plano_input.value == "") {
               alert("Favor informar a data de inicio do plano")
               return;
@@ -131,39 +135,22 @@
           }
         }
 
-        formulario.submit();
-        setTimeout(function () {
-          window.opener.location.reload();
-          window.close();
-        }, 100);
-      }
-    }
-
-    function enviar_formulario_old(id_cliente) {
-      formulario = document.getElementById("registar_pagamento");
-
-      if (formulario.data_pagamento_input.value == "") {
-        alert("Favor informar a data de pagamento.");
-        return;
-      } else {
-        fetch("/datas/editar", {
-          method: "POST",
-          body: new FormData(formulario),
-        })
-          .then((response) => {
-            response.text().then((message) => {
-              if (!response.ok)
-                alert(`Erro ao realizar a operação. \n${message}.`);
-              else {
-                alert("Operação realizada com sucesso!");
-                window.opener.location.reload();
-                window.close();
-              }
+        fetch(formulario.action, {
+          method: formulario.method,
+          body: new FormData(formulario)
+        }).then(response => { 
+          if (!response.ok) {
+            response.text().then(errorMessage => {
+              alert("Erro ao Atualizar data/valores do cliente: " + errorMessage);
             });
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
+          } else {
+            window.opener.location.reload();
+            window.close();
+          }
+        }).catch(error => {
+          console.log('error',error)
+          alert("Erro ao enviar o formulário: " + error);
+        });
       }
     }
 
@@ -182,7 +169,7 @@
 
     function formatarValor(valor) {
       if (valor != "") {
-        valor = valor.replace(/[^\d.]/g, "");
+        valor = valor.replace(/[^\d.]/g, ""); 
         valor = parseFloat(valor).toFixed(2);
         valor = valor.replace(".", ",");
         return "R$ " + valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");

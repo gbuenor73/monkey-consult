@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerta com botões</title>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .modal-content button {
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <p id="errorMessage"></p>
+            <button id="btnSim">Sim</button>
+            <button id="btnNao">Não</button>
+        </div>
+    </div>
+
+    <script>
+        // Obtenha a referência ao modal e aos botões
+        var modal = document.getElementById("myModal");
+        var btnSim = document.getElementById("btnSim");
+        var btnNao = document.getElementById("btnNao");
+
+        // Função para exibir o modal com a mensagem de erro
+        function mostrarErro(errorMessage) {
+            document.getElementById("errorMessage").textContent = errorMessage;
+            modal.style.display = "block";
+        }
+
+        // Quando o usuário clicar em "Sim"
+        btnSim.onclick = function () {
+            modal.style.display = "none";
+            // Faça o que você precisa fazer se o usuário clicar em "Sim"
+        };
+
+        // Quando o usuário clicar em "Não"
+        btnNao.onclick = function () {
+            modal.style.display = "none";
+            // Faça o que você precisa fazer se o usuário clicar em "Não"
+        };
+
+        // Quando o usuário clicar em qualquer lugar fora do modal, feche o modal
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
+
+</body>
+
+</html>

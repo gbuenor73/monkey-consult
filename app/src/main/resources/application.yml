@@ -1,19 +1,14 @@
+server:
+  port: 8080
+
 spring:
+  profiles:
+    active: local
   application:
     name: monkey-consulting
 
   datasource:
-    url: jdbc:mysql://localhost:3306/monkey_consulting
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: monkey
-    password: monkey
-
-  jpa:
-    show-sql: true
-    hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
 #  thymeleaf:
 #    cache: false
 #    mode: HTML
@@ -24,9 +19,6 @@ spring:
 #    cache:
 #      period: 0
 
-
-server:
-  port: 8080
 #  servlet:
 #    context-path: /monkey-consulting
 

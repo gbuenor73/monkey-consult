@@ -12,8 +12,8 @@ public class GlobalExceptionHandler {
     public String handleGlobalException(HttpServletRequest request, Exception ex, Model model) {
 
         if (ex instanceof RuntimeException) {
-            if (ex.getMessage().contains("Cliente ja existente!")) {
-//                return "novo_cliente";
+            if (ex.getMessage().contains("Telefone ja cadastrado!")) {
+                System.out.println("adaddadad");
             }
             model.addAttribute("errorMessage", ex.getMessage()); // Adiciona a mensagem de erro ao Model
         }

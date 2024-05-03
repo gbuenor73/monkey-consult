@@ -24,11 +24,14 @@ public class DataService {
         return this.jpa.findLastByClientesModel(cliente);
     }
 
-    public void atualizarDatas(DataModel dataModel, ValorModel valorModel, Boolean iniciarPlano, Boolean mesmaData) {
+    public void atualizarDatas(DataModel dataModel, ValorModel valorModel, ClienteModel clienteModel,Boolean iniciarPlano, Boolean mesmaData) {
 
-        if (iniciarPlano)
-            if (mesmaData)
-                dataModel.setInicioPlano(dataModel.getDataPagamento());
+        if (iniciarPlano){
+            dataModel.setVencimentoPlano(dataModel.getInicioPlano().plusDays(clienteModel.getPlanoModel().getDiasParaVencimento()));
+
+            dataModel.setInicioDietaTreino(dataModel.getInicioPlano());
+            dataModel.setProximaTrocaDietaTreino(dataModel.getInicioDietaTreino().plusDays(clienteModel.getPlanoModel().getDiasParaTrocaDaDieta()));
+        }
 
         try {
             this.jpa.save(dataModel);
