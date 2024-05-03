@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Formulário de Cliente</title>
+</head>
+
+<body>
+    <div>
+
+        <h1>Formulário de Cliente</h1>
+
+        <form action="/editar" method="patch">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required><br><br>
+
+            <label for="telefone">Telefone:</label>
+            <input type="tel" id="telefone" name="telefone" pattern="[0-9]{10}" placeholder="Apenas números"
+                required><br><br>
+
+            <label for="valor_bruto">Valor Bruto:</label>
+            <input type="text" id="valor_bruto" onkeyup="formatarMoeda(this)">
+
+            <input type="submit" value="Enviar">
+            <a href="/">Voltar</a>
+        </form>
+    </div>
+
+
+    <script>
+
+    </script>
+
+</body>
+
+</html>

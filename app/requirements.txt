@@ -1,7 +1,0 @@
-flask~=3.0.0
-flask_cors
-marshmallow~=3.20.1
-sqlalchemy~=2.0.23
-mysql-connector
-mysql-connector-python
-justpy~=0.14.0

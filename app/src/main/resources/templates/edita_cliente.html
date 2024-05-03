@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title>Editar Cliente</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+
+<body style=" min-width: 450px; max-width: 450px; min-height: 550px; max-height: 550px; padding: 15px; margin: 10px">
+  <div class="form_client">
+    <h1>Editar</h1>
+
+    <form id="editar_cliente" action="/editar" method="post">
+      <div th.text="${cliente}"></div>
+
+      <label class="ocultar" for="id_cliente">ID: </label>
+      <input class="ocultar" type="text" id="id_cliente" name="id_cliente" th:value="${ cliente.idCliente }" readonly />
+
+      <label class="ocultar" for="indicador_cliente_ativo">Cliente Ativo: </label>
+      <input class="ocultar" type="text" id="indicador_cliente_ativo" name="indicador_cliente_ativo"
+        th:value="${cliente.indicadorClienteAtivo}" readonlys />
+
+      <label for="nome">Nome: </label>
+      <input type="text" id="nome" name="nome" th:value="${ cliente.nome }" required />
+      <br>
+
+      <label for="telefone">Telefone: </label>
+      <input type="tel" id="telefone" name="telefone" pattern="[0-9]{11}" maxlength="11" placeholder="Apenas números"
+        th:value="${ cliente.telefone }" required />
+      <br>
+
+      <label for="dieta">Selecione o Treino: </label>
+      <select id="dieta" name="dieta">
+        <th:block th:if="${cliente.dietaTreinoModel != null}">
+          <option th:each="dieta : ${dietas}" th:text="${dieta.descricao}" th:value="${dieta.idDieta}"
+            th:selected="${dieta.idDieta == cliente.dietaTreinoModel.idDieta}">
+          </option>
+        </th:block>
+        <th:block th:unless="${cliente.dietaTreinoModel != null}">
+          <option th:each="dieta : ${dietas}" th:text="${dieta.descricao}" th:value="${dieta.idDieta}">
+          </option>
+        </th:block>
+      </select>
+
+      <br>
+      <label for="plano">Selecione o Plano: </label>
+      <select id="plano" name="plano">
+        <th:block th:if="${cliente.planoModel != null}">
+          <option th:each="plano : ${planos}" th:text="${plano.descricao}" th:value="${plano.idPlano}"
+            th:selected="${plano.idPlano == cliente.planoModel.idPlano}">
+          </option>
+        </th:block>
+        <th:block th:unless="${cliente.planoModel != null}">
+          <option th:each="plano : ${planos}" th:text="${plano.descricao}" th:value="${plano.idPlano}">
+          </option>
+        </th:block>
+      </select>
+
+      <br>
+    </form>
+
+    <br>
+    <button type="submit" onclick="enviar_formulario()">Enviar</button>
+    <button onclick="window.close()">Voltar</button>
+
+    <script th:inline="javascript">
+      function enviar_formulario() {
+        formulario = document.forms[0];
+
+        if (formulario.nome.value == "" || formulario.telefone.value == "") {
+          alert("Ao menos os campos obrigatorios devem ser preenchidos");
+          return;
+        } else {
+
+          fetch(formulario.action, {
+            method: formulario.method,
+            body: new FormData(formulario)
+          }).then(response => {
+            if (!response.ok) {
+              response.text().then(errorMessage => {
+                // alert("Erro ao Atualizar cliente: " + errorMessage);
+                abrirModal(errorMessage);
+              });
+            } else {
+              window.opener.location.reload();
+              window.close();
+            }
+          }).catch(error => {
+            console.log('error', error)
+            alert("Erro ao enviar o formulário: " + error);
+          });
+        }
+      }
+
+      function abrirModal(errorMessage) {
+        // Cria um elemento div para conter o modal
+        var modalContainer = document.createElement("div");
+        modalContainer.innerHTML = `
+            <div id="myModal" class="modal" style="display: block;">
+              <div class="modal-content">
+                <p>${errorMessage}</p>
+                <button id="btnSim">Sim</button>
+                <button id="btnNao">Não</button>
+              </div>
+            </div>
+          `;
+
+        // Adiciona o modal à página atual
+        document.body.appendChild(modalContainer);
+
+        // Obtenha a referência aos botões dentro do modal
+        var btnSim = document.getElementById("btnSim");
+        var btnNao = document.getElementById("btnNao");
+
+        // Quando o usuário clicar em "Sim"
+        btnSim.onclick = function () {
+          fecharModal();
+          // Faça o que você precisa fazer se o usuário clicar em "Sim"
+        };
+
+        // Quando o usuário clicar em "Não"
+        btnNao.onclick = function () {
+          fecharModal();
+          // Faça o que você precisa fazer se o usuário clicar em "Não"
+        };
+
+        // Quando o usuário clicar em qualquer lugar fora do modal, feche o modal
+        window.onclick = function (event) {
+          if (event.target == modalContainer) {
+            fecharModal();
+          }
+        };
+      }
+
+      // Função para fechar o modal
+      function fecharModal() {
+        var modalContainer = document.querySelector(".modal");
+        if (modalContainer) {
+          modalContainer.remove();
+        }
+      }
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape")
+          window.close();
+      });
+    </script>
+
+  </div>
+</body>
+
+</html>

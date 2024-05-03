@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:mysql://viaduct.proxy.rlwy.net:15057/monkey_consulting
+    username: root
+    password: lKEzyUoCYHsXbDlcUIlpIOvWkZlZmSUh
+
+  jpa:
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
