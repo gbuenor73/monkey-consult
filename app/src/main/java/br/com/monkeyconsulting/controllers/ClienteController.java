@@ -122,12 +122,17 @@ public class ClienteController {
     }
 
     @PostMapping("/reativar-cliente")
-    public ResponseEntity reativar(@RequestParam("id_cliente") Integer idCliente,
-                                   @RequestBody String body) {
+    public ResponseEntity reativar(@RequestParam("id_cliente") Integer idCliente) {
+        try {
+            ClienteModel clienteModel = this.clienteService.buscaClientePorId(idCliente);
+            clienteModel.setIndicadorClienteAtivo(true);
 
-        System.out.println(idCliente);
+            this.clienteService.insere(clienteModel);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
 
-        return ResponseEntity.ok().build();
     }
 
 
