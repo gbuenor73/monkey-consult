@@ -146,7 +146,7 @@
         } else {
           alert("Cliente reativado.");
           window.opener.location.reload();
-          // window.close();
+          window.close();
         }
       }).catch(error => {
         console.log("Erro ao reativar cliente", response.status, response.statusText);
