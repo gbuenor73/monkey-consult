@@ -23,7 +23,7 @@
 
     <br />
     <label>Telefone:</label>
-    <input type="tel" id="telefone" name="telefone" pattern="[0-9]{11}" maxlength="11" placeholder="Apenas números"
+    <input type="tel" id="telefone" name="telefone" pattern="[0-9]{12}" maxlength="11" placeholder="Apenas números"
       required />
 
     <br />
@@ -35,16 +35,15 @@
     <input value="R$ 0,00" type="text" id="valor_liquido" name="valor_liquido" onkeyup="formatarMoeda(this)" />
 
     <br />
-    <input type="submit" onclick="enviar_formulario()" value="Enviar" />
+    <button onclick="enviar_formulario()" value="Enviar"> Enviar </button>
     <button onclick="window.close()">Voltar</button>
   </form>
 
   <!-- #include virtual="default/footer"-->
 
   <script th:inline="javascript">
-    function enviar_formulario() {
+    async function enviar_formulario() {
       formulario = document.forms[0];
-
       formulario.valor_bruto.value = formulario.valor_bruto.value.replace(/[^\d,]/g, "").replace(",", ".");
       formulario.valor_liquido.value = formulario.valor_liquido.value.replace(/[^\d,]/g, "").replace(",", ".");
 
@@ -52,23 +51,33 @@
         alert("Ao menos os campos obrigatorios devem ser preenchidos");
         return;
       } else {
-        fetch(formulario.action, {
-          method: formulario.method,
-          body: new FormData(formulario)
-        }).then(response => {
+        try {
+          method = formulario.method
+          console.log(method)
+          console.log(formulario.action)
+          console.log(formulario)
+          console.log(new FormData(formulario))
+          console.log({
+            method: formulario.method,
+            body: new FormData(formulario)
+          })
+
+          const response = await fetch(formulario.action, {
+            method: formulario.method,
+            body: new FormData(formulario)
+          });
+
           if (!response.ok) {
-            response.text().then(data => {
-              // alert("Erro ao cadastrar cliente: " + error_message);
-              abrirModal(data, formulario.telefone.value);
-            });
+            const data = await response.text();
+            abrirModal(data, formulario.telefone.value);
           } else {
             window.opener.location.reload();
             window.close();
           }
-        }).catch(error => {
-          console.log('error', error)
+        } catch (error) {
+          console.error('Erro ao enviar o formulário:', error);
           alert("Erro ao enviar o formulário: " + error);
-        });
+        }
       }
     }
 
@@ -104,6 +113,24 @@
               <button id="btnNao">Não</button>
             </div>
           </div>`;
+
+          // Adiciona o modal à página atual
+          document.body.appendChild(modalContainer);
+
+          // Obtenha a referência aos botões dentro do modal
+          var btnSim = document.getElementById("btnSim");
+          var btnNao = document.getElementById("btnNao");
+
+          // Quando o usuário clicar em "Sim"
+          btnSim.onclick = function () {
+            reativarCliente(btnSim.getAttribute("data_id_cliente"))
+          };
+
+          // Quando o usuário clicar em "Não"
+          btnNao.onclick = function () {
+            fecharModal();
+            // Faça o que você precisa fazer se o usuário clicar em "Não"
+          };
         } else {
           modalContainer.innerHTML = `
             <div id="myModal" class="modal" style="display: block;">
@@ -115,27 +142,10 @@
         }
       }
 
-      // Adiciona o modal à página atual
-      document.body.appendChild(modalContainer);
-
-      // Obtenha a referência aos botões dentro do modal
-      var btnSim = document.getElementById("btnSim");
-      var btnNao = document.getElementById("btnNao");
-
-      // Quando o usuário clicar em "Sim"
-      btnSim.onclick = function () {
-        reativarCliente(btnSim.getAttribute("data_id_cliente"))
-      };
-
-      // Quando o usuário clicar em "Não"
-      btnNao.onclick = function () {
-        fecharModal();
-        // Faça o que você precisa fazer se o usuário clicar em "Não"
-      };
     }
 
     function reativarCliente(idCliente) {
-      fetch(`/reativar-cliente?id_cliente=${idCliente}`, {  
+      fetch(`/reativar-cliente?id_cliente=${idCliente}`, {
         method: "POST"
       }).then(response => {
         console.log(response)

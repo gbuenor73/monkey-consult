@@ -9,6 +9,7 @@ import br.com.monkeyconsulting.services.DietaTreinoService;
 import br.com.monkeyconsulting.services.PlanoService;
 import br.com.monkeyconsulting.services.ValorService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,8 +73,7 @@ public class ClienteController {
     public ResponseEntity<String> insereCliente(@RequestParam("nome") String nome,
                                                 @RequestParam("telefone") Long telefone,
                                                 @RequestParam("valor_bruto") Float valorBruto,
-                                                @RequestParam("valor_liquido") Float valorLiquido,
-                                                Model model) {
+                                                @RequestParam("valor_liquido") Float valorLiquido) {
 
         var cliente = new ClienteModel();
         cliente.setNome(nome);
@@ -82,9 +82,10 @@ public class ClienteController {
         ClienteModel clienteModel = this.clienteService.buscaClientePorTelefone(cliente.getTelefone());
 
         if (nonNull(clienteModel) && nonNull(clienteModel.getTelefone()) && clienteModel.getTelefone().equals(telefone)) {
-            return ResponseEntity.badRequest().body(Map.of("error_message","Telefone ja cadastrado!",
-                    "indicador_cliente_ativo",clienteModel.getIndicadorClienteAtivo(),
-                    "id_cliente",clienteModel.getIdCliente()).toString());
+            ResponseEntity<String> body = ResponseEntity.badRequest().body(Map.of("error_message", "Telefone ja cadastrado!",
+                    "indicador_cliente_ativo", clienteModel.getIndicadorClienteAtivo(),
+                    "id_cliente", clienteModel.getIdCliente()).toString());
+            return body;
         }
 
         cliente.setIndicadorClienteAtivo(true);
@@ -104,9 +105,10 @@ public class ClienteController {
 
             this.valorService.insere(valorModel);
         } else {
-            throw new RuntimeException("Valores inválidoos!");
+//            throw new RuntimeException("Valores inválidos!");
+            return ResponseEntity.badRequest().body("Valores inválidos");
         }
-        return ResponseEntity.ok().body("<script>window.close()</script>");
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/desativar/{id_cliente}")
@@ -128,13 +130,11 @@ public class ClienteController {
             clienteModel.setIndicadorClienteAtivo(true);
 
             this.clienteService.insere(clienteModel);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("<script>window.close()</script>");
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-
     }
-
 
     @GetMapping("/lista")
     @ResponseBody
