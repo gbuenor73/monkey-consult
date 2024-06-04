@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: jdbc:mysql://viaduct.proxy.rlwy.net:15057/monkey_consulting
-    username: root
+    username: monkey
     password: lKEzyUoCYHsXbDlcUIlpIOvWkZlZmSUh
 
   jpa:
