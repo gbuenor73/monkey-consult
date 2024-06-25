@@ -1,7 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/monkey_consulting
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.7:3306/monkey_consulting
     username: monkey
     password: monkey
 
