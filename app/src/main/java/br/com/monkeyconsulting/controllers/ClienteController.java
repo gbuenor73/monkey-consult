@@ -9,7 +9,6 @@ import br.com.monkeyconsulting.services.DietaTreinoService;
 import br.com.monkeyconsulting.services.PlanoService;
 import br.com.monkeyconsulting.services.ValorService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,8 +31,10 @@ public class ClienteController {
     private final DietaTreinoService dietaTreinoService;
 
     @GetMapping
-    public String obtemClientes(Model model) {
-        List<ClienteModel> clienteModels = this.clienteService.buscaClientes();
+    public String obtemClientes(@RequestParam(value = "order", required = false) String order,
+                                @RequestParam(value = "ascending", required = false) Boolean ascendig,
+                                Model model) {
+        List<ClienteModel> clienteModels = this.clienteService.buscaClientes(order, ascendig);
         model.addAttribute("clientes", clienteModels);
         return "index";
     }
@@ -44,7 +45,7 @@ public class ClienteController {
     }
 
     @GetMapping("/detalhar/{id_cliente}")
-    public String detalhaCliente(Model model, @PathVariable("id_cliente") Integer idCliente) {
+    public String detalhaCliente(@PathVariable("id_cliente") Integer idCliente, Model model) {
 
         ClienteModel clienteModel = this.clienteService.buscaClientePorId(idCliente);
         List<PlanoModel> listaPlanos = this.planoService.buscaPlanos();
@@ -120,7 +121,7 @@ public class ClienteController {
             throw new RuntimeException("Cliente Não encontrado");
 
         this.clienteService.cancelarCliente(clienteModel.getIdCliente());
-        return ResponseEntity.ok("Sucessp");
+        return ResponseEntity.ok("Sucesso");
     }
 
     @PostMapping("/reativar-cliente")
@@ -139,8 +140,16 @@ public class ClienteController {
     @GetMapping("/lista")
     @ResponseBody
     public List<ClienteModel> obtemTodosClientes() {
-        List<ClienteModel> clienteModels = this.clienteService.buscaClientes();
+        List<ClienteModel> clienteModels = this.clienteService.buscaClientes(null, null);
         return clienteModels;
+    }
+
+    @GetMapping("cliente/{id_cliente}")
+    @ResponseBody
+    public ResponseEntity buscaPorId(@PathVariable("id_cliente") Integer id, Model model) {
+        ClienteModel clienteModel = this.clienteService.buscaClientePorId(id);
+        model.addAttribute("cliente", clienteModel);
+        return ResponseEntity.ok().build();
     }
 
 }
