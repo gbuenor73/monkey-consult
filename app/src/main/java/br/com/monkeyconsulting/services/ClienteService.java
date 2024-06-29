@@ -8,7 +8,9 @@ import br.com.monkeyconsulting.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -20,9 +22,18 @@ public class ClienteService {
     private final DietaTreinoService dietaTreinoService;
     private final PlanoService planoService;
 
+    public List<ClienteModel> buscaClientes(String order, Boolean ascendig) {
+        List<ClienteModel> clientes = this.jpa.findByIndicadorClienteAtivo(true);
 
-    public List<ClienteModel> buscaClientes() {
-        var clientes = this.jpa.findByIndicadorClienteAtivo(true);
+        if (Objects.nonNull(order)) {
+            if ("nome".equals(order)) {
+                clientes.sort((o1, o2) -> o1.getNome().compareToIgnoreCase(o2.getNome()));
+
+                if (!ascendig)
+                    Collections.reverse(clientes);
+            }
+        }
+
         return clientes;
     }
 
@@ -40,7 +51,7 @@ public class ClienteService {
         try {
             ClienteModel save = this.jpa.save(clienteModel);
             return save;
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Houve um erro ao inserir o cliente, tente novamente: ".concat(e.getMessage()));
         }
     }
@@ -69,7 +80,7 @@ public class ClienteService {
 
         try {
             return this.jpa.save(clienteModel);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Houve um erro ao inserir o cliente, tente novamente: ".concat(e.getMessage()));
         }
     }

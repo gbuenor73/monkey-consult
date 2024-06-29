@@ -24,9 +24,9 @@ public class DataService {
         return this.jpa.findLastByClientesModel(cliente);
     }
 
-    public void atualizarDatas(DataModel dataModel, ValorModel valorModel, ClienteModel clienteModel,Boolean iniciarPlano, Boolean mesmaData) {
+    public void atualizarDatas(DataModel dataModel, ValorModel valorModel, ClienteModel clienteModel, Boolean iniciarPlano, Boolean mesmaData) {
 
-        if (iniciarPlano){
+        if (iniciarPlano) {
             dataModel.setVencimentoPlano(dataModel.getInicioPlano().plusDays(clienteModel.getPlanoModel().getDiasParaVencimento()));
 
             dataModel.setInicioDietaTreino(dataModel.getInicioPlano());

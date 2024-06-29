@@ -51,7 +51,7 @@ public class DataController {
             @RequestParam("valor_bruto_input") Float valorBrutoString,
             @RequestParam("valor_liquido_input") Float valorLiquidoString,
             @RequestParam(value = "mesma_data_check", defaultValue = "") String mesmaDataString,
-            @RequestParam(value = "iniciar_plano_check", defaultValue = "") String iniciarPlanoString    ) {
+            @RequestParam(value = "iniciar_plano_check", defaultValue = "") String iniciarPlanoString) {
 
         ClienteModel clienteModel = this.clienteService.buscaClientePorId(idCliente);
         DataModel dataModel = new DataModel(idData, dataPagamento, null, inicioPlano, null, null, null, clienteModel);
