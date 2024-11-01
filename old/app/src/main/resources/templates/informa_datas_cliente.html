@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Registrar Pagamento</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+</head>
+
+<body style=" min-width: 450px; max-width: 450px; min-height: 550px; max-height: auto; padding: 15px; margin: 10px">
+  <h1>Registrar Pagamento</h1>
+
+  <form id="registar_pagamento" name="registar_pagamento" action="/datas/editar" method="post">
+    <!-- objeto escondido apenas para passar valor -->
+
+<!--    <div class="ocultar" id="id_data" th:text="${cliente.datasModel[0].idData}" readonly></div>-->
+    <div class="ocultar" id="data_pagamento" th:text="${cliente.datasModel[0].dataPagamento}" readonly></div>
+    <div class="ocultar" id="valor_bruto" th:text="${cliente.valoresModel[0].valorBruto}" readonly></div>
+    <div class="ocultar" id="valor_liquido" th:text="${cliente.valoresModel[0].valorLiquido}" readonly></div>
+
+    <input type="hidden" name="id_cliente" th:value="${cliente.idCliente}">
+    <input type="hidden" name="id_data" th:value="${cliente.datasModel[0].idData}">
+    <input type="hidden" name="id_valor" th:value="${cliente.valoresModel[0].idValor}">
+
+    <label id="data_pagamento_label">Selecione a Data do Pagamento: </label>
+    <input type="date" id="data_pagamento_input" name="data_pagamento_input" placeholder="dd/mm/yyyy"/>
+
+    <br> <br>
+    <label id="valor_bruto_label">Informe o valor Bruto: </label>
+    <input class="valor-monetario" type="text" id="valor_bruto_input" name="valor_bruto_input"
+    th:value="${cliente.valoresModel[0].valorBruto}" onkeyup="formatarMoeda(this)" />
+
+    <br>
+    <label id="valor_liquido_label">Informe o valor Liquido: </label>
+    <input class="valor-monetario" type="text" id="valor_liquido_input" name="valor_liquido_input"
+      th:value="${cliente.valoresModel[0].valorLiquido}" onkeyup="formatarMoeda(this)" />
+
+
+    <br /> <br>
+    <div onclick="inciar_plano()">
+      <label>Iniciar Plano?</label>
+      <input type="checkbox" id="iniciar_plano_check" name="iniciar_plano_check" />
+      <br />
+    </div>
+
+    <div id="iniciar_plano_div" style="display: none">
+      <br />
+      <div onclick="mesma_data()">
+        <label id="mesma_data_label" name="mesma_data_label">A data de inicio do plano é mesma do pagamento?</label>
+        <input type="checkbox" id="mesma_data_check" name="mesma_data_check" checked />
+        <br />
+      </div>
+
+      <div id="mesma_data_div" style="display: none">
+        <br />
+        <label id="label_data_plano" name="label_data_plano">Selecione a Data de inicio Plano</label>
+        <br />
+        <div id="inicio_plano_div" style="display: none" th:text="${cliente.datasModel[0].inicioPlano}">
+
+        </div>
+        <input type="date" id="inicio_plano_input" name="inicio_plano_input" />
+        <br />
+      </div>
+    </div>
+  </form>
+  <br />
+  <button type="submit" onclick="enviar_formulario('${cliente.idCliente}')" value="Enviar">Enviar</button>
+  <button onclick="window.close()">Voltar</button>
+
+  <script th:inline="javascript">
+    //adiciona data pré preechida no calendario
+    var data_pagamento = document.getElementById("data_pagamento");
+    var inicio_plano = document.getElementById("inicio_plano_div");
+    var inicio_dieta_treino = document.getElementById("inicio_dieta_treino");
+    var valor_bruto = document.getElementById("valor_bruto");
+    var valor_liquido = document.getElementById("valor_liquido");
+
+    if (data_pagamento.textContent != "") {
+      document.getElementById("data_pagamento_input").value = new Date(
+        data_pagamento.textContent
+      ).toISOString().split("T")[0];
+    }
+
+    if (inicio_plano.textContent != "") {
+      document.getElementById("inicio_plano_input").value = new Date(
+        inicio_plano.textContent
+      ).toISOString().split("T")[0];
+    }
+
+    // logica para iniciar plano
+    function inciar_plano() {
+      var display = "none";
+
+      if (document.getElementById("iniciar_plano_check").checked)
+        display = "block";
+
+      document.getElementById("iniciar_plano_div").style.display = display;
+    }
+
+    //logica para mesma data de pagamento e inicio do plano
+    function mesma_data() {
+      var checked = "none";
+
+      if (!document.getElementById("mesma_data_check").checked)
+        checked = "block";
+
+      document.getElementById("mesma_data_div").style.display = checked;
+    }
+
+    function enviar_formulario(id_cliente) {
+      formulario = document.forms[0]
+      if (formulario.data_pagamento_input.value == "") {
+        alert("Favor informar a data de pagamento.");
+        return;
+      } else {
+        formulario.valor_bruto_input.value = parseFloat(formulario.valor_bruto_input.value.replace('R$', '').replace(',', '.'));
+        formulario.valor_liquido_input.value = parseFloat(formulario.valor_liquido_input.value.replace('R$', '').replace(',', '.'));
+
+        if (formulario.iniciar_plano_check.checked) {
+
+          var cliente = [[${cliente}]];
+          if (cliente.plano == null) {
+            alert("Necessário escolher o plano primeiro");
+            return;
+          }
+
+          if (formulario.mesma_data_check.checked) {
+            formulario.inicio_plano_input.value = formulario.data_pagamento_input.value;
+          } else {
+            if (formulario.inicio_plano_input.value == "") {
+              alert("Favor informar a data de inicio do plano")
+              return;
+            }
+          }
+        }
+
+        fetch(formulario.action, {
+          method: formulario.method,
+          body: new FormData(formulario)
+        }).then(response => { 
+          if (!response.ok) {
+            response.text().then(errorMessage => {
+              alert("Erro ao Atualizar data/valores do cliente: " + errorMessage);
+            });
+          } else {
+            window.opener.location.reload();
+            window.close();
+          }
+        }).catch(error => {
+          console.log('error',error)
+          alert("Erro ao enviar o formulário: " + error);
+        });
+      }
+    }
+
+    function formatarMoeda(input) {
+      let valor = input.value;
+      valor = valor.replace(/\D/g, '');
+      valor = (Number(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      input.value = valor;
+    }
+
+    // fecha se apertar ESC
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape")
+        window.close();
+    });
+
+    function formatarValor(valor) {
+      if (valor != "") {
+        valor = valor.replace(/[^\d.]/g, ""); 
+        valor = parseFloat(valor).toFixed(2);
+        valor = valor.replace(".", ",");
+        return "R$ " + valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      } else {
+        return "R$ 0,00";
+      }
+    }
+
+    // Função para formatar os valores monetários nas células da tabela
+    function formatarValoresMonetarios() {
+      try {
+        var cells = document.querySelectorAll(".valor-monetario");
+        cells.forEach((cell) => {
+          var valor = cell.value.trim();
+          cell.value = formatarValor(valor);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    formatarValoresMonetarios
+    window.onload = function () {
+      // Define o tamanho da janela igual ao tamanho do body
+      window.resizeTo(document.body.offsetWidth, document.body.offsetHeight);
+      formatarValoresMonetarios()
+    };
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: local
+  application:
+    name: monkey-consulting
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#  thymeleaf:
+#    cache: false
+#    mode: HTML
+#    encoding: UTF-8
+#    prefix: file:src/main/resources/templates/
+#  resources:
+#    static-locations: file:/src/main/resources/static/
+#    cache:
+#      period: 0
+
+#  servlet:
+#    context-path: /monkey-consulting
+

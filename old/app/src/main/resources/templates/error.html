@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Error</title>
+</head>
+
+<body>
+    <th:text th:if="${errorMessage != null}" th:text="${errorMessage}"></th>
+
+</body>
+
+<script type="text/javascript">
+    window.onload = function () {
+        window.resizeTo(document.body.offsetWidth, document.body.offsetHeight);
+    };
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") window.close();
+    });
+</script>
+
+</html>
